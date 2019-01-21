@@ -1,7 +1,13 @@
-import csv,xlrd
+import csv,xlrd,glob
 from datetime import datetime
 from definitions import *
 
+def get_c3a_list():
+    return [
+                f for f in glob.iglob(os.path.join(
+                    commande_orange_path,"**/**/*C3A*.xls"), recursive=True
+                )
+            ]
 def resultat_fichier(libelle,tab_resultat,tab_entete,tab_erreur):
     nom_fichier=libelle+'_'+str(datetime.now()).split('.')[0].replace(' ','_').replace(':','-')+'.csv'
     with open(
