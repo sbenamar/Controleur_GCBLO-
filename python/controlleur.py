@@ -1,5 +1,6 @@
 from controles import *
 
+#warning d'un module pour une bibliothèque bientôt obsolète
 warnings.simplefilter("ignore")
 
 rapport=""
