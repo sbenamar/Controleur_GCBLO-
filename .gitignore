@@ -1,0 +1,4 @@
+/exe
+/__pycache__
+/rapports/*.txt
+/rapports/*.csv
