@@ -1,6 +1,11 @@
 import csv,xlrd,glob
-from definitions import *
+from functools import reduce
 
+try:
+    from definitions import *
+except Exception as e:
+    log(e,5)
+    
 def get_c3a_list():
     return [
                 f for f in glob.iglob(os.path.join(
@@ -8,7 +13,8 @@ def get_c3a_list():
                 )
             ]
 def resultat_fichier(libelle,tab_resultat,tab_entete,tab_erreur):
-    nom_fichier=libelle+'_'+str(datetime.now()).split('.')[0].replace(' ','_').replace(':','-')+'.csv'
+    date=str(datetime.now())
+    nom_fichier=libelle+'_'+date.split('.')[0].replace(' ','_').replace(':','-')+'.csv'
     with open(
         os.path.join(chemin_rapport,nom_fichier), 'w', newline=''
         ) as fichier:
@@ -45,6 +51,34 @@ def ouvrir_cable_infra(chemin):
 
     return cable_infra
 
+def get_commandes_groupe():
+    return [
+        (
+            c3a,
+            ouvrir_c3a(
+                get_feuille_commande(
+                    os.path.join(commande_orange_path,c3a)
+                ),
+                ind_premiere_ligne_c3a
+            )
+        )
+            for c3a in get_c3a_list()
+    ]
+
+def get_commandes_joint(commandes_groupe):
+    return reduce(lambda acc_l, sl: acc_l.extend(sl) or acc_l, [commandes for c3a,commandes in commandes_groupe])
+
+def liaisons_commande(commandes_joint):
+    return [[prestation[3].value,prestation[5].value] for prestation in commandes_joint]
+
+def get_poteaux_fiche():
+    return list(set(sum(
+        [os.path.splitext(os.path.basename(f))[0].split('_')
+         for f in glob.iglob(os.path.join(appui_orange_path,"*.xls"))
+         ],
+        []
+    )))
+
 def msg_erreur(erreurs):
     msg_erreur=""
     if len(erreurs) > 1:
@@ -71,12 +105,8 @@ def msg_erreur_fichier(erreurs,nom_fichier):
 def gen_rapport_txt(nom,rapport):
     with open(os.path.join(chemin_rapport,nom), "w") as f:
         f.write(rapport)
-
+        
 def fin_programme(msg_rapport=""):
     print("Programme terminé")
     gen_rapport_txt(nom_rapport,msg_rapport)
     input("Appuyez sur une touche pour quitter le programme...")
-    
-def log(err):
-    with open(os.path.join(log_path,nom_log), "w+") as f:
-        f.write(str(datetime.now())+": "+err+"\n\n")

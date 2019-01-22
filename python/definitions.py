@@ -24,7 +24,6 @@ try:
 
         print("Une erreur est survenue (code: "+str(code)+")")
         exit(code)
-        
 except Exception as e:
     print ("Erreur lors de l'initialisation (code 1)")
     exit(1)
@@ -40,14 +39,16 @@ try:
     chemin_layers=os.path.join(exe_projet,exe_projet,"LAYERS")
     layer_prises = os.path.join(chemin_layers+"PRISES.shp")
     cable_infra_csv_path=os.path.join(chemin_layers,"CABLE_INFRA.csv")
+    appui_orange_path=os.path.join(chemin_exe,"09 - Appui Orange - CAPFT")
         
     ind_premiere_ligne_c3a=31-1
     type_imp=["CONDUITE FT","AERIEN FT"]
     version_c3a_en_cours='C3A BLO5'
     
     chemin_rapport=os.path.join(chemin_courant,"rapports")
-    prefixe_resultat_controle1_2="rapport_verif_c3a_cable_infra"
-    prefixe_resultat_controle1_1="rapport_verif_cable_infra_c3a"
+    prefixe_resultat_controle2_2="rapport_verif_c3a_cable_infra"
+    prefixe_resultat_controle2_1="rapport_verif_cable_infra_c3a"
+    prefixe_resultat_controle3="rapport_verif_c3a_poteaux"
     nom_rapport="rapport.txt"
     
     msg_erreur=""
