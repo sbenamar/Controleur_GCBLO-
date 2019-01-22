@@ -41,7 +41,7 @@ def corresp_cable_infra_c3a(msg_rapport="",parcours_infra=True,parcours_c3a=True
     
     if parcours_infra:
         #### infra -> commandes ####
-        msg="Vérification des correspondances 'cable_infra' -> C3A de type '"+"' ou '".join(type_imp)+"'..."
+        msg="Vérification des correspondances de liaisons entre la table attributaire 'cable_infra' et les C3A pour les liaisons de type '"+"' ou '".join(type_imp)+"'..."
         msg_rapport+=msg+"\n\n"
         print(msg)
         
@@ -66,7 +66,7 @@ def corresp_cable_infra_c3a(msg_rapport="",parcours_infra=True,parcours_c3a=True
             print()
             
         #### commandes -> infra ####
-        msg="Vérification des correspondances C3A -> 'cable_infra' de type '"+"' ou '".join(type_imp)+"'..."
+        msg="Vérification des correspondances de liaisons entre les C3A et la table attributaire 'cable_infra' pour les liaisons de type '"+"' ou '".join(type_imp)+"'..."
         print(msg)
         msg_rapport+=msg+"\n\n"
         

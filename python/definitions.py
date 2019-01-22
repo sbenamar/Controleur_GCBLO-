@@ -40,7 +40,7 @@ try:
     chemin_layers=os.path.join(exe_projet,exe_projet,"LAYERS")
     layer_prises = os.path.join(chemin_layers+"PRISES.shp")
     cable_infra_csv_path=os.path.join(chemin_layers,"CABLE_INFRA.csv")
-    
+        
     ind_premiere_ligne_c3a=31-1
     type_imp=["CONDUITE FT","AERIEN FT"]
     version_c3a_en_cours='C3A BLO5'
