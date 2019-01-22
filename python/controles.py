@@ -1,5 +1,9 @@
-from fonctions import *
 from functools import reduce
+
+try:
+    from fonctions import *
+except Exception as e:
+    log(e,3)
 
 def corresp_cable_infra_c3a(msg_rapport="",parcours_infra=True,parcours_c3a=True):
     if not parcours_c3a and not parcours_c3a:

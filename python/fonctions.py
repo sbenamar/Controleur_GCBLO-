@@ -1,5 +1,4 @@
 import csv,xlrd,glob
-from datetime import datetime
 from definitions import *
 
 def get_c3a_list():
@@ -77,3 +76,7 @@ def fin_programme(msg_rapport=""):
     print("Programme terminé")
     gen_rapport_txt(nom_rapport,msg_rapport)
     input("Appuyez sur une touche pour quitter le programme...")
+    
+def log(err):
+    with open(os.path.join(log_path,nom_log), "w+") as f:
+        f.write(str(datetime.now())+": "+err+"\n\n")
