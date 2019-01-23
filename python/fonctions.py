@@ -4,7 +4,7 @@ from functools import reduce
 try:
     from definitions import *
 except Exception as e:
-    log(e,5)
+    log(e,21)
     
 def get_c3a_list():
     return [
@@ -79,6 +79,20 @@ def get_poteaux_fiche():
         []
     )))
 
+def contenu_rapport(msg,msg_rapport,entete,erreurs,prefixe_fichier):
+    print(msg)
+    msg_rapport+=msg+"\n\n"
+    resultat=["Nombre d'erreurs",str(len(erreurs))]
+    
+    nom_fichier=resultat_fichier(prefixe_fichier,resultat,entete,erreurs)     
+    
+    print()
+    msg=msg_erreur_fichier(erreurs,nom_fichier)
+    msg_rapport+=msg+"\n\n"
+    
+    print()
+    return msg_rapport
+
 def msg_erreur(erreurs):
     msg_erreur=""
     if len(erreurs) > 1:
@@ -105,7 +119,7 @@ def msg_erreur_fichier(erreurs,nom_fichier):
 def gen_rapport_txt(nom,rapport):
     with open(os.path.join(chemin_rapport,nom), "w") as f:
         f.write(rapport)
-        
+
 def fin_programme(msg_rapport=""):
     print("Programme terminé")
     gen_rapport_txt(nom_rapport,msg_rapport)

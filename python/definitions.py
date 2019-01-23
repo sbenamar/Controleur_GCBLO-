@@ -26,13 +26,19 @@ try:
         exit(code)
 except Exception as e:
     print ("Erreur lors de l'initialisation (code 1)")
-    exit(1)
+    exit(11)
 
 try:
     qgis_installation_path=r"C:\Program Files\QGIS 3.4"
     chemin_exe=os.path.join(chemin_courant,"exe")
     exe_projet_racine=os.path.join(chemin_exe,"04 - Projet")
-    nom_projet=os.listdir(exe_projet_racine)[0]
+    
+    try:
+        nom_projet=os.listdir(exe_projet_racine)[0]
+    except Exception as e:
+        print("Un exe est nécessaire pour lancer les contrôles.")
+        log(e,12)
+        
     exe_projet=os.path.join(exe_projet_racine,nom_projet)
     commande_orange_path=os.path.join(chemin_exe,"11 - Commande_Orange")
     exe_projet_carto=os.path.join(exe_projet,"APD"+nom_projet+".qgs")
@@ -44,15 +50,19 @@ try:
     ind_premiere_ligne_c3a=31-1
     type_imp=["CONDUITE FT","AERIEN FT"]
     version_c3a_en_cours='C3A BLO5'
+    combinaisons_types=["CTCT","CCT","CTC","CTP","CTA","ACT","PCT"]
     
     chemin_rapport=os.path.join(chemin_courant,"rapports")
     prefixe_resultat_controle2_2="rapport_verif_c3a_cable_infra"
     prefixe_resultat_controle2_1="rapport_verif_cable_infra_c3a"
     prefixe_resultat_controle3="rapport_verif_c3a_poteaux"
+    prefixe_resultat_controle4_1="rapport_verif_norme_numero"
+    prefixe_resultat_controle4_2="rapport_verif_longueur_troncon"
+    prefixe_resultat_controle4_3="rapport_verif_combinaison_types"
     nom_rapport="rapport.txt"
     
     msg_erreur=""
     msg=""
     rapport=""
 except Exception as e:
-    log(e,2)
+    log(e,13)
