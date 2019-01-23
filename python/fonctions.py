@@ -79,39 +79,40 @@ def get_poteaux_fiche():
         []
     )))
 
-def contenu_rapport(msg,msg_rapport,entete,erreurs,prefixe_fichier):
-    print(msg)
-    msg_rapport+=msg+"\n\n"
-    resultat=["Nombre d'erreurs",str(len(erreurs))]
+def contenu_rapport(msg_debut_controle,entete,erreurs,prefixe_fichier):
+    msg=""
+    print(msg_debut_controle)
+    msg+=msg_debut_controle+"\n\n"
+    resultat=[lib_nb_erreurs,str(len(erreurs))]
     
     nom_fichier=resultat_fichier(prefixe_fichier,resultat,entete,erreurs)     
     
     print()
-    msg=msg_erreur_fichier(erreurs,nom_fichier)
-    msg_rapport+=msg+"\n\n"
+    msg+=msg_erreur_fichier(erreurs,nom_fichier)
+    msg+="\n\n"
     
     print()
-    return msg_rapport
+    return msg
 
 def msg_erreur(erreurs):
     msg_erreur=""
     if len(erreurs) > 1:
-        msg_erreur="Le controlleur a détecté "+str(len(erreurs))+" erreurs:\n"+"\n".join(erreurs)
+        msg_erreur=msg_detecte_erreur1.format(str(len(erreurs)),"\n".join(erreurs))
     elif len(erreurs) == 1:
-        msg_erreur="Le controlleur a détecté 1 erreur ("+erreurs[0]+")."
+        msg_erreur=msg_detecte_erreur2.format(erreurs[0])
     else:
-        msg_erreur="Aucune erreur n'a été détectée par le controlleur."
+        msg_erreur=msg_detecte_erreur3
     
     print(msg_erreur)    
     return msg_erreur
 
 def msg_erreur_fichier(erreurs,nom_fichier):
     if len(erreurs) == 0:
-        msg_erreur="Aucune erreur n'a été détectée par le controlleur."
+        msg_erreur=msg_erreur_fichier1
     elif len(erreurs) == 1:
-        msg_erreur="1 erreur a été détectée par le controlleur. Les détails sont dans le fichier "+nom_fichier
+        msg_erreur=msg_erreur_fichier2.format(nom_fichier)
     else:
-        msg_erreur=str(len(erreurs))+" erreurs ont été détectées par le controlleur. Les détails sont dans le fichier "+nom_fichier
+        msg_erreur=msg_erreur_fichier3.format(str(len(erreurs)),nom_fichier)
     
     print(msg_erreur)
     return msg_erreur
@@ -121,6 +122,6 @@ def gen_rapport_txt(nom,rapport):
         f.write(rapport)
 
 def fin_programme(msg_rapport=""):
-    print("Programme terminé")
+    print(msg_fin_programme_1)
     gen_rapport_txt(nom_rapport,msg_rapport)
-    input("Appuyez sur une touche pour quitter le programme...")
+    input(msg_fin_programme_2)

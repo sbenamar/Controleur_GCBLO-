@@ -26,7 +26,7 @@ def corresp_cable_infra_c3a(msg_rapport="",parcours_infra=True,parcours_c3a=True
     
     if parcours_infra:
         #### infra -> commandes ####
-        msg="Vérification des correspondances de liaisons entre la table attributaire 'cable_infra' et les C3A pour les liaisons de type '"+"' ou '".join(type_imp)+"'..."
+        msg=msg_debut_controle2.format("' ou '".join(type_imp))
         msg_rapport+=msg+"\n\n"
         print(msg)
 
@@ -36,11 +36,10 @@ def corresp_cable_infra_c3a(msg_rapport="",parcours_infra=True,parcours_c3a=True
             for (i,cable) in liaisons_infra_filtre
             if cable not in liaisons_commandes and cable not in sorted(liaisons_commandes)
             ]
-            
-        entete_infra=["","","","ligne","cb_id","cm_id (A)", "cm_id (B)","Ordre"]
-        resultat_infra=["Nombre d'erreurs",str(len(erreurs_infra))]
+
+        resultat_infra=[lib_nb_erreurs,str(len(erreurs_infra))]
         
-        nom_fichier=resultat_fichier(prefixe_resultat_controle2_1,resultat_infra,entete_infra,erreurs_infra)     
+        nom_fichier=resultat_fichier(prefixe_resultat_controle3,resultat_infra,entete_controle3,erreurs_infra)     
         
         print()
         msg=msg_erreur_fichier(erreurs_infra,nom_fichier)
@@ -51,9 +50,9 @@ def corresp_cable_infra_c3a(msg_rapport="",parcours_infra=True,parcours_c3a=True
             print()
             
         #### commandes -> infra ####
-        msg="Vérification des correspondances de liaisons entre les C3A et la table attributaire 'cable_infra' pour les liaisons de type '"+"' ou '".join(type_imp)+"'..."
-        print(msg)
+        msg=msg_debut_controle3.format("' ou '".join(type_imp))
         msg_rapport+=msg+"\n\n"
+        print(msg)
         
         cables = [cable[1] for cable in liaisons_infra_filtre]
         
@@ -65,10 +64,9 @@ def corresp_cable_infra_c3a(msg_rapport="",parcours_infra=True,parcours_c3a=True
                 if prestation not in cables and prestation not in sorted(cables)
             ]
             
-        entete_c3a=["","","","Fichier","Identifiant","Numéro point A","Numéro point B"]
-        resultat_c3a=["Nombre d'erreurs",str(len(erreurs_c3a))]
+        resultat_c3a=[lib_nb_erreurs,str(len(erreurs_c3a))]
         
-        nom_fichier=resultat_fichier(prefixe_resultat_controle2_2,resultat_c3a,entete_c3a,erreurs_c3a)     
+        nom_fichier=resultat_fichier(prefixe_resultat_controle2,resultat_c3a,entete_controle2,erreurs_c3a)     
         
         print()
         msg=msg_erreur_fichier(erreurs_c3a,nom_fichier)
@@ -78,17 +76,16 @@ def corresp_cable_infra_c3a(msg_rapport="",parcours_infra=True,parcours_c3a=True
     return msg_rapport
 
 def version_c3a(msg_rapport=""):
-    msg="Vérification de la version des C3A..."
-    
+    msg=msg_debut_controle1+"\n"
     for f in get_c3a_list():
         c3a=get_feuille_commande(f)
         version=c3a.cell_value(rowx=6, colx=3).strip(' ')
     
         msg+=f.replace(commande_orange_path,"")+" :\n"
         if version == version_c3a_en_cours:
-            msg+="La version du C3A est à jour."
+            msg+=msg_fin_controle1_1
         else:
-            msg+="Version obsolète de la C3A. Veuillez mettre à jour à la version :"+version_c3a_en_cours
+            msg+=msg_fin_controle1_2
             
         msg+="\n\n"
     
@@ -98,9 +95,8 @@ def version_c3a(msg_rapport=""):
     return msg_rapport
 
 def corresp_poteau_c3a(msg_rapport=""):
-    msg="Vérification de la correspondance entre les poteaux présents dans les C3A et les fiches poteaux..."
-    print(msg)
-    msg_rapport+=msg+"\n\n"
+    print(msg_debut_controle4)
+    msg=msg_debut_controle4+"\n\n"
     
     poteaux = get_poteaux_fiche()
     commandes_groupe = get_commandes_groupe()
@@ -117,7 +113,7 @@ def corresp_poteau_c3a(msg_rapport=""):
                     "","","",
                     c3a.replace(commande_orange_path,""),
                     num_prestation+ind_premiere_ligne_c3a+1,
-                    "A",
+                    lib_a,
                     prestation[3].value
                 ])
                 c3a_poteaux.append(point_a)
@@ -127,19 +123,18 @@ def corresp_poteau_c3a(msg_rapport=""):
                     "","","",
                     c3a.replace(commande_orange_path,""),
                     num_prestation+ind_premiere_ligne_c3a+1,
-                    "B",
+                    lib_b,
                     prestation[5].value
                 ])
                 c3a_poteaux.append(point_b)
             else:
                 pass
     
-    entete=["","","","Fichier","Identifiant","Identification A/B","Numéro de chambre / Appui aérien"]
-    resultat=["Nombre d'erreurs",str(len(erreurs))]
-    nom_fichier=resultat_fichier(prefixe_resultat_controle3,resultat,entete,erreurs)     
+    resultat=[lib_nb_erreurs,str(len(erreurs))]
+    nom_fichier=resultat_fichier(prefixe_resultat_controle4,resultat,entete_controle4,erreurs)     
     
     print()
-    msg=msg_erreur_fichier(erreurs,nom_fichier)
+    msg+=msg_erreur_fichier(erreurs,nom_fichier)
     msg_rapport+=msg+"\n\n"
     
     return msg_rapport
@@ -157,16 +152,9 @@ def regles_gcblo_c3a_majeurs(msg_rapport="",controle7=True,controle8=True,contro
     condition8 = '(isinstance(prestation[6].value, (int, float)) or str(prestation[6].value).isdigit()) and int(prestation[6].value) >= 1'
     
     condition12= 'not(prestation[2].value+prestation[4].value in combinaisons_types)'
-    
-    entete7 = ["","","","Fichier","Identifiant","Numéro point A","Numéro point B"]
-    entete8 = ["","","","Fichier","Identifiant","Numéro point A","Numéro point B", "Longueur troncon / portée"]
-    entete12 = ["","","","Fichier","Identifiant","Numéro point A","Numéro point B","Combinaison de types"]
-    
-    msg7="Vérification de la conformité de la forme de l'identifiant des chambres / appuis aériens..."
-    msg8="Vérification de la longueur du tronçon ou de la portée en domaine public..."
-    msg12="Vérification de la bonne combinaison des points A et B..."
 
     commandes_groupe = get_commandes_groupe()
+    msg=""
     
     for c3a,commandes in commandes_groupe:
         fnom = c3a.replace(commande_orange_path,"")
@@ -202,34 +190,32 @@ def regles_gcblo_c3a_majeurs(msg_rapport="",controle7=True,controle8=True,contro
                     num_prestation+ind_premiere_ligne_c3a+1,
                     prestation[3].value,
                     prestation[5].value,
-                    "{} - {}".format(prestation[2].value,prestation[4].value)
+                    combinaison_type_format.format(prestation[2].value,prestation[4].value)
                 ]
                 for (num_prestation,prestation) in enumerate(commandes)
                 if not(eval(condition12))
             ]
     if controle7:        
-        msg_rapport += contenu_rapport(
-                    msg7,
-                    msg_rapport,
-                    entete7,
+        msg += contenu_rapport(
+                    msg_debut_controle7,
+                    entete_controle7,
                     erreurs7,
-                    prefixe_resultat_controle4_1
+                    prefixe_resultat_controle7
                 )
     if controle8:
-        msg_rapport += contenu_rapport(
-                    msg8,
-                    msg_rapport,
-                    entete8,
+        msg += contenu_rapport(
+                    msg_debut_controle8,
+
+                    entete_controle8,
                     erreurs8,
-                    prefixe_resultat_controle4_2
+                    prefixe_resultat_controle8
                 )
     if controle12:
-        msg_rapport += contenu_rapport(
-                    msg12,
-                    msg_rapport,
-                    entete12,
+        msg += contenu_rapport(
+                    msg_debut_controle12,
+                    entete_controle12,
                     erreurs12,
-                    prefixe_resultat_controle4_3
+                    prefixe_resultat_controle12
                 )
-    
+    msg_rapport+=msg
     return msg_rapport
