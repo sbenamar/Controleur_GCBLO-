@@ -4,12 +4,21 @@ from qgis.core import QgsProject,QgsVectorLayer
 from PyQt5.QtCore import QFileInfo
 from datetime import datetime
 
+
+#Gestion de l'exception lors de la création de la fonction de log, qui permettra de généraliser
+##la gestion des erreurs
 try:
+    #chemin_courant permettra de servir de base pour la création des autres chemins
     chemin_courant=os.getcwd()
+    
+    #Préparation des variables utilisées par la fonction log dont un format d'affichage
     log_path=os.path.join(*[chemin_courant,"python","log"])
     nom_log="log.txt"
     format_log="{}: [ligne {} / code {} / erreur {}] - {}\n{}\n\n"
     
+    #Lors d'une exception, permet d'afficher le message d'erreur dans le fichier log.txt.
+    #Le message d'erreur initial est affiche, avec une entête permettant d'avoir une vue rapide.
+    #Un code est inclus, permettant de rapidement identifier la source de l'erreur.
     def log(err,code=0):
         exc_type, exc_obj, exc_tb = sys.exc_info()
         with open(os.path.join(log_path,nom_log), "a") as f:
@@ -22,18 +31,20 @@ try:
                 str(exc_obj),
                 traceback.format_exc()
             ))
-
-        print("Une erreur est survenue (code: "+str(code)+")")
+            
+        print("Une erreur est survenue (code: {})".format(str(code)))
         exit(code)
 except Exception as e:
     print ("Erreur lors de l'initialisation (code 1)")
     exit(11)
 
+#Centralisation de tous les chemins, libéllés, variables, ... avec gestion d'une exception
 try:
     qgis_installation_path=r"C:\Program Files\QGIS 3.4"
     chemin_exe=os.path.join(chemin_courant,"exe")
     exe_projet_racine=os.path.join(chemin_exe,"04 - Projet")
     
+    #Avant de récupérer le chemin du projet de l'exe, vérifier que l'exe est présent
     try:
         nom_projet=os.listdir(exe_projet_racine)[0]
     except Exception as e:
