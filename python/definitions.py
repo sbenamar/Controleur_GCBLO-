@@ -59,7 +59,7 @@ try:
     cable_infra_csv_path=os.path.join(chemin_layers,"CABLE_INFRA.csv")
     appui_orange_path=os.path.join(chemin_exe,"09 - Appui Orange - CAPFT")
     chemin_rapport=os.path.join(chemin_courant,"rapports")
-        
+    
     ind_premiere_ligne_c3a=31-1
     type_imp=["CONDUITE FT","AERIEN FT"]
     version_c3a_en_cours='C3A BLO5'
@@ -110,6 +110,7 @@ try:
     msg=""
     rapport=""
     
-    combinaison_type_format="{} - {}"    
+    combinaison_type="{} - {}"
+    num_ligne="Ligne {}"
 except Exception as e:
     log(e,13)

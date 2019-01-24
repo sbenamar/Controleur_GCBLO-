@@ -74,7 +74,12 @@ def corresp_cable_infra_c3a(msg_rapport="",parcours_infra=True,parcours_c3a=True
         erreurs_c3a=[]
         for c3a,commandes in commandes_groupe:
             erreurs_c3a+=[
-                ["","","",c3a.replace(commande_orange_path,""),num_prestation+ind_premiere_ligne_c3a+1,prestation[3].value,prestation[5].value]
+                ["","","",
+                    c3a.replace(commande_orange_path,""),
+                    num_ligne.format(num_ligne_c3a(num_prestation)),
+                    prestation[3].value,
+                    prestation[5].value
+                ]
                 for (num_prestation,prestation) in enumerate(commandes)
                 if prestation not in cables and prestation not in sorted(cables)
             ]
@@ -228,7 +233,7 @@ def regles_gcblo_c3a_majeurs(msg_rapport="",controle7=True,controle8=True,contro
                     num_prestation+ind_premiere_ligne_c3a+1,
                     prestation[3].value,
                     prestation[5].value,
-                    combinaison_type_format.format(prestation[2].value,prestation[4].value)
+                    combinaison_type.format(prestation[2].value,prestation[4].value)
                 ]
                 for (num_prestation,prestation) in enumerate(commandes)
                 if not(eval(condition12))

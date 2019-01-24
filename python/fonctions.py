@@ -6,6 +6,11 @@ try:
 except Exception as e:
     log(e,21)
 
+#Le tableau ne commence pas à la première ligne
+##donc on récupère le numéro de la première ligne pour avoir le vrai numéro de ligne
+def num_ligne_c3a(num_prestation):
+    return num_prestation+ind_premiere_ligne_c3a+1
+
 #Retourne tous les chemins menants vers des fichier C3A pour le projet
 def get_c3a_list():
     return [
