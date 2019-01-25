@@ -33,6 +33,9 @@ list_controle_exe={
     20:True
 }
 
+#Création du rapport, initialisé avec l'entête
+alim_rapport_csv()
+
 #Chaque contrôle est lancé à la suite, avec une gestion des exception pour chacun
 #list_controle_exe est passé en paramètre avec l'identifiant de contrôle correspondant
 #Le contrôle sera lancé si pour cet identifiant la valeur est True, sinon ignoré

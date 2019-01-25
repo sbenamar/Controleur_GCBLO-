@@ -1,8 +1,9 @@
-import qgis.utils,warnings,os,sys,traceback
-from qgis.core import *
-from qgis.core import QgsProject,QgsVectorLayer
-from PyQt5.QtCore import QFileInfo
+import warnings,os,sys,traceback
 from datetime import datetime
+#import qgis.utils
+#from qgis.core import *
+#from qgis.core import QgsProject,QgsVectorLayer
+#from PyQt5.QtCore import QFileInfo
 
 
 #Gestion de l'exception lors de la création de la fonction de log, qui permettra de généraliser
@@ -71,7 +72,10 @@ try:
     prefixe_resultat_controle7="rapport_verif_norme_numero"
     prefixe_resultat_controle8="rapport_verif_longueur_troncon"
     prefixe_resultat_controle12="rapport_verif_combinaison_types"
+    prefixe_rapport_csv="rapport_erreurs"
     nom_rapport="rapport.txt"
+    
+    libelle_rapport_csv=prefixe_rapport_csv+'_'+str(datetime.now()).split('.')[0].replace(' ','_').replace(':','-')+'.csv'
     
     msg_debut_controle1="Vérification de la version des C3A..."
     msg_debut_controle2="Vérification des correspondances de liaisons entre la table attributaire 'cable_infra' et les C3A pour les liaisons de type {} ..."
@@ -96,12 +100,56 @@ try:
     msg_erreur_fichier2="1 erreur a été détectée par le controlleur. Les détails sont dans le fichier {}"
     msg_erreur_fichier3="{} erreurs ont été détectées par le controlleur. Les détails sont dans le fichier {}"
     
-    entete_controle2=["","","","ligne","cb_id","cm_id (A)", "cm_id (B)","Ordre"]
-    entete_controle3=["","","","Fichier","Identifiant","Numéro point A","Numéro point B"]
-    entete_controle4=["","","","Fichier","Identifiant","Identification A/B","Numéro de chambre / Appui aérien"]
+    entete_controle2 = ["","","","ligne","cb_id","cm_id (A)", "cm_id (B)","Ordre"]
+    entete_controle3 = ["","","","Fichier","Identifiant","Numéro point A","Numéro point B"]
+    entete_controle4 = ["","","","Fichier","Identifiant","Identification A/B","Numéro de chambre / Appui aérien"]
     entete_controle7 = ["","","","Fichier","Identifiant","Numéro point A","Numéro point B"]
     entete_controle8 = ["","","","Fichier","Identifiant","Numéro point A","Numéro point B", "Longueur troncon / portée"]
     entete_controle12 = ["","","","Fichier","Identifiant","Numéro point A","Numéro point B","Combinaison de types"]
+    
+    entete_rapport_csv = [
+        "Référence de contrôle",
+        "Famille",
+        "Sous-famille",
+        "Source A",
+        "Source B",
+        "Contrôle effectué",
+        "Erreur générée",
+        "Criticité générée"
+    ]
+    
+    csv_famille = {
+        "commande_acces":"Commande d'accès"
+    }
+    
+    csv_ss_famille = {
+        "version":"Version",
+        "completude":"Complétude",
+        "coherence":"Cohérence",
+        "regle_gcblo":"Règle GCBLO"
+    }
+    
+    criticite={
+        "mineure":"Mineure",
+        "majeure":"Majeure",
+        "bloquant":"Bloquant"
+    }
+
+    detail_controle1='Vérifier que la colonne C6 contient "C3A BLO5"'
+    detail_controle2="Parcourir la table cable_infra. Pour chaque objet de la table de type infra_orange, vérifier qu'il existe une correspondance dans la C3A"
+    detail_controle3="Parcourir la C3A. Pour chaque ligne, vérifier qu'il existe une correspondance dans la table_infra"
+    detail_controle4="Vérifier qu'il existe une fiche poteaux pour chaque poteaux de la C3A"
+    detail_controle7=""
+    detail_controle8=""
+    detail_controle12=""
+    
+    erreur_format_controle1="Mauvaise version de la C3A"
+    erreur_format_controle2="Liaison {} manquant dans la C3A"
+    erreur_format_controle3="Tronçon {}-{} présent dans la C3A mais absent de QGIS"
+    erreur_format_controle4="Fiche poteaux {} manquante"
+    erreur_format_controle7="Mauvaise con"
+    erreur_format_controle8=""
+    erreur_format_controle12="Combinaison interdite"
     
     lib_nb_erreurs="Nombre d'erreurs"
     lib_a="A"

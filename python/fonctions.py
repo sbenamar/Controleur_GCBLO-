@@ -19,6 +19,17 @@ def get_c3a_list():
                 )
             ]
 
+#Crée ou alimente le rapport csv contenant les erreurs. S'il est créé, on ajoute le header
+def alim_rapport_csv(erreurs=False):
+    with open(os.path.join(chemin_rapport,libelle_rapport_csv), 'a', newline='') as fichier:
+        fwrite = csv.writer(fichier, delimiter=';',
+            quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        if erreurs:
+            for erreur in erreurs:
+                fwrite.writerow(erreur)
+        else:
+            fwrite.writerow(entete_rapport_csv)
+
 #Créé un reporting csv contenant la liste de anomalies et retourne le nom du fichier créé
 def resultat_fichier(libelle,tab_resultat,tab_entete,tab_erreur):
     date=str(datetime.now())

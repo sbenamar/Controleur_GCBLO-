@@ -49,7 +49,7 @@ def corresp_cable_infra_c3a(msg_rapport="",parcours_infra=True,parcours_c3a=True
         
         #Création du rapport Excel
         resultat_infra=[lib_nb_erreurs,str(len(erreurs_infra))]
-        nom_fichier=resultat_fichier(prefixe_resultat_controle3,resultat_infra,entete_controle3,erreurs_infra)     
+        nom_fichier=resultat_fichier(prefixe_resultat_controle2,resultat_infra,entete_controle2,erreurs_infra)     
         
         #Affichage du nombre d'erreurs
         print()
@@ -86,7 +86,7 @@ def corresp_cable_infra_c3a(msg_rapport="",parcours_infra=True,parcours_c3a=True
         
         #Création du rapport Excel
         resultat_c3a=[lib_nb_erreurs,str(len(erreurs_c3a))]
-        nom_fichier=resultat_fichier(prefixe_resultat_controle2,resultat_c3a,entete_controle2,erreurs_c3a)     
+        nom_fichier=resultat_fichier(prefixe_resultat_controle3,resultat_c3a,entete_controle3,erreurs_c3a)     
         
         #Affichage du nombre d'erreurs
         print()
