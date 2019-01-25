@@ -34,6 +34,7 @@ try:
             ))
             
         print("Une erreur est survenue (code: {})".format(str(code)))
+        input()
         exit(code)
 except Exception as e:
     print ("Erreur lors de l'initialisation (code 1)")
@@ -65,7 +66,7 @@ try:
     type_imp=["CONDUITE FT","AERIEN FT"]
     version_c3a_en_cours='C3A BLO5'
     combinaisons_types=["CTCT","CCT","CTC","CTP","CTA","ACT","PCT"]
-    
+        
     prefixe_resultat_controle2="rapport_verif_cable_infra_c3a"
     prefixe_resultat_controle3="rapport_verif_c3a_cable_infra"
     prefixe_resultat_controle4="rapport_verif_c3a_poteaux"
@@ -100,6 +101,22 @@ try:
     msg_erreur_fichier2="1 erreur a été détectée par le controlleur. Les détails sont dans le fichier {}"
     msg_erreur_fichier3="{} erreurs ont été détectées par le controlleur. Les détails sont dans le fichier {}"
     
+    erreur_format_controle1="Mauvaise version de la C3A"
+    erreur_format_controle2="Liaison {} manquant dans la C3A"
+    erreur_format_controle3="Tronçon {}-{} présent dans la C3A mais absent de QGIS"
+    erreur_format_controle4="Fiche poteaux {} manquante"
+    erreur_format_controle7="Mauvaise con"
+    erreur_format_controle8=""
+    erreur_format_controle12="Combinaison interdite"
+    
+    erreur_controle1="Mauvaise version de la C3A"
+    erreur_controle2="Liaison manquante dans la C3A"
+    erreur_controle3="Tronçon présent dans la C3A mais absent de QGIS"
+    erreur_controle4="Fiche poteaux manquante"
+    erreur_controle7="Mauvaise con"
+    erreur_controle8="à remplir"
+    erreur_controle12="Combinaison interdite"
+    
     entete_controle2 = ["","","","ligne","cb_id","cm_id (A)", "cm_id (B)","Ordre"]
     entete_controle3 = ["","","","Fichier","Identifiant","Numéro point A","Numéro point B"]
     entete_controle4 = ["","","","Fichier","Identifiant","Identification A/B","Numéro de chambre / Appui aérien"]
@@ -107,17 +124,36 @@ try:
     entete_controle8 = ["","","","Fichier","Identifiant","Numéro point A","Numéro point B", "Longueur troncon / portée"]
     entete_controle12 = ["","","","Fichier","Identifiant","Numéro point A","Numéro point B","Combinaison de types"]
     
+    criticite={
+        "mineure":"Mineure",
+        "majeure":"Majeure",
+        "bloquant":"Bloquant"
+    }
+    
     entete_rapport_csv = [
-        "Référence de contrôle",
+        "Numéro de contrôle",
         "Famille",
         "Sous-famille",
         "Source A",
         "Source B",
-        "Contrôle effectué",
+        "Champ concerné",
         "Erreur générée",
-        "Criticité générée"
+        "Criticité"
     ]
     
+    pre_entete_1= ["Commande d'accès","Version"]
+    pre_entete_2= ["Commande d'accès","Complétude"]
+    pre_entete_3= ["Commande d'accès","Règle GCBLO"]
+    
+    post_entete_controle1=[erreur_controle1,criticite['bloquant']]
+    post_entete_controle2=[erreur_controle2,criticite['bloquant']]
+    post_entete_controle3=[erreur_controle3,criticite['majeure']]
+    post_entete_controle4=[erreur_controle4,criticite['bloquant']]
+    post_entete_controle7=[erreur_controle7,criticite['majeure']]
+    post_entete_controle8=[erreur_controle8,criticite['majeure']]
+    post_entete_controle12=[erreur_controle12,criticite['majeure']]
+    
+    """
     csv_famille = {
         "commande_acces":"Commande d'accès"
     }
@@ -128,30 +164,11 @@ try:
         "coherence":"Cohérence",
         "regle_gcblo":"Règle GCBLO"
     }
-    
-    criticite={
-        "mineure":"Mineure",
-        "majeure":"Majeure",
-        "bloquant":"Bloquant"
-    }
-
-    detail_controle1='Vérifier que la colonne C6 contient "C3A BLO5"'
-    detail_controle2="Parcourir la table cable_infra. Pour chaque objet de la table de type infra_orange, vérifier qu'il existe une correspondance dans la C3A"
-    detail_controle3="Parcourir la C3A. Pour chaque ligne, vérifier qu'il existe une correspondance dans la table_infra"
-    detail_controle4="Vérifier qu'il existe une fiche poteaux pour chaque poteaux de la C3A"
-    detail_controle7=""
-    detail_controle8=""
-    detail_controle12=""
-    
-    erreur_format_controle1="Mauvaise version de la C3A"
-    erreur_format_controle2="Liaison {} manquant dans la C3A"
-    erreur_format_controle3="Tronçon {}-{} présent dans la C3A mais absent de QGIS"
-    erreur_format_controle4="Fiche poteaux {} manquante"
-    erreur_format_controle7="Mauvaise con"
-    erreur_format_controle8=""
-    erreur_format_controle12="Combinaison interdite"
+    """
     
     lib_nb_erreurs="Nombre d'erreurs"
+    c3a_list_libelle="Ensemble des C3A"
+    cable_infra_list_libelle="Ensemble des C3A"
     lib_a="A"
     lib_b="B"
     msg_erreur=""

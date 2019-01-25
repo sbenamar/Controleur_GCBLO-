@@ -33,6 +33,8 @@ list_controle_exe={
     20:True
 }
 
+print("Contrôles en cours...")
+
 #Création du rapport, initialisé avec l'entête
 alim_rapport_csv()
 
@@ -49,13 +51,11 @@ except Exception as e:
 
 try:
     rapport=corresp_cable_infra_c3a(rapport,list_controle_exe[2],list_controle_exe[3])
-    print()
 except Exception as e:
     log(e,43)
 
 try:
     rapport=corresp_poteau_c3a(rapport,list_controle_exe[4])
-    print()
 except Exception as e:
     log(e,44)
 
@@ -66,11 +66,11 @@ try:
         list_controle_exe[8],
         list_controle_exe[12]
     )
-    print()
 except Exception as e:
     log(e,45)   
-
+"""
 try:
     fin_programme(rapport)
 except Exception as e:
     log(e,46)
+"""

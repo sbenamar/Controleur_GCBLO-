@@ -6,6 +6,28 @@ try:
 except Exception as e:
     log(e,21)
 
+def vider_rapport_csv():
+    with open(os.path.join(chemin_rapport,libelle_rapport_csv), 'w') as fichier:
+        fichier.write("")
+
+def log(err,code=0):
+    vider_rapport_csv()
+    exc_type, exc_obj, exc_tb = sys.exc_info()
+    with open(os.path.join(log_path,nom_log), "a") as f:
+        f.write(
+            format_log.format(
+            str(datetime.now()),
+            str(exc_tb.tb_lineno),
+            str(code),
+            str(exc_type),
+            str(exc_obj),
+            traceback.format_exc()
+        ))
+        
+    print("Une erreur est survenue (code: {})".format(str(code)))
+    input()
+    exit(code)
+    
 #Le tableau ne commence pas à la première ligne
 ##donc on récupère le numéro de la première ligne pour avoir le vrai numéro de ligne
 def num_ligne_c3a(num_prestation):
@@ -19,8 +41,18 @@ def get_c3a_list():
                 )
             ]
 
+def nom_fichier(chemin,extension=False):
+    nom=os.path.basename(chemin)
+    return os.path.splitext(nom)[0] if not extension else nom
+
+def chemin_fichier_application(fichier):
+    return fichier.replace(chemin_exe,"")
+
 #Crée ou alimente le rapport csv contenant les erreurs. S'il est créé, on ajoute le header
 def alim_rapport_csv(erreurs=False):
+    if type(erreurs) is not bool and len(erreurs) == 0:
+        return
+    
     with open(os.path.join(chemin_rapport,libelle_rapport_csv), 'a', newline='') as fichier:
         fwrite = csv.writer(fichier, delimiter=';',
             quotechar='|', quoting=csv.QUOTE_MINIMAL)
@@ -153,5 +185,4 @@ def gen_rapport_txt(nom,rapport):
 #Annonce la fin du programme et lance la génération du rapport texte
 def fin_programme(msg_rapport=""):
     print(msg_fin_programme_1)
-    gen_rapport_txt(nom_rapport,msg_rapport)
     input(msg_fin_programme_2)
