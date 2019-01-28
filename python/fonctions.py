@@ -1,10 +1,15 @@
-import csv,xlrd,glob
+import csv,glob
 from functools import reduce
 
 try:
     from definitions import *
 except Exception as e:
     log(e,21)
+
+try:
+    import xlrd
+except Exception as e:
+    log(e,22)
 
 def vider_rapport_csv():
     with open(os.path.join(chemin_rapport,libelle_rapport_csv), 'w') as fichier:
@@ -37,7 +42,7 @@ def num_ligne_c3a(num_prestation):
 def get_c3a_list():
     return [
                 f for f in glob.iglob(os.path.join(
-                    commande_orange_path,"**/**/*C3A*.xls"), recursive=True
+                    commande_orange_path,arbo_c3a), recursive=True
                 )
             ]
 

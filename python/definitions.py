@@ -5,6 +5,7 @@ from datetime import datetime
 #from qgis.core import QgsProject,QgsVectorLayer
 #from PyQt5.QtCore import QFileInfo
 
+environnement = ["testv1"]
 
 #Gestion de l'exception lors de la création de la fonction de log, qui permettra de généraliser
 ##la gestion des erreurs
@@ -42,25 +43,36 @@ except Exception as e:
 
 #Centralisation de tous les chemins, libéllés, variables, ... avec gestion d'une exception
 try:
-    qgis_installation_path=r"C:\Program Files\QGIS 3.4"
-    chemin_exe=os.path.join(chemin_courant,"exe")
-    exe_projet_racine=os.path.join(chemin_exe,"04 - Projet")
-    
-    #Avant de récupérer le chemin du projet de l'exe, vérifier que l'exe est présent
-    try:
-        nom_projet=os.listdir(exe_projet_racine)[0]
-    except Exception as e:
-        print("Un exe est nécessaire pour lancer les contrôles.")
-        log(e,12)
+    if "EXE" in environnement:
+        qgis_installation_path=r"C:\Program Files\QGIS 3.4"
+        chemin_exe=os.path.join(chemin_courant,"exe")
+        exe_projet_racine=os.path.join(chemin_exe,"04 - Projet")
         
-    exe_projet=os.path.join(exe_projet_racine,nom_projet)
-    commande_orange_path=os.path.join(chemin_exe,"11 - Commande_Orange")
-    exe_projet_carto=os.path.join(exe_projet,"APD"+nom_projet+".qgs")
-    chemin_layers=os.path.join(exe_projet,exe_projet,"LAYERS")
-    layer_prises = os.path.join(chemin_layers+"PRISES.shp")
-    cable_infra_csv_path=os.path.join(chemin_layers,"CABLE_INFRA.csv")
-    appui_orange_path=os.path.join(chemin_exe,"09 - Appui Orange - CAPFT")
-    chemin_rapport=os.path.join(chemin_courant,"rapports")
+        #Avant de récupérer le chemin du projet de l'exe, vérifier que l'exe est présent
+        try:
+            nom_projet=os.listdir(exe_projet_racine)[0]
+        except Exception as e:
+            print("Un projet est nécessaire pour lancer les contrôles.")
+            log(e,12)
+            
+        exe_projet=os.path.join(exe_projet_racine,nom_projet)
+        commande_orange_path=os.path.join(chemin_exe,"11 - Commande_Orange")
+        exe_projet_carto=os.path.join(exe_projet,"APD"+nom_projet+".qgs")
+        chemin_layers=os.path.join(exe_projet,exe_projet,"LAYERS")
+        layer_prises = os.path.join(chemin_layers+"PRISES.shp")
+        cable_infra_csv_path=os.path.join(chemin_layers,"CABLE_INFRA.csv")
+        appui_orange_path=os.path.join(chemin_exe,"09 - Appui Orange - CAPFT")
+        chemin_rapport=os.path.join(chemin_courant,"rapports")
+        arbo_c3a="**/**/*C3A*.xls"
+        
+    if "testv1" in environnement:
+        qgis_installation_path=r"C:\Program Files\QGIS 3.4"
+        chemin_exe=os.path.join(chemin_courant,"Commande d'accès")
+        commande_orange_path=chemin_exe
+        cable_infra_csv_path=os.path.join(chemin_exe,"CABLE_INFRA.csv")
+        appui_orange_path=os.path.join(chemin_exe,"Appui aérien")
+        chemin_rapport=os.path.join(chemin_courant,"rapports")
+        arbo_c3a="*C3A*.xls"
     
     ind_premiere_ligne_c3a=31-1
     type_imp=["CONDUITE FT","AERIEN FT"]
