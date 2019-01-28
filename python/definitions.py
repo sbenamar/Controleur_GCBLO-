@@ -117,7 +117,7 @@ try:
     erreur_format_controle2="Liaison {} manquant dans la C3A"
     erreur_format_controle3="Tronçon {}-{} présent dans la C3A mais absent de QGIS"
     erreur_format_controle4="Fiche poteaux {} manquante"
-    erreur_format_controle7="Mauvaise con"
+    erreur_format_controle7="Format de nommage incorrect"
     erreur_format_controle8=""
     erreur_format_controle12="Combinaison interdite"
     
@@ -180,7 +180,8 @@ try:
     
     lib_nb_erreurs="Nombre d'erreurs"
     c3a_list_libelle="Ensemble des C3A"
-    cable_infra_list_libelle="Ensemble des C3A"
+    poteau_list_libelle="Ensemble des fiches poteaux"
+    cable_infra_list_libelle="Ensemble des cables infra"
     lib_a="A"
     lib_b="B"
     msg_erreur=""

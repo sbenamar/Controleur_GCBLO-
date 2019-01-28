@@ -141,7 +141,7 @@ def corresp_poteau_c3a(msg_rapport="",selectionne=True):
                     pre_erreur
                     +[
                         chemin_fichier_application(c3a),
-                        cable_infra_list_libelle,
+                        poteau_list_libelle,
                         prestation[5].value
                     ]
                     +post_entete_controle4
