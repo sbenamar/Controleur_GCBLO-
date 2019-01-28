@@ -136,7 +136,7 @@ def liaisons_commande(commandes_joint):
 #Récupère la liste des poteaux en explorant la liste des fichiers de poteaux et en récupérant leur nom 
 def get_poteaux_fiche():
     return [os.path.splitext(os.path.basename(f))[0]
-            for f in glob.iglob(os.path.join(appui_orange_path,"*.xls"))
+            for f in glob.iglob(os.path.join(appui_orange_path,"*.xls*"))
     ]
 
 #Créé le fichier rapport d'erreur en csv

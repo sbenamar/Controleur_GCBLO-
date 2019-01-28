@@ -63,7 +63,7 @@ try:
         cable_infra_csv_path=os.path.join(chemin_layers,"CABLE_INFRA.csv")
         appui_orange_path=os.path.join(chemin_exe,"09 - Appui Orange - CAPFT")
         chemin_rapport=os.path.join(chemin_courant,"rapports")
-        arbo_c3a="**/**/*C3A*.xls"
+        arbo_c3a="**/**/*C3A*.xls*"
         
     if "testv1" in environnement:
         qgis_installation_path=r"C:\Program Files\QGIS 3.4"
@@ -72,7 +72,7 @@ try:
         cable_infra_csv_path=os.path.join(chemin_exe,"CABLE_INFRA.csv")
         appui_orange_path=os.path.join(chemin_exe,"Appui aérien")
         chemin_rapport=os.path.join(chemin_courant,"rapports")
-        arbo_c3a="*C3A*.xls"
+        arbo_c3a="*C3A*.xls*"
     
     ind_premiere_ligne_c3a=31-1
     type_imp=["CONDUITE FT","AERIEN FT"]
