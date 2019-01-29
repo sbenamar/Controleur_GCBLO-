@@ -32,12 +32,6 @@ def log(err,code=0):
     print("Une erreur est survenue (code: {})".format(str(code)))
     input()
     exit(code)
-
-def get_commande_groupe_ligne(commandes_groupe):
-    return [[c3a,num_prestation,prestation]
-            for c3a,commandes in commandes_groupe
-            for (num_prestation,prestation) in enumerate(commandes)
-            ]          
   
 #Le tableau ne commence pas à la première ligne
 ##donc on récupère le numéro de la première ligne pour avoir le vrai numéro de ligne
@@ -49,7 +43,7 @@ def get_c3a_list():
     return [
                 f for f in glob.iglob(os.path.join(
                     commande_orange_path,arbo_c3a), recursive=True
-                )
+                ) if "~$" not in f
             ]
 
 def nom_fichier(chemin,extension=False):
@@ -101,9 +95,8 @@ def get_feuille_commande(chemin):
 def ouvrir_c3a(feuille_commandes,ind_premiere_ligne_c3a):
     commandes = [
         feuille_commandes.row(i)[:-1] for i in range(ind_premiere_ligne_c3a,feuille_commandes.nrows)
-        if feuille_commandes.row(i)[1].ctype
+        if feuille_commandes.row(i)[1].ctype or feuille_commandes.row(i)[2].ctype
         ]
-    
     return commandes
 
 #Retourne le tableau de la table cable_infra
@@ -130,6 +123,12 @@ def get_commandes_groupe():
             for c3a in get_c3a_list()
     ]
 
+def get_commande_groupe_ligne():
+    return [[c3a,num_prestation,prestation]
+            for c3a,commandes in get_commandes_groupe()
+            for (num_prestation,prestation) in enumerate(commandes)
+            ]          
+
 #A partir de la liste groupée de C3A,
 ## retourne la concatenation de tous les tableaux de C3A en un seul tableau
 def get_commandes_joint(commandes_groupe):
@@ -147,6 +146,15 @@ def get_poteaux_fiche():
 
 def modele_erreur(num_controle,erreur):
     pre_erreur=[num_controle]+pre_entete_lien[num_controle]
+    return pre_erreur+erreur+eval("post_entete_controle"+str(num_controle))
+
+def modele_erreur_c3a(num_controle,c3a,point_a,point_b):
+    pre_erreur=[num_controle]+pre_entete_lien[num_controle]
+    erreur=[
+        chemin_fichier_application(c3a),
+         "",
+         troncon_format.format(point_a,point_b)
+    ]
     return pre_erreur+erreur+eval("post_entete_controle"+str(num_controle))
     
 #Créé le fichier rapport d'erreur en csv

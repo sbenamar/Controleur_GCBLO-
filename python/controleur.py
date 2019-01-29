@@ -23,14 +23,19 @@ list_controle_exe={
     10:False,
     11:False,
     12:True,
-    13:False,
-    14:False,
-    15:False,
+    13:True,
+    14:True,
+    15:True,
     16:False,
     17:False,
     18:False,
     19:False,
-    20:False
+    20:False,
+    21:False,
+    22:False,
+    23:False,
+    24:False,
+    25:False
 }
 
 print("Contrôles en cours...")
@@ -74,6 +79,11 @@ try:
 except Exception as e:
     log(e,46)
 
+try:
+    valeurs_selon_liaisons({k: v for k, v in list_controle_exe.items() if 13 <= k <= 26})
+except Exception as e:
+    log(e,47)
+    
 """
 try:
     fin_programme(rapport)

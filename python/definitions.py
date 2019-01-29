@@ -74,7 +74,7 @@ try:
         chemin_rapport=os.path.join(chemin_courant,"rapports")
         arbo_c3a="*C3A*.xls*"
     
-    ind_premiere_ligne_c3a=31-1
+    ind_premiere_ligne_c3a=12-1
     type_imp=["CONDUITE FT","AERIEN FT"]
     version_c3a_en_cours='C3A BLO5'
     combinaisons_types=["CTCT","CCT","CTC","CTP","CTA","ACT","PCT"]
@@ -113,6 +113,8 @@ try:
     msg_erreur_fichier2="1 erreur a été détectée par le controlleur. Les détails sont dans le fichier {}"
     msg_erreur_fichier3="{} erreurs ont été détectées par le controlleur. Les détails sont dans le fichier {}"
     
+    msg_erreur_controle13_25="le dictionnaire de contrôle est invalide: {}"
+    
     erreur_format_controle1="Mauvaise version de la C3A"
     erreur_format_controle2="Liaison {} manquant dans la C3A"
     erreur_format_controle3="Tronçon {}-{} présent dans la C3A mais absent de QGIS"
@@ -126,9 +128,12 @@ try:
     erreur_controle3="Tronçon présent dans la C3A mais absent de QGIS"
     erreur_controle4="Fiche poteaux manquante"
     erreur_controle6="Information de sous tubage incomplète pour le tronçon. La colonne I doit être renseigné"
-    erreur_controle7="Mauvaise con"
-    erreur_controle8="à remplir"
+    erreur_controle7="Format de nommage incorrect"
+    erreur_controle8="Longueur de tronçon / portée incorrect"
     erreur_controle12="Combinaison interdite"
+    erreur_controle13="Information de diamètre de l'alvéole mal renseigné"
+    erreur_controle14="Combinaison interdite"
+    erreur_controle15="Combinaison interdite"
     
     '''
     entete_controle2 = ["","","","ligne","cb_id","cm_id (A)", "cm_id (B)","Ordre"]
@@ -179,6 +184,14 @@ try:
         15:pre_entete_3,
         16:pre_entete_3,
         17:pre_entete_3,
+        18:pre_entete_3,
+        19:pre_entete_3,
+        20:pre_entete_3,
+        21:pre_entete_3,
+        22:pre_entete_3,
+        23:pre_entete_3,
+        24:pre_entete_3,
+        25:pre_entete_3
     }
     
     post_entete_controle1=[erreur_controle1,criticite['bloquant']]
@@ -189,6 +202,9 @@ try:
     post_entete_controle7=[erreur_controle7,criticite['majeure']]
     post_entete_controle8=[erreur_controle8,criticite['majeure']]
     post_entete_controle12=[erreur_controle12,criticite['majeure']]
+    post_entete_controle13=[erreur_controle13,criticite['mineure']]
+    post_entete_controle14=[erreur_controle14,criticite['mineure']]
+    post_entete_controle15=[erreur_controle15,criticite['mineure']]
     
     """
     csv_famille = {
@@ -216,5 +232,10 @@ try:
     combinaison_type="{} - {}"
     num_ligne="Ligne {}"
     troncon_format="{} - {}"
+    
+    diametre_alveole_liste=["28","32","45","60","80","100","150","Sous-tubage existant","caniveau","galerie"]
+    liaison_c_c="C - C"
+    liaison_c_imb="C - IMB"
+    
 except Exception as e:
     log(e,13)

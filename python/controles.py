@@ -88,13 +88,13 @@ def version_c3a(msg_rapport="",selectionne=True):
     
     for f in get_c3a_list():
         c3a=get_feuille_commande(f)
-        version=c3a.cell_value(rowx=6, colx=3).strip(' ')
+        version=c3a.cell_value(rowx=5, colx=2).strip(' ')
         
         #Récupération du nom de fichier seulement, sans le chemin
         chemin=chemin_fichier_application(f)
         
         if version != version_c3a_en_cours:
-            erreurs+=[[num_controle]+pre_entete_1+[chemin,chemin,""]+post_entete_controle1]
+            erreurs+=[[num_controle]+pre_entete_1+[chemin,"",""]+post_entete_controle1]
     
     alim_rapport_csv(erreurs)
     
@@ -185,19 +185,18 @@ def regles_gcblo_c3a_majeurs(msg_rapport="",controle7=True,controle8=True,contro
                         pre_erreur
                         +[
                             chemin_fichier_application(c3a),
-                            chemin_fichier_application(c3a),
-                            prestation[3].value
+                            "",
+                            prestation[3].value+" - "+prestation[5].value
                         ]
                         +post_entete_controle7
                     ]
-                    
-                if not(eval(condition7_3+condition7_4)):
+                elif not(eval(condition7_3+condition7_4)):
                     erreurs+=[
                         pre_erreur
                         +[
                             chemin_fichier_application(c3a),
-                            chemin_fichier_application(c3a),
-                            prestation[5].value
+                            "",
+                            prestation[3].value+" - "+prestation[5].value
                         ]
                         +post_entete_controle7
                     ]
@@ -210,7 +209,7 @@ def regles_gcblo_c3a_majeurs(msg_rapport="",controle7=True,controle8=True,contro
                 pre_erreur
                 +[
                     chemin_fichier_application(c3a),
-                    chemin_fichier_application(c3a),
+                    "",
                     prestation[3].value+" - "+prestation[5].value
                 ]
                 +post_entete_controle8
@@ -226,7 +225,7 @@ def regles_gcblo_c3a_majeurs(msg_rapport="",controle7=True,controle8=True,contro
                 pre_erreur
                 +[
                     chemin_fichier_application(c3a),
-                    chemin_fichier_application(c3a),
+                    "",
                     prestation[3].value+" - "+prestation[5].value
                 ]
                 +post_entete_controle12
@@ -244,7 +243,7 @@ def info_sous_tubage(controle=True):
     
     num_controle=6
     
-    commandes = get_commande_groupe_ligne(get_commandes_groupe())
+    commandes = get_commande_groupe_ligne()
     
     erreurs=[
         modele_erreur(num_controle,[chemin_fichier_application(c3a),"",troncon_format.format(prestation[3].value,prestation[5].value)])
@@ -254,3 +253,46 @@ def info_sous_tubage(controle=True):
     ]
     
     alim_rapport_csv(erreurs)
+
+#controle 13,14,15,16,17,18,19,20,21,22,23,24,25
+def valeurs_selon_liaisons(controles={}):
+    valeurs=[[False],[True],[False,True]]
+    if list(set(controles.values())) not in valeurs or list(controles.keys()) != list(range(13,26)):
+        try:
+            raise ValueError(msg_erreur_controle14_25.format(str(controles)))
+        except Exception as e:
+            log(e,34)
+    
+    erreurs={k:[] for k in controles.keys()}
+    commandes = get_commande_groupe_ligne()
+    
+    for c3a,num,prestation in commandes:
+        liaison=combinaison_type.format(prestation[2].value,prestation[4].value)
+ 
+        if liaison == liaison_c_c:
+            #contrôle 13
+            num_controle=13
+            if controles[num_controle] and prestation[7].value not in diametre_alveole_liste:
+                erreurs[num_controle].append(
+                                        modele_erreur_c3a(
+                                            num_controle,
+                                            c3a,
+                                            prestation[3].value,
+                                            prestation[5].value
+                                            )
+                                        )
+        if liaison == liaison_c_imb:
+            #contrôle 14
+            num_controle=14
+            if controles[num_controle] and prestation[5].ctype:
+                erreurs[num_controle].append(
+                                        modele_erreur_c3a(
+                                            num_controle,
+                                            c3a,
+                                            prestation[3].value,
+                                            prestation[5].value
+                                            )
+                                        )
+
+    for ctrl in set(erreurs.keys()):
+        alim_rapport_csv(erreurs[ctrl])
