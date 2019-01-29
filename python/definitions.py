@@ -125,16 +125,20 @@ try:
     erreur_controle2="Liaison manquante dans la C3A"
     erreur_controle3="Tronçon présent dans la C3A mais absent de QGIS"
     erreur_controle4="Fiche poteaux manquante"
+    erreur_controle6="Information de sous tubage incomplète pour le tronçon. La colonne I doit être renseigné"
     erreur_controle7="Mauvaise con"
     erreur_controle8="à remplir"
     erreur_controle12="Combinaison interdite"
     
+    '''
     entete_controle2 = ["","","","ligne","cb_id","cm_id (A)", "cm_id (B)","Ordre"]
     entete_controle3 = ["","","","Fichier","Identifiant","Numéro point A","Numéro point B"]
     entete_controle4 = ["","","","Fichier","Identifiant","Identification A/B","Numéro de chambre / Appui aérien"]
+    entete_controle6 = ["","","","Fichier","Identifiant","Identification A/B","Information de sous tubage incomplète pour le tronçon. La colonne I doit être renseigné"]
     entete_controle7 = ["","","","Fichier","Identifiant","Numéro point A","Numéro point B"]
     entete_controle8 = ["","","","Fichier","Identifiant","Numéro point A","Numéro point B", "Longueur troncon / portée"]
     entete_controle12 = ["","","","Fichier","Identifiant","Numéro point A","Numéro point B","Combinaison de types"]
+    '''
     
     criticite={
         "mineure":"Mineure",
@@ -157,10 +161,31 @@ try:
     pre_entete_2= ["Commande d'accès","Complétude"]
     pre_entete_3= ["Commande d'accès","Règle GCBLO"]
     
+    pre_entete_lien={
+        1:pre_entete_1,
+        2:pre_entete_2,
+        3:pre_entete_2,
+        4:pre_entete_3,
+        5:pre_entete_3,
+        6:pre_entete_3,
+        7:pre_entete_3,
+        8:pre_entete_3,
+        9:pre_entete_3,
+        10:pre_entete_3,
+        11:pre_entete_3,
+        12:pre_entete_3,
+        13:pre_entete_3,
+        14:pre_entete_3,
+        15:pre_entete_3,
+        16:pre_entete_3,
+        17:pre_entete_3,
+    }
+    
     post_entete_controle1=[erreur_controle1,criticite['bloquant']]
     post_entete_controle2=[erreur_controle2,criticite['bloquant']]
     post_entete_controle3=[erreur_controle3,criticite['majeure']]
     post_entete_controle4=[erreur_controle4,criticite['bloquant']]
+    post_entete_controle6=[erreur_controle6,criticite['mineure']]
     post_entete_controle7=[erreur_controle7,criticite['majeure']]
     post_entete_controle8=[erreur_controle8,criticite['majeure']]
     post_entete_controle12=[erreur_controle12,criticite['majeure']]
@@ -190,5 +215,6 @@ try:
     
     combinaison_type="{} - {}"
     num_ligne="Ligne {}"
+    troncon_format="{} - {}"
 except Exception as e:
     log(e,13)

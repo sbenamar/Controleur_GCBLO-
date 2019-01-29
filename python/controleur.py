@@ -16,7 +16,7 @@ list_controle_exe={
     3:False,
     4:True,
     5:False,
-    6:False,
+    6:True,
     7:True,
     8:True,
     9:False,
@@ -60,6 +60,11 @@ except Exception as e:
     log(e,44)
 
 try:
+    info_sous_tubage(list_controle_exe[6])
+except Exception as e:
+    log(e,45)
+
+try:
     rapport=regles_gcblo_c3a_majeurs(
         rapport,
         list_controle_exe[7],
@@ -67,7 +72,8 @@ try:
         list_controle_exe[12]
     )
 except Exception as e:
-    log(e,45)   
+    log(e,46)
+
 """
 try:
     fin_programme(rapport)

@@ -32,7 +32,13 @@ def log(err,code=0):
     print("Une erreur est survenue (code: {})".format(str(code)))
     input()
     exit(code)
-    
+
+def get_commande_groupe_ligne(commandes_groupe):
+    return [[c3a,num_prestation,prestation]
+            for c3a,commandes in commandes_groupe
+            for (num_prestation,prestation) in enumerate(commandes)
+            ]          
+  
 #Le tableau ne commence pas à la première ligne
 ##donc on récupère le numéro de la première ligne pour avoir le vrai numéro de ligne
 def num_ligne_c3a(num_prestation):
@@ -139,6 +145,10 @@ def get_poteaux_fiche():
             for f in glob.iglob(os.path.join(appui_orange_path,"*.xls*"))
     ]
 
+def modele_erreur(num_controle,erreur):
+    pre_erreur=[num_controle]+pre_entete_lien[num_controle]
+    return pre_erreur+erreur+eval("post_entete_controle"+str(num_controle))
+    
 #Créé le fichier rapport d'erreur en csv
 ##et affiche les informations de logs sur le terminal et fichier rapport
 def contenu_rapport(msg_debut_controle,entete,erreurs,prefixe_fichier):

@@ -1,1 +1,1 @@
-python python/controlleur.py
+python python/controleur.py

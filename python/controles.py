@@ -129,7 +129,7 @@ def corresp_poteau_c3a(msg_rapport="",selectionne=True):
                     pre_erreur
                     +[
                         chemin_fichier_application(c3a),
-                        cable_infra_list_libelle,
+                        poteau_list_libelle,
                         prestation[3].value
                     ]
                     +post_entete_controle4
@@ -236,3 +236,21 @@ def regles_gcblo_c3a_majeurs(msg_rapport="",controle7=True,controle8=True,contro
 
     alim_rapport_csv(erreurs)
     return msg_rapport
+
+#controle 6
+def info_sous_tubage(controle=True):
+    if not controle:
+        return
+    
+    num_controle=6
+    
+    commandes = get_commande_groupe_ligne(get_commandes_groupe())
+    
+    erreurs=[
+        modele_erreur(num_controle,[chemin_fichier_application(c3a),"",troncon_format.format(prestation[3].value,prestation[5].value)])
+        for c3a,num,prestation in commandes
+        if not(prestation[8].ctype or len(prestation[8].value))
+        and (prestation[9].ctype or len(prestation[9].value))
+    ]
+    
+    alim_rapport_csv(erreurs)
