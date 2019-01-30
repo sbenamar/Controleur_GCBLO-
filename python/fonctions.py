@@ -11,6 +11,9 @@ try:
 except Exception as e:
     log(e,22)
 
+def pos_xl(lettre):
+    return ord(lettre.lower()) - 96 -1
+
 def vider_rapport_csv():
     with open(os.path.join(chemin_rapport,libelle_rapport_csv), 'w') as fichier:
         fichier.write("")

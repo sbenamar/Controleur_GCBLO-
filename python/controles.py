@@ -180,7 +180,7 @@ def regles_gcblo_c3a_majeurs(msg_rapport="",controle7=True,controle8=True,contro
             pre_erreur=[num_controle]+pre_entete_3
             
             for (num_prestation,prestation) in enumerate(commandes):
-                if not(eval(condition7_1+condition7_2)):
+                if prestation[3].ctype and not(eval(condition7_1+condition7_2)):
                     erreurs+=[
                         pre_erreur
                         +[
@@ -190,7 +190,7 @@ def regles_gcblo_c3a_majeurs(msg_rapport="",controle7=True,controle8=True,contro
                         ]
                         +post_entete_controle7
                     ]
-                elif not(eval(condition7_3+condition7_4)):
+                elif prestation[5].ctype and not(eval(condition7_3+condition7_4)):
                     erreurs+=[
                         pre_erreur
                         +[
@@ -254,10 +254,10 @@ def info_sous_tubage(controle=True):
     
     alim_rapport_csv(erreurs)
 
-#controle 13,14,15,16,17,18,19,20,21,22,23,24,25
+#controle 13,14,15,16,17,18,19,20,21,22,23,24
 def valeurs_selon_liaisons(controles={}):
     valeurs=[[False],[True],[False,True]]
-    if list(set(controles.values())) not in valeurs or list(controles.keys()) != list(range(13,26)):
+    if list(set(controles.values())) not in valeurs or list(controles.keys()) != list(range(13,25)):
         try:
             raise ValueError(msg_erreur_controle14_25.format(str(controles)))
         except Exception as e:
@@ -272,7 +272,7 @@ def valeurs_selon_liaisons(controles={}):
         if liaison == liaison_c_c:
             #contrôle 13
             num_controle=13
-            if controles[num_controle] and prestation[7].value not in diametre_alveole_liste:
+            if controles[num_controle] and str(int(prestation[7].value)) not in diametre_alveole_liste:
                 erreurs[num_controle].append(
                                         modele_erreur_c3a(
                                             num_controle,
@@ -293,6 +293,124 @@ def valeurs_selon_liaisons(controles={}):
                                             prestation[5].value
                                             )
                                         )
-
+            #contrôle 15
+            num_controle=15
+            if controles[num_controle] and prestation[pos_xl("H")].value != "adduction":
+                erreurs[num_controle].append(
+                                        modele_erreur_c3a(
+                                            num_controle,
+                                            c3a,
+                                            prestation[3].value,
+                                            prestation[5].value
+                                            )
+                                        )
+            #contrôle 16
+            num_controle=16
+            if controles[num_controle] and prestation[pos_xl("F")].ctype:
+                erreurs[num_controle].append(
+                                        modele_erreur_c3a(
+                                            num_controle,
+                                            c3a,
+                                            prestation[3].value,
+                                            prestation[5].value
+                                            )
+                                        )
+            #contrôle 17
+            num_controle=17
+            if controles[num_controle] and str(int(prestation[pos_xl("G")].value)) != "7":
+                erreurs[num_controle].append(
+                                        modele_erreur_c3a(
+                                            num_controle,
+                                            c3a,
+                                            prestation[3].value,
+                                            prestation[5].value
+                                            )
+                                        )
+                
+        if liaison == liaison_c_f:    
+            #contrôle 18
+            num_controle=18
+            if controles[num_controle] and prestation[pos_xl("F")].ctype:
+                erreurs[num_controle].append(
+                                        modele_erreur_c3a(
+                                            num_controle,
+                                            c3a,
+                                            prestation[3].value,
+                                            prestation[5].value
+                                            )
+                                        )  
+            #contrôle 19
+            num_controle=19
+            if controles[num_controle] and prestation[pos_xl("H")].value != "transition":
+                erreurs[num_controle].append(
+                                        modele_erreur_c3a(
+                                            num_controle,
+                                            c3a,
+                                            prestation[3].value,
+                                            prestation[5].value
+                                            )
+                                        )
+            
+            #contrôle 20
+            num_controle=20
+            if controles[num_controle] and str(prestation[pos_xl("G")].value) != "7":
+                erreurs[num_controle].append(
+                                        modele_erreur_c3a(
+                                            num_controle,
+                                            c3a,
+                                            prestation[3].value,
+                                            prestation[5].value
+                                            )
+                                        )
+                
+        if liaison in (liaison_c_p,laison_c_pt):
+            #contrôle 21
+            num_controle=21
+            if controles[num_controle] and prestation[pos_xl("H")].value != "transition":
+                erreurs[num_controle].append(
+                                        modele_erreur_c3a(
+                                            num_controle,
+                                            c3a,
+                                            prestation[3].value,
+                                            prestation[5].value
+                                            )
+                                        )
+                
+        if liaison == laison_c_pt:
+            #contrôle 22
+            num_controle=22
+            if controles[num_controle] and prestation[pos_xl("F")].ctype:
+                erreurs[num_controle].append(
+                                        modele_erreur_c3a(
+                                            num_controle,
+                                            c3a,
+                                            prestation[3].value,
+                                            prestation[5].value
+                                            )
+                                        )
+        if liaison == laison_ct_p:
+            #contrôle 23
+            num_controle=23
+            if controles[num_controle] and (prestation[pos_xl("B")].ctype or prestation[pos_xl("D")].ctype):
+                erreurs[num_controle].append(
+                                        modele_erreur_c3a(
+                                            num_controle,
+                                            c3a,
+                                            prestation[3].value,
+                                            prestation[5].value
+                                            )
+                                        )
+            #contrôle 24
+            num_controle=24
+            if controles[num_controle] and prestation[pos_xl("H")].value != "transition":
+                erreurs[num_controle].append(
+                                        modele_erreur_c3a(
+                                            num_controle,
+                                            c3a,
+                                            prestation[3].value,
+                                            prestation[5].value
+                                            )
+                                        )
+            
     for ctrl in set(erreurs.keys()):
         alim_rapport_csv(erreurs[ctrl])

@@ -132,8 +132,17 @@ try:
     erreur_controle8="Longueur de tronçon / portée incorrect"
     erreur_controle12="Combinaison interdite"
     erreur_controle13="Information de diamètre de l'alvéole mal renseigné"
-    erreur_controle14="Combinaison interdite"
-    erreur_controle15="Combinaison interdite"
+    erreur_controle14="Message à définir"
+    erreur_controle15="Message à définir"
+    erreur_controle16="Message à définir"
+    erreur_controle17="Message à définir"
+    erreur_controle18="Message à définir"
+    erreur_controle19="Message à définir"
+    erreur_controle20="Message à définir"
+    erreur_controle21="Message à définir"
+    erreur_controle22="Message à définir"
+    erreur_controle23="Message à définir"
+    erreur_controle24="Message à définir"
     
     '''
     entete_controle2 = ["","","","ligne","cb_id","cm_id (A)", "cm_id (B)","Ordre"]
@@ -205,6 +214,15 @@ try:
     post_entete_controle13=[erreur_controle13,criticite['mineure']]
     post_entete_controle14=[erreur_controle14,criticite['mineure']]
     post_entete_controle15=[erreur_controle15,criticite['mineure']]
+    post_entete_controle16=[erreur_controle16,criticite['mineure']]
+    post_entete_controle17=[erreur_controle17,criticite['mineure']]
+    post_entete_controle18=[erreur_controle18,criticite['mineure']]
+    post_entete_controle19=[erreur_controle19,criticite['mineure']]
+    post_entete_controle20=[erreur_controle20,criticite['mineure']]
+    post_entete_controle21=[erreur_controle21,criticite['mineure']]
+    post_entete_controle22=[erreur_controle22,criticite['mineure']]
+    post_entete_controle23=[erreur_controle23,criticite['mineure']]
+    post_entete_controle24=[erreur_controle24,criticite['mineure']]
     
     """
     csv_famille = {
@@ -236,6 +254,10 @@ try:
     diametre_alveole_liste=["28","32","45","60","80","100","150","Sous-tubage existant","caniveau","galerie"]
     liaison_c_c="C - C"
     liaison_c_imb="C - IMB"
+    liaison_c_f="C - F"
+    liaison_c_p="C - P"
+    laison_c_pt="C - PT"
+    laison_ct_p="CT - P"
     
 except Exception as e:
     log(e,13)
