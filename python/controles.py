@@ -272,7 +272,13 @@ def valeurs_selon_liaisons(controles={}):
         if liaison == liaison_c_c:
             #contrôle 13
             num_controle=13
-            if controles[num_controle] and str(int(prestation[7].value)) not in diametre_alveole_liste:
+            
+            diametre=prestation[7].value
+            condition1=diametre in diametre_alveole_liste_c_c
+            condition2_1=str(diametre).replace('.','',1).isdigit()
+            condition2_2=str(int(diametre)) in diametre_alveole_liste_c_c
+
+            if controles[num_controle] and not(condition1 or (condition2_1 and condition2_2)):
                 erreurs[num_controle].append(
                                         modele_erreur_c3a(
                                             num_controle,
@@ -414,3 +420,55 @@ def valeurs_selon_liaisons(controles={}):
             
     for ctrl in set(erreurs.keys()):
         alim_rapport_csv(erreurs[ctrl])
+
+#Contrôle 9
+def verif_liste_colonnes(controle=True):
+    if not controle:
+        return
+    
+    num_controle=9
+    commandes = get_commande_groupe_ligne()
+    
+    erreurs=[
+        modele_erreur(num_controle,[chemin_fichier_application(c3a),"",troncon_format.format(prestation[3].value,prestation[5].value)])
+        for c3a,num,prestation in commandes
+        if (prestation[pos_xl("C")].ctype
+            and not prestation[pos_xl("C")].value in type_chambre_appui
+            )
+        #or (prestation[pos_xl("E")].ctype
+        #    and not prestation[pos_xl("E")].value in type_chambre_appui
+        #    )
+        or (prestation[pos_xl("H")].ctype
+            and not(prestation[pos_xl("H")].value in diametre_alveole_liste
+                 or (
+                    str(prestation[pos_xl("H")].value).replace('.','',1).isdigit()
+                    and str(int(prestation[pos_xl("H")].value)) in diametre_alveole_liste
+                    )
+                )
+           )
+        #or (prestation[pos_xl("I")].ctype
+        #    and not prestation[pos_xl("I")].value in tubage_rigide_liste
+        #    )
+        #or (prestation[pos_xl("J")].ctype
+        #    and not prestation[pos_xl("J")].value in diametre_tube_liste
+        #    )
+        #or (prestation[pos_xl("K")].ctype
+        #    and str(prestation[pos_xl("K")].value).isdigit()
+        #    and not float(prestation[pos_xl("K")].value) in diametre_cable_liste
+        #    )
+        #or (prestation[pos_xl("M")].ctype
+        #    and not prestation[pos_xl("M")].value in travaux_liste
+        #    )
+        #or (prestation[pos_xl("N")].ctype
+        #    and not prestation[pos_xl("N")].value in travaux_liste
+        #    )
+        #or (prestation[pos_xl("O")].ctype
+        #    and not prestation[pos_xl("O")].value in installation_liste
+        #    )
+        #or (prestation[pos_xl("P")].ctype
+        #    and not prestation[pos_xl("P")].value in refus_res_liste
+        #    )
+    ]
+
+    alim_rapport_csv(erreurs)
+    return

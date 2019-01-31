@@ -130,6 +130,7 @@ try:
     erreur_controle6="Information de sous tubage incomplète pour le tronçon. La colonne I doit être renseigné"
     erreur_controle7="Format de nommage incorrect"
     erreur_controle8="Longueur de tronçon / portée incorrect"
+    erreur_controle9="Les valeurs ne respectent pas les listes déroulantes"
     erreur_controle12="Combinaison interdite"
     erreur_controle13="Information de diamètre de l'alvéole mal renseigné"
     erreur_controle14="Message à définir"
@@ -210,6 +211,7 @@ try:
     post_entete_controle6=[erreur_controle6,criticite['mineure']]
     post_entete_controle7=[erreur_controle7,criticite['majeure']]
     post_entete_controle8=[erreur_controle8,criticite['majeure']]
+    post_entete_controle9=[erreur_controle9,criticite['mineure']]
     post_entete_controle12=[erreur_controle12,criticite['majeure']]
     post_entete_controle13=[erreur_controle13,criticite['mineure']]
     post_entete_controle14=[erreur_controle14,criticite['mineure']]
@@ -251,7 +253,39 @@ try:
     num_ligne="Ligne {}"
     troncon_format="{} - {}"
     
-    diametre_alveole_liste=["28","32","45","60","80","100","150","Sous-tubage existant","caniveau","galerie"]
+    type_chambre_appui=["C","A","P","IMB","F","CT","AT","PT"]
+    diametre_alveole_liste=["28","32","45","60","80","100","150",
+                            "Sous-tubage existant","caniveau","galerie","transition","adduction","aérien"
+                            ]
+    diametre_alveole_liste_c_c=["28","32","45","60","80","100","150",
+                                "Sous-tubage existant","caniveau","galerie"
+                                ]
+    tubage_rigide_liste=["Oui"]
+    diametre_tube_liste=["6/8mm","8/10mm","11/14mm","13/16mm","15/18mm","16/20mm","21/25mm","27/32mm"]
+    diametre_cable_liste=[nb/2 for nb in range(0,43)]
+    travaux_liste=["oui percement grand pied droit","oui percement petit pied droit",
+               "oui percement avec plus de 4 alvéoles","oui remplacement appui",
+               "oui renforcement appui sans commande d'appui",
+               "oui renforcement appui avec commande d'appui",
+               "oui transition égout petit pied droit",
+               "oui transition égout grand pied droit"]
+    
+    installation_liste=["A Manchon > 2dm3",
+                  "A Micro Manchon < 2dm3",
+                  "B Manchon > 2dm3",
+                  "B Micro Manchon < 2dm3",
+                  "A PEO",
+                  "B PEO",
+                  "A PMSB",
+                  "B PMSB",
+                  "A PB Chambre",
+                  "B PB Chambre",
+                  "A PB Appui",
+                  "B PB Appui"
+                  ]
+    
+    refus_res_liste=["X"]
+    
     liaison_c_c="C - C"
     liaison_c_imb="C - IMB"
     liaison_c_f="C - F"

@@ -19,7 +19,7 @@ list_controle_exe={
     6:True,
     7:True,
     8:True,
-    9:False,
+    9:True,
     10:False,
     11:False,
     12:True,
@@ -79,13 +79,12 @@ except Exception as e:
     log(e,46)
 
 try:
-    valeurs_selon_liaisons({k: v for k, v in list_controle_exe.items() if 13 <= k <= 25})
+    verif_liste_colonnes(list_controle_exe[9])
 except Exception as e:
     log(e,47)
-    
-"""
+
 try:
-    fin_programme(rapport)
+    valeurs_selon_liaisons({k: v for k, v in list_controle_exe.items() if 13 <= k <= 25})
 except Exception as e:
-    log(e,46)
-"""
+    log(e,48)
+
