@@ -43,15 +43,30 @@ def num_ligne_c3a(num_prestation):
 
 #Retourne tous les chemins menants vers des fichier C3A pour le projet
 def get_c3a_list():
-    return [
-                f for f in glob.iglob(os.path.join(
-                    commande_orange_path,arbo_c3a), recursive=True
-                ) if "~$" not in f
-            ]
+    return [f for f in glob.iglob(chemin_c3a, recursive=True) if "~$" not in f]
 
 def nom_fichier(chemin,extension=False):
     nom=os.path.basename(chemin)
     return os.path.splitext(nom)[0] if not extension else nom
+
+def get_feuille_c7(c3a):
+    nom=nom_fichier(c3a).split("C3")[0]
+    c7_xls = xlrd.open_workbook([f for f in glob.glob(format_chemin_c7.format(nom)) if "~$" not in f][0])   
+    return (nom,c7_xls.sheet_by_index(0))
+
+def ouvrir_c7(feuille):
+    cmd_c7 = [
+        feuille.row(i)[:-1] for i in range(ind_premiere_ligne_c7,feuille.nrows)
+        if feuille.row(i)[1].ctype or feuille.row(i)[2].ctype
+        ]
+    return cmd_c7
+
+def ouvrir_c3a(feuille_commandes,ind_premiere_ligne_c3a):
+    commandes = [
+        feuille_commandes.row(i)[:-1] for i in range(ind_premiere_ligne_c3a,feuille_commandes.nrows)
+        if feuille_commandes.row(i)[1].ctype or feuille_commandes.row(i)[2].ctype
+        ]
+    return commandes
 
 def chemin_fichier_application(fichier):
     return fichier.replace(chemin_exe,"")
@@ -151,13 +166,28 @@ def modele_erreur(num_controle,erreur):
     pre_erreur=[num_controle]+pre_entete_lien[num_controle]
     return pre_erreur+erreur+eval("post_entete_controle"+str(num_controle))
 
-def modele_erreur_c3a(num_controle,c3a,point_a,point_b):
+def modele_erreur_c3a(num_controle,c3a,point_a,point_b,source_b="",nb_champs=2):
     pre_erreur=[num_controle]+pre_entete_lien[num_controle]
-    erreur=[
-        chemin_fichier_application(c3a),
-         "",
-         troncon_format.format(point_a,point_b)
-    ]
+    if nb_champs == 2:
+        erreur=[
+            chemin_fichier_application(c3a),
+             source_b,
+             troncon_format.format(point_a,point_b)
+        ]
+    else:
+        if point_a:
+            erreur=[
+                chemin_fichier_application(c3a),
+                 source_b,
+                 point_a
+            ]
+        else:
+            erreur=[
+                chemin_fichier_application(c3a),
+                 source_b,
+                 point_b
+            ]
+    
     return pre_erreur+erreur+eval("post_entete_controle"+str(num_controle))
     
 #Créé le fichier rapport d'erreur en csv

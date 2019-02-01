@@ -73,8 +73,12 @@ try:
         appui_orange_path=os.path.join(chemin_exe,"Appui aérien")
         chemin_rapport=os.path.join(chemin_courant,"rapports")
         arbo_c3a="*C3A*.xls*"
+        format_arbo_c7="*{}*C7*.xls*"
+        chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
+        format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
     
     ind_premiere_ligne_c3a=12-1
+    ind_premiere_ligne_c7=20-1
     type_imp=["CONDUITE FT","AERIEN FT"]
     version_c3a_en_cours='C3A BLO5'
     combinaisons_types=["CTCT","CCT","CTC","CTP","CTA","ACT","PCT"]
@@ -131,19 +135,21 @@ try:
     erreur_controle7="Format de nommage incorrect"
     erreur_controle8="Longueur de tronçon / portée incorrect"
     erreur_controle9="Les valeurs ne respectent pas les listes déroulantes"
+    erreur_controle10="Fichier C7 manquant"
+    erreur_controle11="Appui manquant dans la C7"
     erreur_controle12="Combinaison interdite"
     erreur_controle13="Information de diamètre de l'alvéole mal renseigné"
-    erreur_controle14="Message à définir"
-    erreur_controle15="Message à définir"
-    erreur_controle16="Message à définir"
-    erreur_controle17="Message à définir"
-    erreur_controle18="Message à définir"
-    erreur_controle19="Message à définir"
-    erreur_controle20="Message à définir"
-    erreur_controle21="Message à définir"
-    erreur_controle22="Message à définir"
-    erreur_controle23="Message à définir"
-    erreur_controle24="Message à définir"
+    erreur_controle14="La colonne F doit être vide"
+    erreur_controle15='La colonne H doit contenir la valeur "adduction"'
+    erreur_controle16="La colonne F doit être vide"
+    erreur_controle17='La colonne G doit contenir la valeur "7"'
+    erreur_controle18="La colonne F doit être vide"
+    erreur_controle19='La colonne H doit contenir la valeur "transition"'
+    erreur_controle20='La colonne G doit contenir la valeur "7"'
+    erreur_controle21='La colonne H doit contenir la valeur "transition"'
+    erreur_controle22='La colonne F doit être vide'
+    erreur_controle23='Les colonne B et D doivent être vide'
+    erreur_controle24='La colonne H doit contenir la valeur "transition"'
     
     '''
     entete_controle2 = ["","","","ligne","cb_id","cm_id (A)", "cm_id (B)","Ordre"]
@@ -212,6 +218,8 @@ try:
     post_entete_controle7=[erreur_controle7,criticite['majeure']]
     post_entete_controle8=[erreur_controle8,criticite['majeure']]
     post_entete_controle9=[erreur_controle9,criticite['mineure']]
+    post_entete_controle10=[erreur_controle10,criticite['majeure']]
+    post_entete_controle11=[erreur_controle11,criticite['majeure']]
     post_entete_controle12=[erreur_controle12,criticite['majeure']]
     post_entete_controle13=[erreur_controle13,criticite['mineure']]
     post_entete_controle14=[erreur_controle14,criticite['mineure']]
@@ -241,6 +249,7 @@ try:
     
     lib_nb_erreurs="Nombre d'erreurs"
     c3a_list_libelle="Ensemble des C3A"
+    c7_list_libelle="Ensemble des C7"
     poteau_list_libelle="Ensemble des fiches poteaux"
     cable_infra_list_libelle="Ensemble des cables infra"
     lib_a="A"
@@ -285,6 +294,8 @@ try:
                   ]
     
     refus_res_liste=["X"]
+    
+    condition_travaux_c7=["oui remplacement appui","oui renforcement appui avec commande d'appui"]
     
     liaison_c_c="C - C"
     liaison_c_imb="C - IMB"

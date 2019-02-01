@@ -254,15 +254,15 @@ def info_sous_tubage(controle=True):
     
     alim_rapport_csv(erreurs)
 
-#controle 13,14,15,16,17,18,19,20,21,22,23,24
+#controle 13,15,16,17,18,19,20,21,22,23,24
 def valeurs_selon_liaisons(controles={}):
     valeurs=[[False],[True],[False,True]]
-    if list(set(controles.values())) not in valeurs or list(controles.keys()) != list(range(13,25)):
+    if list(set(controles.values())) not in valeurs or list(controles.keys()) != [13]+list(range(15,25)):
         try:
             raise ValueError(msg_erreur_controle14_25.format(str(controles)))
         except Exception as e:
             log(e,34)
-    
+
     erreurs={k:[] for k in controles.keys()}
     commandes = get_commande_groupe_ligne()
     
@@ -289,16 +289,17 @@ def valeurs_selon_liaisons(controles={}):
                                         )
         if liaison == liaison_c_imb:
             #contrôle 14
-            num_controle=14
-            if controles[num_controle] and prestation[5].ctype:
-                erreurs[num_controle].append(
-                                        modele_erreur_c3a(
-                                            num_controle,
-                                            c3a,
-                                            prestation[3].value,
-                                            prestation[5].value
-                                            )
-                                        )
+            #num_controle=14
+            #if controles[num_controle] and prestation[5].ctype:
+            #    erreurs[num_controle].append(
+            #                            modele_erreur_c3a(
+            #                                num_controle,
+            #                                c3a,
+            #                                prestation[3].value,
+            #                                prestation[5].value
+            #                                )
+            #                            )
+            
             #contrôle 15
             num_controle=15
             if controles[num_controle] and prestation[pos_xl("H")].value != "adduction":
@@ -435,9 +436,9 @@ def verif_liste_colonnes(controle=True):
         if (prestation[pos_xl("C")].ctype
             and not prestation[pos_xl("C")].value in type_chambre_appui
             )
-        #or (prestation[pos_xl("E")].ctype
-        #    and not prestation[pos_xl("E")].value in type_chambre_appui
-        #    )
+        or (prestation[pos_xl("E")].ctype
+            and not prestation[pos_xl("E")].value in type_chambre_appui
+            )
         or (prestation[pos_xl("H")].ctype
             and not(prestation[pos_xl("H")].value in diametre_alveole_liste
                  or (
@@ -446,29 +447,97 @@ def verif_liste_colonnes(controle=True):
                     )
                 )
            )
-        #or (prestation[pos_xl("I")].ctype
-        #    and not prestation[pos_xl("I")].value in tubage_rigide_liste
-        #    )
-        #or (prestation[pos_xl("J")].ctype
-        #    and not prestation[pos_xl("J")].value in diametre_tube_liste
-        #    )
-        #or (prestation[pos_xl("K")].ctype
-        #    and str(prestation[pos_xl("K")].value).isdigit()
-        #    and not float(prestation[pos_xl("K")].value) in diametre_cable_liste
-        #    )
-        #or (prestation[pos_xl("M")].ctype
-        #    and not prestation[pos_xl("M")].value in travaux_liste
-        #    )
-        #or (prestation[pos_xl("N")].ctype
-        #    and not prestation[pos_xl("N")].value in travaux_liste
-        #    )
-        #or (prestation[pos_xl("O")].ctype
-        #    and not prestation[pos_xl("O")].value in installation_liste
-        #    )
-        #or (prestation[pos_xl("P")].ctype
-        #    and not prestation[pos_xl("P")].value in refus_res_liste
-        #    )
+        or (prestation[pos_xl("I")].ctype
+            and not prestation[pos_xl("I")].value in tubage_rigide_liste
+            )
+        or (prestation[pos_xl("J")].ctype
+            and not prestation[pos_xl("J")].value in diametre_tube_liste
+            )
+        or (prestation[pos_xl("K")].ctype
+            and str(prestation[pos_xl("K")].value).isdigit()
+            and not float(prestation[pos_xl("K")].value) in diametre_cable_liste
+            )
+        or (prestation[pos_xl("M")].ctype
+            and not prestation[pos_xl("M")].value in travaux_liste
+            )
+        or (prestation[pos_xl("N")].ctype
+            and not prestation[pos_xl("N")].value in travaux_liste
+            )
+        or (prestation[pos_xl("O")].ctype
+            and not prestation[pos_xl("O")].value in installation_liste
+            )
+        or (prestation[pos_xl("P")].ctype
+            and not prestation[pos_xl("P")].value in refus_res_liste
+            )
     ]
 
     alim_rapport_csv(erreurs)
+    return
+
+def verif_c7_travaux_existe(controle10=True,controle11=True):
+    if not controle10 and not controle11:
+        return
+    
+    erreurs=[[],[]]
+    commandes = get_commande_groupe_ligne()
+    
+    for c3a,num,prestation in commandes:
+        condition_a=prestation[pos_xl("M")].value in condition_travaux_c7
+        condition_b=prestation[pos_xl("N")].value in condition_travaux_c7
+        
+        if condition_a:
+            num_controle=11
+            try:
+                (nom_c7,cmd_c7)=ouvrir_c7(get_feuille_c7(c3a))
+                
+                if prestation[3].value not in [appui[0].value.replace("_","/") for appui in cmd_c7]:
+                    erreurs[1].append(
+                                    modele_erreur_c3a(
+                                        num_controle,
+                                        c3a,
+                                        prestation[3].value,
+                                        "",
+                                        nom_c7
+                                    )
+                                )
+            except:
+                num_controle=10
+                erreurs[0].append(
+                                    modele_erreur_c3a(
+                                        num_controle,
+                                        c3a,
+                                        prestation[3].value,
+                                        "",
+                                        c7_list_libelle
+                                    )
+                                )
+        if condition_b:
+            num_controle=11
+            try:
+                (nom_c7,cmd_c7)=ouvrir_c7(get_feuille_c7(c3a))
+                
+                if prestation[5].value not in [appui[0].value.replace("_","/") for appui in cmd_c7]:
+                    erreurs[1].append(
+                                    modele_erreur_c3a(
+                                        num_controle,
+                                        c3a,
+                                        "",
+                                        prestation[5].value,
+                                        nom_c7
+                                    )
+                                )
+            except Exception as e:
+                num_controle=10
+                erreurs[0].append(
+                                    modele_erreur_c3a(
+                                        num_controle,
+                                        c3a,
+                                        "",
+                                        prestation[5].value,
+                                        c7_list_libelle,
+                                        1
+                                    )
+                                )
+    alim_rapport_csv(erreurs[0])
+    alim_rapport_csv(erreurs[1])
     return

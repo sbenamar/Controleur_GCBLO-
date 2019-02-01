@@ -20,11 +20,10 @@ list_controle_exe={
     7:True,
     8:True,
     9:True,
-    10:False,
-    11:False,
+    10:True,
+    11:True,
     12:True,
     13:True,
-    14:True,
     15:True,
     16:True,
     17:True,
@@ -84,7 +83,11 @@ except Exception as e:
     log(e,47)
 
 try:
-    valeurs_selon_liaisons({k: v for k, v in list_controle_exe.items() if 13 <= k <= 25})
+    verif_c7_travaux_existe(list_controle_exe[10],list_controle_exe[11])
 except Exception as e:
     log(e,48)
-
+    
+try:
+    valeurs_selon_liaisons({k: v for k, v in list_controle_exe.items() if 13 <= k <= 25 and k != 14})
+except Exception as e:
+    log(e,49)
