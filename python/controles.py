@@ -264,7 +264,7 @@ def valeurs_selon_liaisons(controles={}):
             
             diametre=prestation[7].value
             condition1=diametre in diametre_alveole_liste_c_c
-            condition2_1=str(diametre).replace('.','',1).isdigit()
+            condition2_1=isnumber(diametre)
             condition2=condition2_1 and str(int(diametre)) in diametre_alveole_liste_c_c
 
             if controles[num_controle] and not(condition1 or (condition2)):
@@ -301,7 +301,8 @@ def valeurs_selon_liaisons(controles={}):
                                         )
             #contrôle 17
             num_controle=17
-            if controles[num_controle] and str(int(prestation[pos_xl("G")].value)) != "7":
+            condition=controles[num_controle] and isnumber(prestation[pos_xl("G")])
+            if condition and int(prestation[pos_xl("G")].value) != 7:
                 erreurs[num_controle].append(
                                         modele_erreur_c3a(
                                             num_controle,
@@ -337,7 +338,8 @@ def valeurs_selon_liaisons(controles={}):
             
             #contrôle 20
             num_controle=20
-            if controles[num_controle] and str(prestation[pos_xl("G")].value) != "7":
+            condition=controles[num_controle] and isnumber(prestation[pos_xl("G")])
+            if condition and int(prestation[pos_xl("G")].value) != 7:
                 erreurs[num_controle].append(
                                         modele_erreur_c3a(
                                             num_controle,
@@ -409,7 +411,12 @@ def verif_liste_colonnes(controle=True):
     commandes = get_commande_groupe_ligne()
     
     erreurs=[
-        modele_erreur(num_controle,[chemin_fichier_application(c3a),"",troncon_format.format(prestation[3].value,prestation[5].value)])
+        modele_erreur_c3a(
+                        num_controle,
+                        c3a,
+                        prestation[3].value,
+                        prestation[5].value
+        )
         for c3a,num,prestation in commandes
         if (prestation[pos_xl("C")].ctype
             and not prestation[pos_xl("C")].value in type_chambre_appui
@@ -420,7 +427,7 @@ def verif_liste_colonnes(controle=True):
         or (prestation[pos_xl("H")].ctype
             and not(prestation[pos_xl("H")].value in diametre_alveole_liste
                  or (
-                    str(prestation[pos_xl("H")].value).replace('.','',1).isdigit()
+                    isnumber(prestation[pos_xl("H")].value)
                     and str(int(prestation[pos_xl("H")].value)) in diametre_alveole_liste
                     )
                 )
@@ -433,10 +440,10 @@ def verif_liste_colonnes(controle=True):
             )
         or (prestation[pos_xl("K")].ctype
             and (
-                str(prestation[pos_xl("K")].value).replace('.','',1).isdigit()
+                isnumber(prestation[pos_xl("K")].value)
                 and not float(prestation[pos_xl("K")].value) in diametre_cable_liste
                 )
-            or not str(prestation[pos_xl("K")].value).replace('.','',1).isdigit()
+            or not isnumber(prestation[pos_xl("K")].value)
            )
         or (prestation[pos_xl("M")].ctype
             and not prestation[pos_xl("M")].value in travaux_liste
@@ -453,7 +460,6 @@ def verif_liste_colonnes(controle=True):
     ]
 
     alim_rapport_csv(erreurs)
-    return
 
 #Contrôles 10 et 11
 def verif_c7_travaux_existe(controle10=True,controle11=True):
@@ -518,7 +524,7 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
                                         1
                                     )
                                 )
-            except Exception as e:
+            except IndexError:
                 #Contrôle 10 pour colonne N
                 num_controle=10
                 erreurs[0].append(
@@ -531,5 +537,6 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
                                         1
                                     )
                                 )
+                
     alim_rapport_csv(erreurs[0])
     alim_rapport_csv(erreurs[1])

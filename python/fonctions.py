@@ -48,6 +48,9 @@ def nom_fichier(chemin,extension=False):
     nom=os.path.basename(chemin)
     return os.path.splitext(nom)[0] if not extension else nom
 
+def isnumber(variable):
+    return str(variable).replace('.','',1).isdigit()
+
 #Récupération de la première feuille du fichier C7
 def get_feuille_c7(c3a):
     nom = [f for f in glob.glob(format_chemin_c7.format(nom_fichier(c3a).split("C3")[0])) if "~$" not in f][0]
