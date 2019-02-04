@@ -11,13 +11,16 @@ try:
 except Exception as e:
     log(e,22)
 
+#Retourne l'indice d'une colonne csv selon la lettre donnée
 def pos_xl(lettre):
     return ord(lettre.lower()) - 96 -1
 
+#Supprimer le contenu d'un rapport s'il y a une exception
 def vider_rapport_csv():
     with open(os.path.join(chemin_rapport,libelle_rapport_csv), 'w') as fichier:
         fichier.write("")
 
+#Fonction permettant d'alimenter le log et avoir des informations sur une erreur / exception
 def log(err,code=0):
     vider_rapport_csv()
     exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -35,25 +38,23 @@ def log(err,code=0):
     print("Une erreur est survenue (code: {})".format(str(code)))
     input()
     exit(code)
-  
-#Le tableau ne commence pas à la première ligne
-##donc on récupère le numéro de la première ligne pour avoir le vrai numéro de ligne
-def num_ligne_c3a(num_prestation):
-    return num_prestation+ind_premiere_ligne_c3a+1
 
 #Retourne tous les chemins menants vers des fichier C3A pour le projet
 def get_c3a_list():
     return [f for f in glob.iglob(chemin_c3a, recursive=True) if "~$" not in f]
 
+#Retourne le nom du fichier selon le chemin
 def nom_fichier(chemin,extension=False):
     nom=os.path.basename(chemin)
     return os.path.splitext(nom)[0] if not extension else nom
 
+#Récupération de la première feuille du fichier C7
 def get_feuille_c7(c3a):
     nom = [f for f in glob.glob(format_chemin_c7.format(nom_fichier(c3a).split("C3")[0])) if "~$" not in f][0]
     c7_xls = xlrd.open_workbook(nom)
     return nom_fichier(nom,True),c7_xls.sheet_by_index(0)
 
+#Récupération des lignes de la feuille de la C7
 def ouvrir_c7(feuille):
     cmd_c7 = [
         feuille.row(i)[:-1] for i in range(ind_premiere_ligne_c7,feuille.nrows)
@@ -66,13 +67,15 @@ def get_feuille_commande(chemin):
     c3a_xls = xlrd.open_workbook(chemin)
     return c3a_xls.sheet_by_index(1)
 
-def ouvrir_c3a(feuille_commandes,ind_premiere_ligne_c3a):
+#Récupération des lignes de la feuille de la C3A
+def ouvrir_c3a(feuille_commandes):
     commandes = [
         feuille_commandes.row(i)[:-1] for i in range(ind_premiere_ligne_c3a,feuille_commandes.nrows)
         if feuille_commandes.row(i)[1].ctype or feuille_commandes.row(i)[2].ctype
         ]
     return commandes
 
+#Chemin du fichier à partir du dossier de l'application
 def chemin_fichier_application(fichier):
     return fichier.replace(chemin_exe,"")
 
@@ -89,25 +92,6 @@ def alim_rapport_csv(erreurs=False):
                 fwrite.writerow(erreur)
         else:
             fwrite.writerow(entete_rapport_csv)
-
-#Créé un reporting csv contenant la liste de anomalies et retourne le nom du fichier créé
-def resultat_fichier(libelle,tab_resultat,tab_entete,tab_erreur):
-    date=str(datetime.now())
-    nom_fichier=libelle+'_'+date.split('.')[0].replace(' ','_').replace(':','-')+'.csv'
-    with open(
-        os.path.join(chemin_rapport,nom_fichier), 'w', newline=''
-        ) as fichier:
-        
-        fwrite = csv.writer(fichier, delimiter=';',
-            quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        
-        fwrite.writerow(tab_resultat)
-        fwrite.writerow([])
-        fwrite.writerow(tab_entete)
-        for ligne in tab_erreur:
-            fwrite.writerow(ligne)
-            
-    return nom_fichier
 
 #Retourne le tableau de la table cable_infra
 def ouvrir_cable_infra(chemin):
@@ -126,13 +110,13 @@ def get_commandes_groupe():
             ouvrir_c3a(
                 get_feuille_commande(
                     os.path.join(commande_orange_path,c3a)
-                ),
-                ind_premiere_ligne_c3a
+                )
             )
         )
             for c3a in get_c3a_list()
     ]
 
+#Récupère les lignes de la C3A avec le numéro de ligne et le nom du fichier, tout sur une même ligne
 def get_commande_groupe_ligne():
     return [[c3a,num_prestation,prestation]
             for c3a,commandes in get_commandes_groupe()
@@ -154,12 +138,15 @@ def get_poteaux_fiche():
             for f in glob.iglob(os.path.join(appui_orange_path,"*.xls*"))
     ]
 
+#Modèle de ligne d'erreur dans le fichier rapport, contenant les informations de contrôle pré-enregistrés
+#selon le numéro de contrôle.
 def modele_erreur(num_controle,erreur):
     pre_erreur=[num_controle]+pre_entete_lien[num_controle]
     return pre_erreur+erreur+eval("post_entete_controle"+str(num_controle))
 
+#Utilisation de la fonction modele_erreur plus spécifiquement pour la C3A
+#Le modèle affiche en "champ concerné" la concaténation des points, ou seulement l'un ou l'autre
 def modele_erreur_c3a(num_controle,c3a,point_a,point_b,source_b="",nb_champs=2):
-    pre_erreur=[num_controle]+pre_entete_lien[num_controle]
     if nb_champs == 2:
         erreur=[
             chemin_fichier_application(c3a),
@@ -180,57 +167,8 @@ def modele_erreur_c3a(num_controle,c3a,point_a,point_b,source_b="",nb_champs=2):
                  point_b
             ]
     
-    return pre_erreur+erreur+eval("post_entete_controle"+str(num_controle))
-    
-#Créé le fichier rapport d'erreur en csv
-##et affiche les informations de logs sur le terminal et fichier rapport
-def contenu_rapport(msg_debut_controle,entete,erreurs,prefixe_fichier):
-    msg=""
-    print(msg_debut_controle)
-    msg+=msg_debut_controle+"\n\n"
-    resultat=[lib_nb_erreurs,str(len(erreurs))]
-    
-    nom_fichier=resultat_fichier(prefixe_fichier,resultat,entete,erreurs)     
-    
-    print()
-    msg+=msg_erreur_fichier(erreurs,nom_fichier)
-    msg+="\n\n"
-    
-    print()
-    return msg
+    return modele_erreur(num_controle,erreur)
 
-#Retourne et affiche le message d'erreur à écire selon le nombre d'erreurs dans le contrôle
-def msg_erreur(erreurs):
-    msg_erreur=""
-    if len(erreurs) > 1:
-        msg_erreur=msg_detecte_erreur1.format(str(len(erreurs)),"\n".join(erreurs))
-    elif len(erreurs) == 1:
-        msg_erreur=msg_detecte_erreur2.format(erreurs[0])
-    else:
-        msg_erreur=msg_detecte_erreur3
-    
-    print(msg_erreur)    
-    return msg_erreur
-
-#Retourne et affiche le message d'erreur à écire selon le nombre d'erreurs dans le contrôle
-##en précisant le lien du fichier csv auquel se réferer 
-def msg_erreur_fichier(erreurs,nom_fichier):
-    if len(erreurs) == 0:
-        msg_erreur=msg_erreur_fichier1
-    elif len(erreurs) == 1:
-        msg_erreur=msg_erreur_fichier2.format(nom_fichier)
-    else:
-        msg_erreur=msg_erreur_fichier3.format(str(len(erreurs)),nom_fichier)
-    
-    print(msg_erreur)
-    return msg_erreur
-
-#Génère le fichier rapport texte afin d'avoir une vue stynthétique sur le résultat des contrôles
-def gen_rapport_txt(nom,rapport):
-    with open(os.path.join(chemin_rapport,nom), "w") as f:
-        f.write(rapport)
-
-#Annonce la fin du programme et lance la génération du rapport texte
-def fin_programme(msg_rapport=""):
+#Annonce la fin du programme
+def fin_programme():
     print(msg_fin_programme_1)
-    input(msg_fin_programme_2)

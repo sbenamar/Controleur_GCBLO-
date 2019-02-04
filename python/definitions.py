@@ -82,42 +82,12 @@ try:
     type_imp=["CONDUITE FT","AERIEN FT"]
     version_c3a_en_cours='C3A BLO5'
     combinaisons_types=["CTCT","CCT","CTC","CTP","CTA","ACT","PCT"]
-        
-    prefixe_resultat_controle2="rapport_verif_cable_infra_c3a"
-    prefixe_resultat_controle3="rapport_verif_c3a_cable_infra"
-    prefixe_resultat_controle4="rapport_verif_c3a_poteaux"
-    prefixe_resultat_controle7="rapport_verif_norme_numero"
-    prefixe_resultat_controle8="rapport_verif_longueur_troncon"
-    prefixe_resultat_controle12="rapport_verif_combinaison_types"
+
     prefixe_rapport_csv="rapport_erreurs"
-    nom_rapport="rapport.txt"
     
     libelle_rapport_csv=prefixe_rapport_csv+'_'+str(datetime.now()).split('.')[0].replace(' ','_').replace(':','-')+'.csv'
     
-    msg_debut_controle1="Vérification de la version des C3A..."
-    msg_debut_controle2="Vérification des correspondances de liaisons entre la table attributaire 'cable_infra' et les C3A pour les liaisons de type {} ..."
-    msg_debut_controle3="Vérification des correspondances de liaisons entre les C3A et la table attributaire 'cable_infra' pour les liaisons de type {} ..."
-    msg_debut_controle4="Vérification de la correspondance entre les poteaux présents dans les C3A et les fiches poteaux..."
-    msg_debut_controle7="Vérification de la conformité de la forme de l'identifiant des chambres / appuis aériens..."
-    msg_debut_controle8="Vérification de la longueur du tronçon ou de la portée en domaine public..."
-    msg_debut_controle12="Vérification de la bonne combinaison des points A et B..."
-    
-    msg_fin_controle1_1="La version du C3A est à jour."
-    msg_fin_controle1_2="Version obsolète de la C3A. Veuillez mettre à jour à la version : {}".format(
-        version_c3a_en_cours
-    )
     msg_fin_programme_1="Programme terminé"
-    msg_fin_programme_2="Appuyez sur une touche pour quitter le programme..."
-    
-    msg_detecte_erreur1="Le controlleur a détecté {} erreurs:\n{}"
-    msg_detecte_erreur2="Le controlleur a détecté 1 erreur ({})."
-    msg_detecte_erreur3="Aucune erreur n'a été détectée par le controlleur."
-    
-    msg_erreur_fichier1="Aucune erreur n'a été détectée par le controlleur."
-    msg_erreur_fichier2="1 erreur a été détectée par le controlleur. Les détails sont dans le fichier {}"
-    msg_erreur_fichier3="{} erreurs ont été détectées par le controlleur. Les détails sont dans le fichier {}"
-    
-    msg_erreur_controle13_25="le dictionnaire de contrôle est invalide: {}"
     
     erreur_format_controle1="Mauvaise version de la C3A"
     erreur_format_controle2="Liaison {} manquant dans la C3A"
@@ -150,16 +120,6 @@ try:
     erreur_controle22='La colonne F doit être vide'
     erreur_controle23='Les colonne B et D doivent être vide'
     erreur_controle24='La colonne H doit contenir la valeur "transition"'
-    
-    '''
-    entete_controle2 = ["","","","ligne","cb_id","cm_id (A)", "cm_id (B)","Ordre"]
-    entete_controle3 = ["","","","Fichier","Identifiant","Numéro point A","Numéro point B"]
-    entete_controle4 = ["","","","Fichier","Identifiant","Identification A/B","Numéro de chambre / Appui aérien"]
-    entete_controle6 = ["","","","Fichier","Identifiant","Identification A/B","Information de sous tubage incomplète pour le tronçon. La colonne I doit être renseigné"]
-    entete_controle7 = ["","","","Fichier","Identifiant","Numéro point A","Numéro point B"]
-    entete_controle8 = ["","","","Fichier","Identifiant","Numéro point A","Numéro point B", "Longueur troncon / portée"]
-    entete_controle12 = ["","","","Fichier","Identifiant","Numéro point A","Numéro point B","Combinaison de types"]
-    '''
     
     criticite={
         "mineure":"Mineure",
@@ -233,19 +193,6 @@ try:
     post_entete_controle22=[erreur_controle22,criticite['mineure']]
     post_entete_controle23=[erreur_controle23,criticite['mineure']]
     post_entete_controle24=[erreur_controle24,criticite['mineure']]
-    
-    """
-    csv_famille = {
-        "commande_acces":"Commande d'accès"
-    }
-    
-    csv_ss_famille = {
-        "version":"Version",
-        "completude":"Complétude",
-        "coherence":"Cohérence",
-        "regle_gcblo":"Règle GCBLO"
-    }
-    """
     
     lib_nb_erreurs="Nombre d'erreurs"
     c3a_list_libelle="Ensemble des C3A"

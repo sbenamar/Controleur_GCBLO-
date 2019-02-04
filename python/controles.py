@@ -6,9 +6,9 @@ except Exception as e:
     log(e,33)
 
 #Contrôle 2 / Contrôle 3: possibilité de selection du/des contrôle(s) à réaliser
-def corresp_cable_infra_c3a(msg_rapport="",parcours_infra=True,parcours_c3a=True):
+def corresp_cable_infra_c3a(parcours_infra=True,parcours_c3a=True):
     if not parcours_infra and not parcours_c3a:
-        return msg_rapport
+        return 
     
     #Récupération des C3A sous plusieurs formats
     ##C3A pour le contrôle 3
@@ -36,9 +36,12 @@ def corresp_cable_infra_c3a(msg_rapport="",parcours_infra=True,parcours_c3a=True
 
     #Début du contrôle 2, s'il est sélectionné
     if parcours_infra:
+        #Initialisation du message d'erreur
         num_controle=2
         pre_erreur=[num_controle]+pre_entete_2
         
+        #Alimentation des lignes d'erreurs selon les conditions de contrôle,
+        #complété par les variables préféfinies
         erreurs_infra=[
             pre_erreur
             +[cable_infra_fichier,c3a_list_libelle,(cable[0]+"=>"+cable[1]).replace("/","_")]
@@ -47,6 +50,7 @@ def corresp_cable_infra_c3a(msg_rapport="",parcours_infra=True,parcours_c3a=True
             if cable not in liaisons_commandes and cable not in sorted(liaisons_commandes)
             ]        
         
+        #Ajout des lignes d'erreur dans le rapport csv
         alim_rapport_csv(erreurs_infra)
     
     #Début du contrôle 3, s'il est sélectionné
@@ -74,18 +78,17 @@ def corresp_cable_infra_c3a(msg_rapport="",parcours_infra=True,parcours_c3a=True
             ]
             
         alim_rapport_csv(erreurs_c3a)
-        
-    return msg_rapport
 
 #Contrôle 1
-def version_c3a(msg_rapport="",selectionne=True):
+def version_c3a(controle=True):
     num_controle=1
     
-    if not selectionne:
-        return msg_rapport
+    if not controle:
+        return 
     
     erreurs=[]
     
+    #Parcours des c3a
     for f in get_c3a_list():
         c3a=get_feuille_commande(f)
         version=c3a.cell_value(rowx=5, colx=2).strip(' ')
@@ -97,13 +100,11 @@ def version_c3a(msg_rapport="",selectionne=True):
             erreurs+=[[num_controle]+pre_entete_1+[chemin,"",""]+post_entete_controle1]
     
     alim_rapport_csv(erreurs)
-    
-    return msg_rapport
 
 #Contrôle 4
-def corresp_poteau_c3a(msg_rapport="",selectionne=True):
-    if not selectionne:
-        return msg_rapport
+def corresp_poteau_c3a(controle=True):
+    if not controle:
+        return 
     
     num_controle=4
     pre_erreur=[num_controle]+pre_entete_3
@@ -151,12 +152,12 @@ def corresp_poteau_c3a(msg_rapport="",selectionne=True):
                 pass
             
     alim_rapport_csv(erreurs)
-    return msg_rapport
+    return 
 
 #Contrôle 7 / Contrôle 8 / Contrôle 12: possibilité de selection du/des contrôle(s) à réaliser
-def regles_gcblo_c3a_majeurs(msg_rapport="",controle7=True,controle8=True,controle12=True):
+def regles_gcblo_c3a_majeurs(controle7=True,controle8=True,controle12=True):
     if not controle7 and not controle8 and not controle12:
-        return msg_rapport
+        return 
     
     erreurs = []
     
@@ -172,7 +173,6 @@ def regles_gcblo_c3a_majeurs(msg_rapport="",controle7=True,controle8=True,contro
     condition12= 'prestation[2].value+prestation[4].value in combinaisons_types'
 
     commandes_groupe = get_commandes_groupe()
-    msg=""
     
     for c3a,commandes in commandes_groupe:
         if controle7:
@@ -234,7 +234,6 @@ def regles_gcblo_c3a_majeurs(msg_rapport="",controle7=True,controle8=True,contro
             ]
 
     alim_rapport_csv(erreurs)
-    return msg_rapport
 
 #controle 6
 def info_sous_tubage(controle=True):
@@ -256,14 +255,20 @@ def info_sous_tubage(controle=True):
 
 #controle 13,15,16,17,18,19,20,21,22,23,24
 def valeurs_selon_liaisons(controles={}):
+    
+    #valeurs possibles des paramètres
     valeurs=[[False],[True],[False,True]]
+    
+    #Vérifier que le paramètre passé est conforme (liste entière et valeurs attendues)
     if list(set(controles.values())) not in valeurs or list(controles.keys()) != [13]+list(range(15,25)):
         try:
             raise ValueError(msg_erreur_controle14_25.format(str(controles)))
         except Exception as e:
             log(e,34)
 
+    #Initialisation du tableau d'erreur organisé par numéro de contrôle, afin de tout afficher à la suite
     erreurs={k:[] for k in controles.keys()}
+    
     commandes = get_commande_groupe_ligne()
     
     for c3a,num,prestation in commandes:
@@ -288,18 +293,6 @@ def valeurs_selon_liaisons(controles={}):
                                             )
                                         )
         if liaison == liaison_c_imb:
-            #contrôle 14
-            #num_controle=14
-            #if controles[num_controle] and prestation[5].ctype:
-            #    erreurs[num_controle].append(
-            #                            modele_erreur_c3a(
-            #                                num_controle,
-            #                                c3a,
-            #                                prestation[3].value,
-            #                                prestation[5].value
-            #                                )
-            #                            )
-            
             #contrôle 15
             num_controle=15
             if controles[num_controle] and prestation[pos_xl("H")].value != "adduction":
@@ -418,7 +411,8 @@ def valeurs_selon_liaisons(controles={}):
                                             prestation[5].value
                                             )
                                         )
-            
+    
+    #Ecriture des erreurs pour chaque contrôle selectionné
     for ctrl in set(erreurs.keys()):
         alim_rapport_csv(erreurs[ctrl])
 
@@ -477,6 +471,7 @@ def verif_liste_colonnes(controle=True):
     alim_rapport_csv(erreurs)
     return
 
+#Contrôles 10 et 11
 def verif_c7_travaux_existe(controle10=True,controle11=True):
     if not controle10 and not controle11:
         return
@@ -488,13 +483,16 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
         condition_a=prestation[pos_xl("M")].value in condition_travaux_c7
         condition_b=prestation[pos_xl("N")].value in condition_travaux_c7
         
+        #Si l'ouverture de la C7 échoue, on attrape l'exception et ça signie donc que la C7 n'existe pas
+        #et donc que le contrôle 10 est en erreur
         if condition_a:
+            #Contrôle 11 pour colonne M
             num_controle=11
             try:
                 (nom_c7,feuille) = get_feuille_c7(c3a)
                 cmd_c7 = ouvrir_c7(feuille)
 
-                if prestation[3].value not in [appui[0].value.replace("_","/") for appui in cmd_c7]:
+                if prestation[3].ctype and prestation[3].value not in [appui[0].value.replace("_","/") for appui in cmd_c7]:
                     erreurs[1].append(
                                     modele_erreur_c3a(
                                         num_controle,
@@ -506,6 +504,7 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
                                     )
                                 )
             except:
+                #Contrôle 10 pour colonne M
                 num_controle=10
                 erreurs[0].append(
                                     modele_erreur_c3a(
@@ -518,12 +517,13 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
                                     )
                                 )
         if condition_b:
+            #Contrôle 11 pour colonne N
             num_controle=11
             try:
                 (nom_c7,feuille) = get_feuille_c7(c3a)
                 cmd_c7 = ouvrir_c7(feuille)
                 
-                if prestation[5].value not in [appui[0].value.replace("_","/") for appui in cmd_c7]:
+                if prestation[5].ctype and prestation[5].value not in [appui[0].value.replace("_","/") for appui in cmd_c7]:
                     erreurs[1].append(
                                     modele_erreur_c3a(
                                         num_controle,
@@ -535,6 +535,7 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
                                     )
                                 )
             except Exception as e:
+                #Contrôle 10 pour colonne N
                 num_controle=10
                 erreurs[0].append(
                                     modele_erreur_c3a(
@@ -548,4 +549,3 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
                                 )
     alim_rapport_csv(erreurs[0])
     alim_rapport_csv(erreurs[1])
-    return

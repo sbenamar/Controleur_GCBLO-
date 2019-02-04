@@ -45,20 +45,17 @@ alim_rapport_csv()
 #list_controle_exe est passé en paramètre avec l'identifiant de contrôle correspondant
 #Le contrôle sera lancé si pour cet identifiant la valeur est True, sinon ignoré
 try:
-    #Pour chaque fonction,
-    ##on passe le rapport texte en paramètre, puis on le récupère pour réutiliser dans la suivante
-    #Ainsi il est enrichi petit à petit par chaque fonction
-    rapport=version_c3a(rapport,list_controle_exe[1])
+    version_c3a(list_controle_exe[1])
 except Exception as e:
     log(e,42)
 
 try:
-    rapport=corresp_cable_infra_c3a(rapport,list_controle_exe[2],list_controle_exe[3])
+    corresp_cable_infra_c3a(list_controle_exe[2],list_controle_exe[3])
 except Exception as e:
     log(e,43)
 
 try:
-    rapport=corresp_poteau_c3a(rapport,list_controle_exe[4])
+    corresp_poteau_c3a(list_controle_exe[4])
 except Exception as e:
     log(e,44)
 
@@ -68,8 +65,7 @@ except Exception as e:
     log(e,45)
 
 try:
-    rapport=regles_gcblo_c3a_majeurs(
-        rapport,
+    regles_gcblo_c3a_majeurs(
         list_controle_exe[7],
         list_controle_exe[8],
         list_controle_exe[12]
@@ -88,6 +84,7 @@ except Exception as e:
     log(e,48)
     
 try:
+    #Pour les contrôles 13,15,16,...24
     valeurs_selon_liaisons({k: v for k, v in list_controle_exe.items() if 13 <= k <= 25 and k != 14})
 except Exception as e:
     log(e,49)
