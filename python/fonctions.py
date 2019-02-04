@@ -50,9 +50,9 @@ def nom_fichier(chemin,extension=False):
     return os.path.splitext(nom)[0] if not extension else nom
 
 def get_feuille_c7(c3a):
-    nom=nom_fichier(c3a).split("C3")[0]
-    c7_xls = xlrd.open_workbook([f for f in glob.glob(format_chemin_c7.format(nom)) if "~$" not in f][0])   
-    return (nom,c7_xls.sheet_by_index(0))
+    nom = [f for f in glob.glob(format_chemin_c7.format(nom_fichier(c3a).split("C3")[0])) if "~$" not in f][0]
+    c7_xls = xlrd.open_workbook(nom)
+    return nom_fichier(nom,True),c7_xls.sheet_by_index(0)
 
 def ouvrir_c7(feuille):
     cmd_c7 = [
@@ -60,6 +60,11 @@ def ouvrir_c7(feuille):
         if feuille.row(i)[1].ctype or feuille.row(i)[2].ctype
         ]
     return cmd_c7
+
+#A partir d'un chemin de C3A, retourne la 2ème feuille, contenant les informations nécessaires
+def get_feuille_commande(chemin):
+    c3a_xls = xlrd.open_workbook(chemin)
+    return c3a_xls.sheet_by_index(1)
 
 def ouvrir_c3a(feuille_commandes,ind_premiere_ligne_c3a):
     commandes = [
@@ -103,19 +108,6 @@ def resultat_fichier(libelle,tab_resultat,tab_entete,tab_erreur):
             fwrite.writerow(ligne)
             
     return nom_fichier
-
-#A partir d'un chemin de C3A, retourne la 2ème feuille, contenant les informations nécessaires
-def get_feuille_commande(chemin):
-    c3a_xls = xlrd.open_workbook(chemin)
-    return c3a_xls.sheet_by_index(1)
-
-#A partir de la feuille de C3A, retourne toutes les lignes en tableau
-def ouvrir_c3a(feuille_commandes,ind_premiere_ligne_c3a):
-    commandes = [
-        feuille_commandes.row(i)[:-1] for i in range(ind_premiere_ligne_c3a,feuille_commandes.nrows)
-        if feuille_commandes.row(i)[1].ctype or feuille_commandes.row(i)[2].ctype
-        ]
-    return commandes
 
 #Retourne le tableau de la table cable_infra
 def ouvrir_cable_infra(chemin):

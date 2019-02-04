@@ -113,17 +113,17 @@ def corresp_poteau_c3a(msg_rapport="",selectionne=True):
     
     erreurs=[]
     
-    #Ce tableau sert à éviter d'ajouter des lignes doublons dans les erreurs
-    #Dés qu'un poteau est manquant, on l'ajoute dans ce tableau et ce poteaux ne sera plus ajouté
-    c3a_poteaux=[]
-    
     for c3a,commandes in commandes_groupe:
+        #Ce tableau sert à éviter d'ajouter des lignes doublons dans les erreurs
+        #Dés qu'un poteau est manquant, on l'ajoute dans ce tableau et ce poteaux ne sera plus ajouté
+        c3a_poteaux=[]
+
         for (num_prestation,prestation) in enumerate(commandes):
             
             #Permet d'avoir le même format pour comparer
             point_a=prestation[3].value.replace("/","_")
             point_b=prestation[5].value.replace("/","_")
-            
+
             if point_a not in poteaux and point_a not in c3a_poteaux and len(point_a):
                 erreurs.append(
                     pre_erreur
@@ -169,7 +169,7 @@ def regles_gcblo_c3a_majeurs(msg_rapport="",controle7=True,controle8=True,contro
 
     condition8 = '(isinstance(prestation[6].value, (int, float)) or str(prestation[6].value).isdigit()) and int(prestation[6].value) >= 1'
     
-    condition12= 'not(prestation[2].value+prestation[4].value in combinaisons_types)'
+    condition12= 'prestation[2].value+prestation[4].value in combinaisons_types'
 
     commandes_groupe = get_commandes_groupe()
     msg=""
@@ -218,7 +218,7 @@ def regles_gcblo_c3a_majeurs(msg_rapport="",controle7=True,controle8=True,contro
             ]
 
         if controle12:
-            num_controle=8
+            num_controle=12
             pre_erreur=[num_controle]+pre_entete_3
             
             erreurs+=[
@@ -226,11 +226,11 @@ def regles_gcblo_c3a_majeurs(msg_rapport="",controle7=True,controle8=True,contro
                 +[
                     chemin_fichier_application(c3a),
                     "",
-                    prestation[3].value+" - "+prestation[5].value
+                    prestation[2].value+" - "+prestation[4].value
                 ]
                 +post_entete_controle12
                 for (num_prestation,prestation) in enumerate(commandes)
-                if not(eval(condition12))
+                if eval(condition12)
             ]
 
     alim_rapport_csv(erreurs)
@@ -276,9 +276,9 @@ def valeurs_selon_liaisons(controles={}):
             diametre=prestation[7].value
             condition1=diametre in diametre_alveole_liste_c_c
             condition2_1=str(diametre).replace('.','',1).isdigit()
-            condition2_2=str(int(diametre)) in diametre_alveole_liste_c_c
+            condition2=condition2_1 and str(int(diametre)) in diametre_alveole_liste_c_c
 
-            if controles[num_controle] and not(condition1 or (condition2_1 and condition2_2)):
+            if controles[num_controle] and not(condition1 or (condition2)):
                 erreurs[num_controle].append(
                                         modele_erreur_c3a(
                                             num_controle,
@@ -454,9 +454,12 @@ def verif_liste_colonnes(controle=True):
             and not prestation[pos_xl("J")].value in diametre_tube_liste
             )
         or (prestation[pos_xl("K")].ctype
-            and str(prestation[pos_xl("K")].value).isdigit()
-            and not float(prestation[pos_xl("K")].value) in diametre_cable_liste
-            )
+            and (
+                str(prestation[pos_xl("K")].value).replace('.','',1).isdigit()
+                and not float(prestation[pos_xl("K")].value) in diametre_cable_liste
+                )
+            or not str(prestation[pos_xl("K")].value).replace('.','',1).isdigit()
+           )
         or (prestation[pos_xl("M")].ctype
             and not prestation[pos_xl("M")].value in travaux_liste
             )
@@ -488,8 +491,9 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
         if condition_a:
             num_controle=11
             try:
-                (nom_c7,cmd_c7)=ouvrir_c7(get_feuille_c7(c3a))
-                
+                (nom_c7,feuille) = get_feuille_c7(c3a)
+                cmd_c7 = ouvrir_c7(feuille)
+
                 if prestation[3].value not in [appui[0].value.replace("_","/") for appui in cmd_c7]:
                     erreurs[1].append(
                                     modele_erreur_c3a(
@@ -497,7 +501,8 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
                                         c3a,
                                         prestation[3].value,
                                         "",
-                                        nom_c7
+                                        nom_c7,
+                                        1
                                     )
                                 )
             except:
@@ -508,13 +513,15 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
                                         c3a,
                                         prestation[3].value,
                                         "",
-                                        c7_list_libelle
+                                        c7_list_libelle,
+                                        1
                                     )
                                 )
         if condition_b:
             num_controle=11
             try:
-                (nom_c7,cmd_c7)=ouvrir_c7(get_feuille_c7(c3a))
+                (nom_c7,feuille) = get_feuille_c7(c3a)
+                cmd_c7 = ouvrir_c7(feuille)
                 
                 if prestation[5].value not in [appui[0].value.replace("_","/") for appui in cmd_c7]:
                     erreurs[1].append(
@@ -523,7 +530,8 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
                                         c3a,
                                         "",
                                         prestation[5].value,
-                                        nom_c7
+                                        nom_c7,
+                                        1
                                     )
                                 )
             except Exception as e:

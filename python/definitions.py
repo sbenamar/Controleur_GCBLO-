@@ -35,7 +35,7 @@ try:
             ))
             
         print("Une erreur est survenue (code: {})".format(str(code)))
-        input()
+        input("")
         exit(code)
 except Exception as e:
     print ("Erreur lors de l'initialisation (code 1)")
