@@ -15,48 +15,44 @@ def corresp_cable_infra_c3a(parcours_infra=True,parcours_c3a=True):
     commandes_groupe = get_commandes_groupe()
     
     #C3A pour le contrôle 2
-    commandes_joint = get_commandes_joint(commandes_groupe)
+    liaisons_commandes = [[prestation[3],prestation[5]] for c3a,num,prestation in get_commande_groupe_ligne()]
 
     #Récupération du tableau de cable infra
     cable_infra = ouvrir_cable_infra(cable_infra_csv_path)
 
-    #Comparaison des C3A et cable infra
-    
     #Table infra reformaté pour avoir les points A et B séparés et sélectionner les données utiles
     #On filtre selon le typ_imp, défini dans le fichier de définition
     liaisons_infra_filtre=[
         (i,cable["cm_id"].replace("_","/").split("=>")) for (i,cable) in enumerate(cable_infra)
         if cable["cm_typ_imp"] in type_imp
     ]
-    
-    #Simplification de la liste des commandes pour la comparaison
-    liaisons_commandes=liaisons_commande(commandes_joint)
-    
+
+
     cable_infra_fichier=chemin_fichier_application(cable_infra_csv_path)
 
     #Début du contrôle 2, s'il est sélectionné
     if parcours_infra:
         #Initialisation du message d'erreur
         num_controle=2
-        pre_erreur=[num_controle]+pre_entete_2
         
         #Alimentation des lignes d'erreurs selon les conditions de contrôle,
         #complété par les variables préféfinies
+        #On test la combinaison existe ou si la combinaison inverse existe
         erreurs_infra=[
-            pre_erreur
-            +[cable_infra_fichier,c3a_list_libelle,(cable[0]+"=>"+cable[1]).replace("/","_")]
-            +post_entete_controle2
+            modele_erreur(
+                num_controle,
+                [cable_infra_fichier,c3a_list_libelle,(cable[0]+"=>"+cable[1]).replace("/","_")]
+            )
             for (i,cable) in liaisons_infra_filtre
-            if cable not in liaisons_commandes and cable not in sorted(liaisons_commandes)
-            ]        
-        
+            if cable not in liaisons_commandes and cable[::-1] not in liaisons_commandes
+        ]        
+
         #Ajout des lignes d'erreur dans le rapport csv
         alim_rapport_csv(erreurs_infra)
     
     #Début du contrôle 3, s'il est sélectionné
     if parcours_c3a:
         num_controle=3
-        pre_erreur=[num_controle]+pre_entete_2
         
         #On reprend la liste des cables, filtrée,
         ##en retirant l'identifiant pour n'avoir que l'information à comparer
@@ -66,17 +62,16 @@ def corresp_cable_infra_c3a(parcours_infra=True,parcours_c3a=True):
         erreurs_c3a=[]
         for c3a,commandes in commandes_groupe:
             erreurs_c3a+=[
-                pre_erreur
-                +[
-                    chemin_fichier_application(c3a),
-                    cable_infra_list_libelle,
-                    prestation[3].value+" - "+prestation[5].value
-                ]
-                +post_entete_controle3
+                        modele_erreur_c3a(
+                            num_controle,
+                            c3a,
+                            prestation[3].value,
+                            prestation[5].value,
+                            cable_infra_list_libelle
+                        )
                 for (num_prestation,prestation) in enumerate(commandes)
                 if prestation not in cables and prestation not in sorted(cables)
             ]
-            
         alim_rapport_csv(erreurs_c3a)
 
 #Contrôle 1
@@ -97,7 +92,7 @@ def version_c3a(controle=True):
         chemin=chemin_fichier_application(f)
         
         if version != version_c3a_en_cours:
-            erreurs+=[[num_controle]+pre_entete_1+[chemin,"",""]+post_entete_controle1]
+            erreurs+=[modele_erreur(num_controle,[chemin,"",""])]
     
     alim_rapport_csv(erreurs)
 
@@ -107,7 +102,6 @@ def corresp_poteau_c3a(controle=True):
         return 
     
     num_controle=4
-    pre_erreur=[num_controle]+pre_entete_3
     
     poteaux = get_poteaux_fiche()
     commandes_groupe = get_commandes_groupe()
@@ -127,30 +121,18 @@ def corresp_poteau_c3a(controle=True):
 
             if point_a not in poteaux and point_a not in c3a_poteaux and len(point_a):
                 erreurs.append(
-                    pre_erreur
-                    +[
-                        chemin_fichier_application(c3a),
-                        poteau_list_libelle,
-                        prestation[3].value
-                    ]
-                    +post_entete_controle4
+                    modele_erreur_c3a(num_controle,c3a,prestation[3].value,"",poteau_list_libelle,1)
                 )
                 c3a_poteaux.append(point_a)
                 
             elif point_b not in poteaux and point_b not in c3a_poteaux and len(point_b):
                 erreurs.append(
-                    pre_erreur
-                    +[
-                        chemin_fichier_application(c3a),
-                        poteau_list_libelle,
-                        prestation[5].value
-                    ]
-                    +post_entete_controle4
+                    modele_erreur_c3a(num_controle,c3a,"",prestation[5].value,poteau_list_libelle,1)
                 )
                 c3a_poteaux.append(point_b)
             else:
                 pass
-            
+    
     alim_rapport_csv(erreurs)
     return 
 
@@ -168,7 +150,8 @@ def regles_gcblo_c3a_majeurs(controle7=True,controle8=True,controle12=True):
     condition7_3 = '("/" in prestation[5].value and prestation[5].value.split("/")[0].isdigit()'
     condition7_4 = ' and len(prestation[5].value.split("/")[0]) == 5)'
 
-    condition8 = '(isinstance(prestation[6].value, (int, float)) or str(prestation[6].value).isdigit()) and int(prestation[6].value) >= 1'
+    condition8_1 = '(isinstance(prestation[6].value, (int, float)) or str(prestation[6].value).isdigit())'
+    condition8_2 = ' and int(prestation[6].value) >= 1'
     
     condition12= 'prestation[2].value+prestation[4].value in combinaisons_types'
 
@@ -182,23 +165,21 @@ def regles_gcblo_c3a_majeurs(controle7=True,controle8=True,controle12=True):
             for (num_prestation,prestation) in enumerate(commandes):
                 if prestation[3].ctype and not(eval(condition7_1+condition7_2)):
                     erreurs+=[
-                        pre_erreur
-                        +[
+                        modele_erreur_c3a(
+                            num_controle,
                             chemin_fichier_application(c3a),
-                            "",
-                            prestation[3].value+" - "+prestation[5].value
-                        ]
-                        +post_entete_controle7
+                            prestation[3].value,
+                            prestation[5].value
+                        )
                     ]
                 elif prestation[5].ctype and not(eval(condition7_3+condition7_4)):
                     erreurs+=[
-                        pre_erreur
-                        +[
+                        modele_erreur_c3a(
+                            num_controle,
                             chemin_fichier_application(c3a),
-                            "",
-                            prestation[3].value+" - "+prestation[5].value
-                        ]
-                        +post_entete_controle7
+                            prestation[3].value,
+                            prestation[5].value
+                        )
                     ]
 
         if controle8:
@@ -206,15 +187,14 @@ def regles_gcblo_c3a_majeurs(controle7=True,controle8=True,controle12=True):
             pre_erreur=[num_controle]+pre_entete_3
             
             erreurs+=[
-                pre_erreur
-                +[
-                    chemin_fichier_application(c3a),
-                    "",
-                    prestation[3].value+" - "+prestation[5].value
-                ]
-                +post_entete_controle8
+                modele_erreur_c3a(
+                            num_controle,
+                            chemin_fichier_application(c3a),
+                            prestation[3].value,
+                            prestation[5].value
+                        )
                 for (num_prestation,prestation) in enumerate(commandes)
-                if not(eval(condition8))
+                if not(eval(condition8_1+condition8_2))
             ]
 
         if controle12:
@@ -222,13 +202,12 @@ def regles_gcblo_c3a_majeurs(controle7=True,controle8=True,controle12=True):
             pre_erreur=[num_controle]+pre_entete_3
             
             erreurs+=[
-                pre_erreur
-                +[
-                    chemin_fichier_application(c3a),
-                    "",
-                    prestation[2].value+" - "+prestation[4].value
-                ]
-                +post_entete_controle12
+                modele_erreur_c3a(
+                            num_controle,
+                            chemin_fichier_application(c3a),
+                            prestation[2].value,
+                            prestation[4].value
+                        )
                 for (num_prestation,prestation) in enumerate(commandes)
                 if eval(condition12)
             ]
@@ -245,7 +224,12 @@ def info_sous_tubage(controle=True):
     commandes = get_commande_groupe_ligne()
     
     erreurs=[
-        modele_erreur(num_controle,[chemin_fichier_application(c3a),"",troncon_format.format(prestation[3].value,prestation[5].value)])
+        modele_erreur_c3a(
+            num_controle,
+            chemin_fichier_application(c3a),
+            prestation[3].value,
+            prestation[5].value
+        )
         for c3a,num,prestation in commandes
         if not(prestation[8].ctype or len(prestation[8].value))
         and (prestation[9].ctype or len(prestation[9].value))
@@ -503,7 +487,7 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
                                         1
                                     )
                                 )
-            except:
+            except Exception as e:
                 #Contrôle 10 pour colonne M
                 num_controle=10
                 erreurs[0].append(
