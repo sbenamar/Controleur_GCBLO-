@@ -1,1 +1,2 @@
-python python/controleur.py
+start pythonw python/main.pyw
+

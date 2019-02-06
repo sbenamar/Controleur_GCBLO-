@@ -1,9 +1,14 @@
 import warnings,os,sys,traceback
 from datetime import datetime
+
+#from PyQt5.QtCore import *
+#from PyQt5.QtWidgets import *
+#import sys
+
 #import qgis.utils
 #from qgis.core import *
 #from qgis.core import QgsProject,QgsVectorLayer
-#from PyQt5.QtCore import QFileInfo
+##from PyQt5.QtCore import QFileInfo
 
 environnement = ["testv1"]
 
@@ -82,6 +87,7 @@ try:
     type_imp=["CONDUITE FT","AERIEN FT"]
     version_c3a_en_cours='C3A BLO5'
     combinaisons_types=["CTCT","CCT","CTC","CTP","CTA","ACT","PCT"]
+    dpts = ("CD21","CD39","CD58","CD70")
 
     prefixe_rapport_csv="rapport_erreurs"
     

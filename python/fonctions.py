@@ -1,6 +1,10 @@
 import csv,glob
 from functools import reduce
 
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import pyqtSlot
+
 try:
     from definitions import *
 except Exception as e:
@@ -34,10 +38,19 @@ def log(err,code=0):
             str(exc_obj),
             traceback.format_exc()
         ))
-        
-    print("Une erreur est survenue (code: {})".format(str(code)))
-    input()
-    exit(code)
+    
+    try:
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Critical)
+        msg.setText("Une erreur est survenue")
+        msg.setWindowTitle("Erreur")
+        msg.setDetailedText("Code d'erreur: {}".format(str(code)))
+        msg.setStandardButtons(QMessageBox.Close)
+        msg.exec_()
+    except Exception as e:
+        print(e)
+        print("Une erreur est survenue (code: {})".format(str(code)))
+        exit(code)
 
 #Retourne tous les chemins menants vers des fichier C3A pour le projet
 def get_c3a_list():
