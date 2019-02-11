@@ -1,5 +1,5 @@
-import os,sys
-from controleur import lancer_controles
+﻿import os,sys
+from controleur_param import lancer_controles
 
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
