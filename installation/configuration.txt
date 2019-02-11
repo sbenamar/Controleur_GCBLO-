@@ -1,0 +1,29 @@
+Lignes de commande pré qgis:
+set OSGEO4W_ROOT=C:\PROGRA~1\QGIS3~1.4
+set PATH=%OSGEO4W_ROOT%\apps\qgis\bin;%PATH%;%OSGEO4W_ROOT%\apps\Python37;%OSGEO4W_ROOT%\apps\Python37\Scripts;%OSGEO4W_ROOT%\apps\qt5\bin;%OSGEO4W_ROOT%\bin;%PATH%
+set QT_PLUGIN_PATH=%OSGEO4W_ROOT%\apps\Qt5\plugins
+set O4W_QT_PREFIX=%OSGEO4W_ROOT:\=/%/apps/Qt5
+set O4W_QT_BINARIES=%OSGEO4W_ROOT:\=/%/apps/Qt5/bin
+set O4W_QT_PLUGINS=%OSGEO4W_ROOT:\=/%/apps/Qt5/plugins
+set O4W_QT_LIBRARIES=%OSGEO4W_ROOT:\=/%/apps/Qt5/lib
+set O4W_QT_TRANSLATIONS=%OSGEO4W_ROOT:\=/%/apps/Qt5/translations
+set O4W_QT_HEADERS=%OSGEO4W_ROOT:\=/%/apps/Qt5/include
+set O4W_QT_DOC=%OSGEO4W_ROOT:\=/%/apps/Qt5/doc
+set PYTHONPATH=
+set PYTHONHOME=%OSGEO4W_ROOT%\apps\Python37
+set QGIS_PREFIXtest_PATH=%OSGEO4W_ROOT:\=/%/apps/qgis
+set GDAL_FILENAME_IS_UTF8=YES
+set VSI_CACHE=TRUE
+set VSI_CACHE_SIZE=1000000
+set QT_PLUGIN_PATH=%OSGEO4W_ROOT%\apps\qgis\qtplugins;%OSGEO4W_ROOT%\apps\qt5\plugins
+set PYTHONPATH=%OSGEO4W_ROOT%\apps\qgis\python;%PYTHONPATH%
+set GDAL_DATA=%OSGEO4W_ROOT%\share\gdal
+
+Chemins:
+PYTHONPATH=C:\Users\PTPC9452\AppData\Local\Programs\Python\Python37\Lib\site-packages;C:\Users\PTPC9452\AppData\Local\Programs\Python\Python37\Scripts\;C:\Program Files\QGIS 3.4\apps\qgis\python;C:\Users\PTPC9452\AppData\Roaming\QGIS\QGIS3\profiles\default\python;C:\Program Files\QGIS 3.4\apps\qgis\python\plugins;C:\Program Files\QGIS 3.4\apps\qgis\python;C:\Program Files\QGIS 3.4\apps\Python37\DLLs;C:\Program Files\QGIS 3.4\apps\Python37\lib;C:\Program Files\QGIS 3.4\bin;C:\Program Files\QGIS 3.4\apps\Python37;C:\Program Files\QGIS 3.4\apps\Python37\lib\site-packages;C:\Program Files\QGIS 3.4\apps\Python37\lib\site-packages\win32;C:\Program Files\QGIS 3.4\apps\Python37\lib\site-packages\win32\lib;C:\Program Files\QGIS 3.4\apps\Python37\lib\site-packages\Pythonwin;C:\Users\PTPC9452\AppData\Roaming\QGIS\QGIS3\profiles\default\python;
+QT_QPA_PLATFORM_PLUGIN_PATH=C:\Program Files\QGIS 3.4\apps\Qt5\plugins
+Path=C:\Program Files (x86)\ActiveState Komodo IDE 11\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\SafeNet\Authentication\SAC\x64;C:\Program Files\SafeNet\Authentication\SAC\x32;C:\Program Files\TortoiseGit\bin;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files (x86)\Microsoft Emulator Manager\1.0\;C:\Program Files (x86)\nodejs\;C:\Users\PTPC9452\AppData\Local\Microsoft\WindowsApps;C:\Users\PTPC9452\AppData\Local\Programs\Git\cmd;C:\Program Files (x86)\Microsoft Visual Studio 8\VC;C:\Program Files (x86)\Microsoft Visual Studio 8;C:\Users\PTPC9452\AppData\Local\Programs\Python\Python37\Scripts\;C:\Users\PTPC9452\AppData\Local\Programs\Python\Python37\;C:\Users\PTPC9452\.dnx\bin;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild;C:\Program Files (x86)\Microsoft
+PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+
+Commandes:
+cxfreeze controleur.pyw --base=Win32GUI

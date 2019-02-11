@@ -2,6 +2,11 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 
+from qgis.core import *
+import qgis.utils
+#from qgis.core import QgsProject,QgsVectorLayer
+from PyQt5.QtCore import QFileInfo
+
 try:
     from controles import *
 except Exception as e:
@@ -16,8 +21,8 @@ rapport=""
 #Ce dictionnaire sera généré depuis un fichier Excel, selon si une case est cochée ou non
 list_controle_exe={
     1:True,
-    2:False,
-    3:False,
+    2:True,
+    3:True,
     4:True,
     5:False,
     6:True,
@@ -41,6 +46,37 @@ list_controle_exe={
 }
 
 def lancer_controles(widget):
+    qgis_installation_path=r"C:\Program Files\QGIS 3.4"
+    exe_projet=r"C:\Users\PTPC9452\Documents\EXE test\04 - Projet\SRO21024SEM_1_Projet"
+    exe_projet_carto=exe_projet+"\APD_SRO21024SEM_1.qgs"
+    #exe_projet_carto=exe_projet+"\test2.qgs"
+    
+    #project = QgsProject.instance()
+    #project.read(exe_projet_carto)
+    
+    qgs = QgsApplication([], False)
+    #QgsApplication.setPrefixPath("C:\\Program Files\\QGIS 3.4\\apps\\qgis", True)
+    qgs.initQgis()
+    
+    layer_prises = exe_projet+r"\LAYERS\PRISES.shp"
+    layer = QgsVectorLayer(layer_prises, "PRISES" , "ogr")
+    print(QgsVectorLayer(r"C:\Users\PTPC9452\Documents\EXE test\04 - Projet\SRO21024SEM_1_Projet\LAYERS\PRISES.shp", "PRISES" , "ogr").isValid())
+    
+    if not layer.isValid():
+        print("Erreur de chargement de la couche")
+        #input("Appuyez sur une touche pour quitter le programme...")
+        #exit(1)
+    
+    
+    iter = layer.getFeatures()
+    print("Listing des coordonnées pour chaque prise du projet SRO21024SEM_1_Projet:")
+    for feature in iter:
+        print("Pour la prise "+feature['NOM']+
+            " -> Coordonnée X:"+str(feature['X_L93'])+
+            ", Coordonnée Y:"+str(feature['Y_L93'])
+            )
+    
+    #input("Appuyez sur une touche pour quitter le programme...")
     pbar = QProgressBar(widget)
     pbar.setMinimum(0)
     pbar.setMaximum(100)
