@@ -1,14 +1,7 @@
 import warnings,os,sys,traceback
 from datetime import datetime
 
-#from PyQt5.QtCore import *
-#from PyQt5.QtWidgets import *
-#import sys
-
-#import qgis.utils
-#from qgis.core import *
-#from qgis.core import QgsProject,QgsVectorLayer
-##from PyQt5.QtCore import QFileInfo
+from qgis.core import *
 
 environnement = ["testv1"]
 
@@ -81,6 +74,10 @@ try:
         format_arbo_c7="*{}*C7*.xls*"
         chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
         format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
+        
+        exe_projet=r"C:\Users\PTPC9452\Documents\EXE test\04 - Projet\SRO21024SEM_1_Projet"
+        qgis_prefix_path=r".\lib\qgis"
+        layer_prises = exe_projet+r"\LAYERS\PRISES.shp"
     
     ind_premiere_ligne_c3a=12-1
     ind_premiere_ligne_c7=20-1
@@ -107,6 +104,7 @@ try:
     erreur_controle2="Liaison manquante dans la C3A"
     erreur_controle3="Tronçon présent dans la C3A mais absent de QGIS"
     erreur_controle4="Fiche poteaux manquante"
+    erreur_controle5="Incohérence du type de point technique entre la C3A et QGIS"
     erreur_controle6="Information de sous tubage incomplète pour le tronçon. La colonne I doit être renseigné"
     erreur_controle7="Format de nommage incorrect"
     erreur_controle8="Longueur de tronçon / portée incorrect"
@@ -147,13 +145,14 @@ try:
     pre_entete_1= ["Commande d'accès","Version"]
     pre_entete_2= ["Commande d'accès","Complétude"]
     pre_entete_3= ["Commande d'accès","Règle GCBLO"]
+    pre_entete_4= ["Commande d'accès","Cohérence"]
     
     pre_entete_lien={
         1:pre_entete_1,
         2:pre_entete_2,
         3:pre_entete_2,
         4:pre_entete_3,
-        5:pre_entete_3,
+        5:pre_entete_4,
         6:pre_entete_3,
         7:pre_entete_3,
         8:pre_entete_3,
@@ -180,6 +179,7 @@ try:
     post_entete_controle2=[erreur_controle2,criticite['bloquant']]
     post_entete_controle3=[erreur_controle3,criticite['majeure']]
     post_entete_controle4=[erreur_controle4,criticite['bloquant']]
+    post_entete_controle5=[erreur_controle5,criticite['majeure']]
     post_entete_controle6=[erreur_controle6,criticite['mineure']]
     post_entete_controle7=[erreur_controle7,criticite['majeure']]
     post_entete_controle8=[erreur_controle8,criticite['majeure']]
@@ -249,6 +249,20 @@ try:
     refus_res_liste=["X"]
     
     condition_travaux_c7=["oui remplacement appui","oui renforcement appui avec commande d'appui"]
+    
+    prop_orange='ORANGE'
+    proprietaire_point_liste=['AUTRE', 'CLIENT', 'ENEDIS', prop_orange]
+    type_point_liste=['APPUI', 'CHAMBRE', 'POTELET']
+    
+    corr_point_lib_code={
+        'APPUI':'A',
+        'CHAMBRE':'C',
+        'POTELET':'P',
+        'IMMEUBLRE':'IMB',
+        'FACADE':'F'
+    }
+    
+    point_tiers_liste=['APPUI','CHAMBRE','POTELET']
     
     liaison_c_c="C - C"
     liaison_c_imb="C - IMB"

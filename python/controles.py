@@ -27,7 +27,6 @@ def corresp_cable_infra_c3a(parcours_infra=True,parcours_c3a=True):
         if cable["cm_typ_imp"] in type_imp
     ]
 
-
     cable_infra_fichier=chemin_fichier_application(cable_infra_csv_path)
 
     #Début du contrôle 2, s'il est sélectionné
@@ -160,8 +159,6 @@ def regles_gcblo_c3a_majeurs(controle7=True,controle8=True,controle12=True):
     for c3a,commandes in commandes_groupe:
         if controle7:
             num_controle=7
-            pre_erreur=[num_controle]+pre_entete_3
-            
             for (num_prestation,prestation) in enumerate(commandes):
                 if prestation[3].ctype and not(eval(condition7_1+condition7_2)):
                     erreurs+=[
@@ -184,8 +181,6 @@ def regles_gcblo_c3a_majeurs(controle7=True,controle8=True,controle12=True):
 
         if controle8:
             num_controle=8
-            pre_erreur=[num_controle]+pre_entete_3
-            
             erreurs+=[
                 modele_erreur_c3a(
                             num_controle,
@@ -198,9 +193,7 @@ def regles_gcblo_c3a_majeurs(controle7=True,controle8=True,controle12=True):
             ]
 
         if controle12:
-            num_controle=12
-            pre_erreur=[num_controle]+pre_entete_3
-            
+            num_controle=12           
             erreurs+=[
                 modele_erreur_c3a(
                             num_controle,
@@ -540,3 +533,37 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
                 
     alim_rapport_csv(erreurs[0])
     alim_rapport_csv(erreurs[1])
+
+def verif_point_technique_c3a(controle=True):
+    if not controle:
+        return
+    num_controle=5
+    
+    point_technique_shp=r"C:\Users\PTPC9452\Documents\EXE test\04 - Projet\SRO21024SEM_1_Projet\LAYERS\POINT TECHNIQUE.shp"
+    layer = QgsVectorLayer(point_technique_shp, "POINT TECHNIQUE" , "ogr")
+    
+    if not layer.isValid():
+        raise Exception("Shape non valide: {}".format(point_technique_shp))
+    else:
+        iter = layer.getFeatures()
+        points_techniques=[(code_type_point(feature['pt_typephy'],feature['pt_prop']),str(feature['pt_id'])) for feature in iter]
+        commandes = reduce(
+                lambda x,y:x+y,
+                [
+                    (
+                        (str(prestation[2].value).replace("/","_"),str(prestation[3].value).replace("/","_")),
+                        (str(prestation[4].value).replace("/","_"),str(prestation[5].value).replace("/","_"))
+                    )
+                    for c3a,num,prestation in get_commande_groupe_ligne()
+                ]
+        )
+        print(points_techniques)
+        erreurs=[
+            modele_erreur(
+                num_controle,
+                [chemin_fichier_application(point_technique_shp),c3a_list_libelle,point[1]]
+            )
+            for point in points_techniques if point[0] not in commandes
+        ]
+        
+        alim_rapport_csv(erreurs)

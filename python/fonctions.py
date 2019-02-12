@@ -26,18 +26,19 @@ def vider_rapport_csv():
 
 #Fonction permettant d'alimenter le log et avoir des informations sur une erreur / exception
 def log(err,code=0):
-    vider_rapport_csv()
-    exc_type, exc_obj, exc_tb = sys.exc_info()
-    with open(os.path.join(log_path,nom_log), "a") as f:
-        f.write(
-            format_log.format(
-            str(datetime.now()),
-            str(exc_tb.tb_lineno),
-            str(code),
-            str(exc_type),
-            str(exc_obj),
-            traceback.format_exc()
-        ))
+    if err is not None:
+        vider_rapport_csv()
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        with open(os.path.join(log_path,nom_log), "a") as f:
+            f.write(
+                format_log.format(
+                str(datetime.now()),
+                str(exc_tb.tb_lineno),
+                str(code),
+                str(exc_type),
+                str(exc_obj),
+                traceback.format_exc()
+            ))
     
     try:
         msg = QMessageBox()
@@ -51,6 +52,12 @@ def log(err,code=0):
         print(e)
         print("Une erreur est survenue (code: {})".format(str(code)))
         exit(code)
+
+def code_type_point(type_point,prop):
+    return "{}{}".format(
+        corr_point_lib_code[type_point if type_point in type_point_liste else 'ND'],
+        'T' if prop != prop_orange and type_point in point_tiers_liste else ''
+        )
 
 #Retourne tous les chemins menants vers des fichier C3A pour le projet
 def get_c3a_list():
