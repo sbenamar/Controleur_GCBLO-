@@ -15,13 +15,16 @@ try:
 except Exception as e:
     log(e,22)
 
+def update_conf_fct(config):
+    exec("global conf,libelle_rapport_csv;conf=config;libelle_rapport_csv=set_libelle_rapport_csv()")
+
 #Retourne l'indice d'une colonne csv selon la lettre donnée
 def pos_xl(lettre):
     return ord(lettre.lower()) - 96 -1
 
 #Supprimer le contenu d'un rapport s'il y a une exception
 def vider_rapport_csv():
-    with open(os.path.join(chemin_rapport,libelle_rapport_csv), 'w') as fichier:
+    with open(os.path.join(conf["chemin_rapport"],libelle_rapport_csv), 'w') as fichier:
         fichier.write("")
 
 #Fonction permettant d'alimenter le log et avoir des informations sur une erreur / exception
@@ -61,7 +64,7 @@ def code_type_point(type_point,prop):
 
 #Retourne tous les chemins menants vers des fichier C3A pour le projet
 def get_c3a_list():
-    return [f for f in glob.iglob(chemin_c3a, recursive=True) if "~$" not in f]
+    return [f for f in glob.iglob(conf["chemin_c3a"], recursive=True) if "~$" not in f]
 
 #Retourne le nom du fichier selon le chemin
 def nom_fichier(chemin,extension=False):
@@ -71,9 +74,12 @@ def nom_fichier(chemin,extension=False):
 def isnumber(variable):
     return str(variable).replace('.','',1).isdigit()
 
+def format_id_pt(id_pt,insee):
+    return id_pt if "_" in id_pt else "{}_{}".format(insee,id_pt)
+
 #Récupération de la première feuille du fichier C7
 def get_feuille_c7(c3a):
-    nom = [f for f in glob.glob(format_chemin_c7.format(nom_fichier(c3a).split("C3")[0])) if "~$" not in f][0]
+    nom = [f for f in glob.glob(conf["format_chemin_c7"].format(nom_fichier(c3a).split("C3")[0])) if "~$" not in f][0]
     c7_xls = xlrd.open_workbook(nom)
     return nom_fichier(nom,True),c7_xls.sheet_by_index(0)
 
@@ -100,13 +106,13 @@ def ouvrir_c3a(feuille_commandes):
 
 #Chemin du fichier à partir du dossier de l'application
 def chemin_fichier_application(fichier):
-    return fichier.replace(chemin_exe,"")
+    return fichier.replace(conf["chemin_exe"],"")
 
 #Crée ou alimente le rapport csv contenant les erreurs. S'il est créé, on ajoute le header
 def alim_rapport_csv(erreurs=False):
     if type(erreurs) is not bool and len(erreurs) == 0:
         return
-    
+
     with open(os.path.join(chemin_rapport,libelle_rapport_csv), 'a', newline='') as fichier:
         fwrite = csv.writer(fichier, delimiter=';',
             quotechar='|', quoting=csv.QUOTE_MINIMAL)
@@ -118,7 +124,7 @@ def alim_rapport_csv(erreurs=False):
 
 #Retourne le tableau de la table cable_infra
 def ouvrir_cable_infra(chemin):
-    with open(chemin) as cable_infra_csv:
+    with open(chemin) as conf["cable_infra_csv"]:
         cable_infra = [
             {k:v for k, v in row.items()}
             for row in csv.DictReader(cable_infra_csv, delimiter=';')
@@ -132,7 +138,7 @@ def get_commandes_groupe():
             c3a,
             ouvrir_c3a(
                 get_feuille_commande(
-                    os.path.join(commande_orange_path,c3a)
+                    os.path.join(conf["commande_orange_path"],c3a)
                 )
             )
         )
@@ -158,7 +164,7 @@ def liaisons_commande(commandes_joint):
 #Récupère la liste des poteaux en explorant la liste des fichiers de poteaux et en récupérant leur nom 
 def get_poteaux_fiche():
     return [os.path.splitext(os.path.basename(f))[0]
-            for f in glob.iglob(os.path.join(appui_orange_path,"*.xls*"))
+            for f in glob.iglob(os.path.join(conf["appui_orange_path"],"*.xls*"))
     ]
 
 #Modèle de ligne d'erreur dans le fichier rapport, contenant les informations de contrôle pré-enregistrés

@@ -1,16 +1,12 @@
 ﻿import os,sys
-from controleur_param import *
-
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
+from controleur_param import *
 
 locale = QLocale.system().name()
 
-QgsApplication.setPrefixPath("qgis_prefix_path",True)
-print(qgis_prefix_path)
-qgs = QgsApplication([], False)
-qgs.initQgis()
+dpts = ("CD21","CD39","CD58","CD70","ND","EXE","testv1")
 
 def main(args) :
     app = QApplication(args)
@@ -21,8 +17,24 @@ def main(args) :
     button.resize(120,60)
     button.move(60,45)
     widget.setFixedSize(widget.size())
-    button.clicked.connect(lambda: lancer_controles(widget))
+    button.clicked.connect(lambda: test(widget))
     widget.show()
     app.exec_()
+
+def test(widget):
+    dpt, ok = QInputDialog.getItem(widget,"Sélection du département", "Liste des départements", dpts, 0, False)
+    
+    if not(ok and dpt):
+        return log(None,411)
+
+    update_conf(conf_dpt[dpt])
+    lancer_controles(widget)
+
+def update_conf(conf_dpt):
+    update_conf_param(conf_dpt)
+    update_conf_ctrl(conf_dpt)
+    update_conf_fct(conf_dpt)
+    update_conf_def(conf_dpt)
+
 if __name__ == "__main__":
     main(sys.argv)

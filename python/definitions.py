@@ -1,10 +1,98 @@
+from importlib import reload
+import sys
 import warnings,os,sys,traceback
 from datetime import datetime
-
 from qgis.core import *
 
-environnement = ["testv1"]
+#chemin_courant permettra de servir de base pour la création des autres chemins
+chemin_courant=os.getcwd()
 
+prefixe_rapport_csv="rapport_erreurs"
+libelle_rapport_csv=prefixe_rapport_csv+'.csv'
+
+conf={}
+conf_dpt={}
+
+update_conf_exec="global conf,libelle_rapport_csv;conf=config;libelle_rapport_csv=set_libelle_rapport_csv()"
+   
+try:    
+    chemin_exe=os.path.join(chemin_courant,"exe")
+    exe_projet_racine=os.path.join(chemin_exe,"04 - Projet")
+    
+    #Avant de récupérer le chemin du projet de l'exe, vérifier que l'exe est présent
+    try:
+        nom_projet=os.listdir(exe_projet_racine)[0]
+    except Exception as e:
+        log(e,12)
+        
+    exe_projet=os.path.join(exe_projet_racine,nom_projet)
+    commande_orange_path=os.path.join(chemin_exe,"09 - Commande_Orange")
+    chemin_layers=os.path.join(exe_projet,"LAYERS")
+    cable_infra_csv_path=os.path.join(chemin_layers,"CABLE_INFRA.csv")
+    point_technique_path=os.path.join(chemin_layers,"POINT_TECHNIQUE.shp")
+    appui_orange_path=os.path.join(chemin_exe,"07 - Appui","Appui Orange - CAPFT","POTEAU")
+    chemin_rapport=os.path.join(chemin_courant,"rapports")
+    arbo_c3a="**/**/*C3A*.xls*"
+    format_arbo_c7="*{}*C7*.xls*"
+    chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
+    format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
+    
+    conf_dpt["EXE"]={
+        "chemin_exe":chemin_exe,
+        "exe_projet_racine":exe_projet_racine,
+        "nom_projet":nom_projet,
+        "exe_projet":exe_projet,
+        "commande_orange_path":commande_orange_path,
+        "chemin_layers":chemin_layers,
+        "cable_infra_csv_path":cable_infra_csv_path,
+        "point_technique_path":point_technique_path,
+        "appui_orange_path":appui_orange_path,
+        "chemin_rapport":chemin_rapport,
+        "arbo_c3a":arbo_c3a,
+        "format_arbo_c7":format_arbo_c7,
+        "chemin_c3a":chemin_c3a,
+        "format_chemin_c7":format_chemin_c7
+    }
+
+    chemin_exe=os.path.join(chemin_courant,"Commande d'accès")
+    commande_orange_path=chemin_exe
+    cable_infra_csv_path=os.path.join(chemin_exe,"CABLE_INFRA.csv")
+    appui_orange_path=os.path.join(chemin_exe,"Appui aérien")
+    chemin_rapport=os.path.join(chemin_courant,"rapports")
+    arbo_c3a="*C3A*.xls*"
+    format_arbo_c7="*{}*C7*.xls*"
+    chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
+    format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
+    exe_projet=r"C:\Users\PTPC9452\Documents\EXE test\04 - Projet\SRO21024SEM_1_Projet"
+    
+    conf_dpt["testv1"]={
+        "chemin_exe":chemin_exe,
+        "commande_orange_path":commande_orange_path,
+        "cable_infra_csv_path":cable_infra_csv_path,
+        "appui_orange_path":appui_orange_path,
+        "chemin_rapport":chemin_rapport,
+        "arbo_c3a":arbo_c3a,
+        "format_arbo_c7":format_arbo_c7,
+        "chemin_c3a":chemin_c3a,
+        "format_chemin_c7":format_chemin_c7,
+        "exe_projet":exe_projet
+    }
+    
+    #if "testv2" in environnement:
+    #chemin_exe=os.path.join(chemin_courant,"Commande d'accès")
+    #commande_orange_path=chemin_exe
+    #cable_infra_csv_path=os.path.join(chemin_exe,"CABLE_INFRA.csv")
+    #appui_orange_path=os.path.join(chemin_exe,"Appui aérien")
+    #chemin_rapport=os.path.join(chemin_courant,"rapports")
+    #arbo_c3a="*C3A*.xls*"
+    #format_arbo_c7="*{}*C7*.xls*"
+    #chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
+    #format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
+    #exe_projet=r"C:\Users\PTPC9452\Documents\EXE test\04 - Projet\SRO21024SEM_1_Projet"
+        
+except Exception as e:
+    log(e,15)
+    
 #Gestion de l'exception lors de la création de la fonction de log, qui permettra de généraliser
 ##la gestion des erreurs
 try:
@@ -15,7 +103,7 @@ try:
     log_path=os.path.join(*[chemin_courant,"python","log"])
     nom_log="log.txt"
     format_log="{}: [ligne {} / code {} / erreur {}] - {}\n{}\n\n"
-    
+
     #Lors d'une exception, permet d'afficher le message d'erreur dans le fichier log.txt.
     #Le message d'erreur initial est affiche, avec une entête permettant d'avoir une vue rapide.
     #Un code est inclus, permettant de rapidement identifier la source de l'erreur.
@@ -31,64 +119,31 @@ try:
                 str(exc_obj),
                 traceback.format_exc()
             ))
-            
-        print("Une erreur est survenue (code: {})".format(str(code)))
-        input("")
-        exit(code)
-except Exception as e:
-    print ("Erreur lors de l'initialisation (code 1)")
-    exit(11)
-
-#Centralisation de tous les chemins, libéllés, variables, ... avec gestion d'une exception
-try:
-    if "EXE" in environnement:
-        qgis_installation_path=r"C:\Program Files\QGIS 3.4"
-        chemin_exe=os.path.join(chemin_courant,"exe")
-        exe_projet_racine=os.path.join(chemin_exe,"04 - Projet")
-        
-        #Avant de récupérer le chemin du projet de l'exe, vérifier que l'exe est présent
         try:
-            nom_projet=os.listdir(exe_projet_racine)[0]
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Une erreur est survenue")
+            msg.setWindowTitle("Erreur")
+            msg.setDetailedText("Code d'erreur: {}".format(str(code)))
+            msg.setStandardButtons(QMessageBox.Close)
+            msg.exec_()
         except Exception as e:
-            print("Un projet est nécessaire pour lancer les contrôles.")
-            log(e,12)
-            
-        exe_projet=os.path.join(exe_projet_racine,nom_projet)
-        commande_orange_path=os.path.join(chemin_exe,"11 - Commande_Orange")
-        exe_projet_carto=os.path.join(exe_projet,"APD"+nom_projet+".qgs")
-        chemin_layers=os.path.join(exe_projet,exe_projet,"LAYERS")
-        layer_prises = os.path.join(chemin_layers+"PRISES.shp")
-        cable_infra_csv_path=os.path.join(chemin_layers,"CABLE_INFRA.csv")
-        appui_orange_path=os.path.join(chemin_exe,"09 - Appui Orange - CAPFT")
-        chemin_rapport=os.path.join(chemin_courant,"rapports")
-        arbo_c3a="**/**/*C3A*.xls*"
-        
-    if "testv1" in environnement:
-        qgis_installation_path=r"C:\Program Files\QGIS 3.4"
-        chemin_exe=os.path.join(chemin_courant,"Commande d'accès")
-        commande_orange_path=chemin_exe
-        cable_infra_csv_path=os.path.join(chemin_exe,"CABLE_INFRA.csv")
-        appui_orange_path=os.path.join(chemin_exe,"Appui aérien")
-        chemin_rapport=os.path.join(chemin_courant,"rapports")
-        arbo_c3a="*C3A*.xls*"
-        format_arbo_c7="*{}*C7*.xls*"
-        chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
-        format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
-        
-        exe_projet=r"C:\Users\PTPC9452\Documents\EXE test\04 - Projet\SRO21024SEM_1_Projet"
-        qgis_prefix_path=r".\lib\qgis"
-        layer_prises = exe_projet+r"\LAYERS\PRISES.shp"
+            print("Une erreur est survenue (code: {})".format(str(code)))
+            exit(code)
+    
+except Exception as e:
+    print ("Une erreur est survenue (code: 1)")
+    exit(11)
+    
+try:
+    dpts = ("CD21","CD39","CD58","CD70")
+    qgis_prefix_path=r".\lib\qgis"
     
     ind_premiere_ligne_c3a=12-1
     ind_premiere_ligne_c7=20-1
     type_imp=["CONDUITE FT","AERIEN FT"]
     version_c3a_en_cours='C3A BLO5'
     combinaisons_types=["CTCT","CCT","CTC","CTP","CTA","ACT","PCT"]
-    dpts = ("CD21","CD39","CD58","CD70")
-
-    prefixe_rapport_csv="rapport_erreurs"
-    
-    libelle_rapport_csv=prefixe_rapport_csv+'_'+str(datetime.now()).split('.')[0].replace(' ','_').replace(':','-')+'.csv'
     
     msg_fin_programme_1="Programme terminé"
     
@@ -226,25 +281,25 @@ try:
     diametre_tube_liste=["6/8mm","8/10mm","11/14mm","13/16mm","15/18mm","16/20mm","21/25mm","27/32mm"]
     diametre_cable_liste=[nb/2 for nb in range(0,43)]
     travaux_liste=["oui percement grand pied droit","oui percement petit pied droit",
-               "oui percement avec plus de 4 alvéoles","oui remplacement appui",
-               "oui renforcement appui sans commande d'appui",
-               "oui renforcement appui avec commande d'appui",
-               "oui transition égout petit pied droit",
-               "oui transition égout grand pied droit"]
+            "oui percement avec plus de 4 alvéoles","oui remplacement appui",
+            "oui renforcement appui sans commande d'appui",
+            "oui renforcement appui avec commande d'appui",
+            "oui transition égout petit pied droit",
+            "oui transition égout grand pied droit"]
     
     installation_liste=["A Manchon > 2dm3",
-                  "A Micro Manchon < 2dm3",
-                  "B Manchon > 2dm3",
-                  "B Micro Manchon < 2dm3",
-                  "A PEO",
-                  "B PEO",
-                  "A PMSB",
-                  "B PMSB",
-                  "A PB Chambre",
-                  "B PB Chambre",
-                  "A PB Appui",
-                  "B PB Appui"
-                  ]
+                "A Micro Manchon < 2dm3",
+                "B Manchon > 2dm3",
+                "B Micro Manchon < 2dm3",
+                "A PEO",
+                "B PEO",
+                "A PMSB",
+                "B PMSB",
+                "A PB Chambre",
+                "B PB Chambre",
+                "A PB Appui",
+                "B PB Appui"
+                ]
     
     refus_res_liste=["X"]
     
@@ -259,7 +314,8 @@ try:
         'CHAMBRE':'C',
         'POTELET':'P',
         'IMMEUBLRE':'IMB',
-        'FACADE':'F'
+        'FACADE':'F',
+        'ND':'ND'
     }
     
     point_tiers_liste=['APPUI','CHAMBRE','POTELET']
@@ -270,6 +326,12 @@ try:
     liaison_c_p="C - P"
     laison_c_pt="C - PT"
     laison_ct_p="CT - P"
-    
+        
 except Exception as e:
-    log(e,13)
+    log(e,11)
+
+def set_libelle_rapport_csv():
+    return prefixe_rapport_csv+'_'+str(datetime.now()).split('.')[0].replace(' ','_').replace(':','-')+'.csv'
+
+def update_conf_def(config):
+    exec("global conf,libelle_rapport_csv;conf=config;libelle_rapport_csv=set_libelle_rapport_csv()")

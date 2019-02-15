@@ -1,9 +1,11 @@
 #Pour l'explication des contrôles, se réferer au fichier Controlleur.xlsx dans le dossier Documentation
-
 try:
     from fonctions import *
 except Exception as e:
     log(e,33)
+
+def update_conf_ctrl(config):
+    exec("global conf,libelle_rapport_csv;conf=config;libelle_rapport_csv=set_libelle_rapport_csv()")
 
 #Contrôle 2 / Contrôle 3: possibilité de selection du/des contrôle(s) à réaliser
 def corresp_cable_infra_c3a(parcours_infra=True,parcours_c3a=True):
@@ -18,7 +20,7 @@ def corresp_cable_infra_c3a(parcours_infra=True,parcours_c3a=True):
     liaisons_commandes = [[prestation[3],prestation[5]] for c3a,num,prestation in get_commande_groupe_ligne()]
 
     #Récupération du tableau de cable infra
-    cable_infra = ouvrir_cable_infra(cable_infra_csv_path)
+    cable_infra = ouvrir_cable_infra(conf["cable_infra_csv_path"])
 
     #Table infra reformaté pour avoir les points A et B séparés et sélectionner les données utiles
     #On filtre selon le typ_imp, défini dans le fichier de définition
@@ -27,7 +29,7 @@ def corresp_cable_infra_c3a(parcours_infra=True,parcours_c3a=True):
         if cable["cm_typ_imp"] in type_imp
     ]
 
-    cable_infra_fichier=chemin_fichier_application(cable_infra_csv_path)
+    cable_infra_fichier=chemin_fichier_application(conf["cable_infra_csv_path"])
 
     #Début du contrôle 2, s'il est sélectionné
     if parcours_infra:
@@ -118,13 +120,13 @@ def corresp_poteau_c3a(controle=True):
             point_a=prestation[3].value.replace("/","_")
             point_b=prestation[5].value.replace("/","_")
 
-            if point_a not in poteaux and point_a not in c3a_poteaux and len(point_a):
+            if prestation[2].value == "A" and point_a not in poteaux and point_a not in c3a_poteaux and len(point_a):
                 erreurs.append(
                     modele_erreur_c3a(num_controle,c3a,prestation[3].value,"",poteau_list_libelle,1)
                 )
                 c3a_poteaux.append(point_a)
                 
-            elif point_b not in poteaux and point_b not in c3a_poteaux and len(point_b):
+            elif prestation[4].value == "A" and point_b not in poteaux and point_b not in c3a_poteaux and len(point_b):
                 erreurs.append(
                     modele_erreur_c3a(num_controle,c3a,"",prestation[5].value,poteau_list_libelle,1)
                 )
@@ -539,31 +541,31 @@ def verif_point_technique_c3a(controle=True):
         return
     num_controle=5
     
-    point_technique_shp=r"C:\Users\PTPC9452\Documents\EXE test\04 - Projet\SRO21024SEM_1_Projet\LAYERS\POINT TECHNIQUE.shp"
-    layer = QgsVectorLayer(point_technique_shp, "POINT TECHNIQUE" , "ogr")
+    layer = QgsVectorLayer(conf["point_technique_path"], "POINT TECHNIQUE" , "ogr")
     
     if not layer.isValid():
-        raise Exception("Shape non valide: {}".format(point_technique_shp))
+        raise Exception("Shape non valide: {}".format(conf["point_technique_path"]))
     else:
         iter = layer.getFeatures()
-        points_techniques=[(code_type_point(feature['pt_typephy'],feature['pt_prop']),str(feature['pt_id'])) for feature in iter]
+        points_techniques=[(code_type_point(feature['pt_typephy'],feature['pt_prop']),format_id_pt(str(feature['NOM']),str(feature['CODE_INSEE']))) for feature in iter]
+        
         commandes = reduce(
                 lambda x,y:x+y,
                 [
                     (
-                        (str(prestation[2].value).replace("/","_"),str(prestation[3].value).replace("/","_")),
-                        (str(prestation[4].value).replace("/","_"),str(prestation[5].value).replace("/","_"))
+                        (str(prestation[2].value),str(prestation[3].value).replace("/","_")),
+                        (str(prestation[4].value),str(prestation[5].value).replace("/","_"))
                     )
                     for c3a,num,prestation in get_commande_groupe_ligne()
                 ]
         )
-        print(points_techniques)
+
         erreurs=[
             modele_erreur(
                 num_controle,
-                [chemin_fichier_application(point_technique_shp),c3a_list_libelle,point[1]]
+                [chemin_fichier_application(conf["point_technique_path"]),c3a_list_libelle,point[1]]
             )
-            for point in points_techniques if point[0] not in commandes
+            for point in points_techniques if point not in commandes
         ]
         
         alim_rapport_csv(erreurs)

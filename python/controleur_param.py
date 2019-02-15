@@ -1,9 +1,16 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
-
-import os
+import os,sys
 from PyQt5.QtCore import QFileInfo
+from qgis.core import *
+from importlib import reload
+
+init=False
+
+#QgsApplication.setPrefixPath(qgis_prefix_path,True)
+qgs = QgsApplication([], False)
+qgs.initQgis()
 
 try:
     from controles import *
@@ -19,10 +26,10 @@ rapport=""
 #Ce dictionnaire sera généré depuis un fichier Excel, selon si une case est cochée ou non
 list_controle_exe={
     1:True,
-    2:True,
-    3:True,
+    2:False,
+    3:False,
     4:True,
-    5:True,
+    5:False,
     6:True,
     7:True,
     8:True,
@@ -43,12 +50,10 @@ list_controle_exe={
     24:True
 }
 
-def lancer_controles(widget):
-    dpt, ok = QInputDialog.getItem(widget,"Sélection du département", "Liste des départements", dpts, 0, False)
+def update_conf_param(config):
+    exec("global conf,libelle_rapport_csv;conf=config;libelle_rapport_csv=set_libelle_rapport_csv()")
 
-    if not(ok and dpt):
-        return log(None,411)
-    
+def lancer_controles(widget):  
     pbar = QProgressBar(widget)
     pbar.setMinimum(0)
     pbar.setMaximum(100)
@@ -57,7 +62,7 @@ def lancer_controles(widget):
     pbar.show()
     
     print("Contrôles en cours...")
-    
+
     #Création du rapport, initialisé avec l'entête
     alim_rapport_csv()
     
@@ -122,7 +127,7 @@ def lancer_controles(widget):
         pbar.setValue(100)
     except Exception as e:
         return log(e,49)
-    
+
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Information)
     msg.setText("Tous les contrôles ont été effectués.")
