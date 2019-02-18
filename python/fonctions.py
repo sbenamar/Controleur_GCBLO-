@@ -15,6 +15,15 @@ try:
 except Exception as e:
     log(e,22)
 
+def msg_succes():
+    msg = QMessageBox()
+    msg.setIcon(QMessageBox.Information)
+    msg.setText("Tous les contrôles ont été effectués.")
+    msg.setWindowTitle("Contrôles terminés")
+    msg.setDetailedText('Le rapport des contrôles a été généré dans le dossier "rapports"')
+    msg.setStandardButtons(QMessageBox.Close)
+    msg.exec_()
+
 def update_conf_fct(config):
     exec("global conf,libelle_rapport_csv;conf=config;libelle_rapport_csv=set_libelle_rapport_csv()")
 
@@ -24,7 +33,7 @@ def pos_xl(lettre):
 
 #Supprimer le contenu d'un rapport s'il y a une exception
 def vider_rapport_csv():
-    with open(os.path.join(conf["chemin_rapport"],libelle_rapport_csv), 'w') as fichier:
+    with open(os.path.join(chemin_rapport,libelle_rapport_csv), 'w') as fichier:
         fichier.write("")
 
 #Fonction permettant d'alimenter le log et avoir des informations sur une erreur / exception
@@ -104,6 +113,17 @@ def ouvrir_c3a(feuille_commandes):
         ]
     return commandes
 
+def get_feuille_doc_controleur():
+    c3a_xls = xlrd.open_workbook(chemin_doc_controleur)
+    return c3a_xls.sheet_by_index(0)
+
+#Récupération des lignes de la feuille de la C3A
+def get_liste_controle_dpt(dpt):
+    feuille=get_feuille_doc_controleur()
+    controles_dpt=list(map(bool,feuille.col_values(col_dpt[dpt])[1:]))
+    identifiants=map(int,feuille.col_values(0)[1:])
+    return dict(zip(identifiants,controles_dpt))
+
 #Chemin du fichier à partir du dossier de l'application
 def chemin_fichier_application(fichier):
     return fichier.replace(conf["chemin_exe"],"")
@@ -124,7 +144,7 @@ def alim_rapport_csv(erreurs=False):
 
 #Retourne le tableau de la table cable_infra
 def ouvrir_cable_infra(chemin):
-    with open(chemin) as conf["cable_infra_csv"]:
+    with open(chemin) as cable_infra_csv:
         cable_infra = [
             {k:v for k, v in row.items()}
             for row in csv.DictReader(cable_infra_csv, delimiter=';')

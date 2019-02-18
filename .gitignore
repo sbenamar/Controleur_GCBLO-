@@ -3,3 +3,5 @@
 /rapports/*.txt
 /rapports/*.csv
 /Documentation/~$Controleur.xlsx
+/Commande/tests
+/Commande/tests/*.XLSX

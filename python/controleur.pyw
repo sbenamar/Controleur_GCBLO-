@@ -6,8 +6,6 @@ from controleur_param import *
 
 locale = QLocale.system().name()
 
-dpts = ("CD21","CD39","CD58","CD70","ND","EXE","testv1")
-
 def main(args) :
     app = QApplication(args)
     widget = QWidget(None)
@@ -27,7 +25,13 @@ def test(widget):
     if not(ok and dpt):
         return log(None,411)
 
-    update_conf(conf_dpt[dpt])
+    dpt="testv1"
+    
+    try:
+        update_conf(conf_dpt[dpt])
+    except Exception as e:
+        return log(e,412)
+        
     lancer_controles(widget)
 
 def update_conf(conf_dpt):

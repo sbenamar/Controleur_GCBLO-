@@ -61,8 +61,8 @@ def lancer_controles(widget):
     pbar.move(66,104)
     pbar.show()
     
-    print("Contrôles en cours...")
-
+    #list_controle_exe=get_liste_controle_dpt(conf["dpt"])
+    
     #Création du rapport, initialisé avec l'entête
     alim_rapport_csv()
     
@@ -70,7 +70,12 @@ def lancer_controles(widget):
     #list_controle_exe est passé en paramètre avec l'identifiant de contrôle correspondant
     #Le contrôle sera lancé si pour cet identifiant la valeur est True, sinon ignoré
     try:
-        version_c3a(list_controle_exe[1])
+        res=version_c3a(list_controle_exe[1])
+        #if res:
+            #pbar.setValue(100)
+            #msg_succes()
+            #return
+        
         pbar.setValue(float(1)/len(list_controle_exe)*100)
     except Exception as e:
         return log(e,42)
@@ -127,11 +132,5 @@ def lancer_controles(widget):
         pbar.setValue(100)
     except Exception as e:
         return log(e,49)
-
-    msg = QMessageBox()
-    msg.setIcon(QMessageBox.Information)
-    msg.setText("Tous les contrôles ont été effectués.")
-    msg.setWindowTitle("Contrôles terminés")
-    msg.setDetailedText('Le rapport des contrôles a été généré dans le dossier "rapports"')
-    msg.setStandardButtons(QMessageBox.Close)
-    msg.exec_()
+    
+    msg_succes()

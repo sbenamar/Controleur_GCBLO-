@@ -96,6 +96,7 @@ def version_c3a(controle=True):
             erreurs+=[modele_erreur(num_controle,[chemin,"",""])]
     
     alim_rapport_csv(erreurs)
+    return len(erreurs)
 
 #Contrôle 4
 def corresp_poteau_c3a(controle=True):
@@ -108,7 +109,7 @@ def corresp_poteau_c3a(controle=True):
     commandes_groupe = get_commandes_groupe()
     
     erreurs=[]
-    
+
     for c3a,commandes in commandes_groupe:
         #Ce tableau sert à éviter d'ajouter des lignes doublons dans les erreurs
         #Dés qu'un poteau est manquant, on l'ajoute dans ce tableau et ce poteaux ne sera plus ajouté
@@ -133,7 +134,7 @@ def corresp_poteau_c3a(controle=True):
                 c3a_poteaux.append(point_b)
             else:
                 pass
-    
+
     alim_rapport_csv(erreurs)
     return 
 

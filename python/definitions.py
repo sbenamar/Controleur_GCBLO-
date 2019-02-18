@@ -9,90 +9,14 @@ chemin_courant=os.getcwd()
 
 prefixe_rapport_csv="rapport_erreurs"
 libelle_rapport_csv=prefixe_rapport_csv+'.csv'
+chemin_rapport=os.path.join(chemin_courant,"rapports")
+chemin_doc_controleur=os.path.join(chemin_courant,*["Documentation","controleur.xlsx"])
 
 conf={}
 conf_dpt={}
 
 update_conf_exec="global conf,libelle_rapport_csv;conf=config;libelle_rapport_csv=set_libelle_rapport_csv()"
    
-try:    
-    chemin_exe=os.path.join(chemin_courant,"exe")
-    exe_projet_racine=os.path.join(chemin_exe,"04 - Projet")
-    
-    #Avant de récupérer le chemin du projet de l'exe, vérifier que l'exe est présent
-    try:
-        nom_projet=os.listdir(exe_projet_racine)[0]
-    except Exception as e:
-        log(e,12)
-        
-    exe_projet=os.path.join(exe_projet_racine,nom_projet)
-    commande_orange_path=os.path.join(chemin_exe,"09 - Commande_Orange")
-    chemin_layers=os.path.join(exe_projet,"LAYERS")
-    cable_infra_csv_path=os.path.join(chemin_layers,"CABLE_INFRA.csv")
-    point_technique_path=os.path.join(chemin_layers,"POINT_TECHNIQUE.shp")
-    appui_orange_path=os.path.join(chemin_exe,"07 - Appui","Appui Orange - CAPFT","POTEAU")
-    chemin_rapport=os.path.join(chemin_courant,"rapports")
-    arbo_c3a="**/**/*C3A*.xls*"
-    format_arbo_c7="*{}*C7*.xls*"
-    chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
-    format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
-    
-    conf_dpt["EXE"]={
-        "chemin_exe":chemin_exe,
-        "exe_projet_racine":exe_projet_racine,
-        "nom_projet":nom_projet,
-        "exe_projet":exe_projet,
-        "commande_orange_path":commande_orange_path,
-        "chemin_layers":chemin_layers,
-        "cable_infra_csv_path":cable_infra_csv_path,
-        "point_technique_path":point_technique_path,
-        "appui_orange_path":appui_orange_path,
-        "chemin_rapport":chemin_rapport,
-        "arbo_c3a":arbo_c3a,
-        "format_arbo_c7":format_arbo_c7,
-        "chemin_c3a":chemin_c3a,
-        "format_chemin_c7":format_chemin_c7
-    }
-
-    chemin_exe=os.path.join(chemin_courant,"Commande d'accès")
-    commande_orange_path=chemin_exe
-    cable_infra_csv_path=os.path.join(chemin_exe,"CABLE_INFRA.csv")
-    appui_orange_path=os.path.join(chemin_exe,"Appui aérien")
-    chemin_rapport=os.path.join(chemin_courant,"rapports")
-    arbo_c3a="*C3A*.xls*"
-    format_arbo_c7="*{}*C7*.xls*"
-    chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
-    format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
-    exe_projet=r"C:\Users\PTPC9452\Documents\EXE test\04 - Projet\SRO21024SEM_1_Projet"
-    
-    conf_dpt["testv1"]={
-        "chemin_exe":chemin_exe,
-        "commande_orange_path":commande_orange_path,
-        "cable_infra_csv_path":cable_infra_csv_path,
-        "appui_orange_path":appui_orange_path,
-        "chemin_rapport":chemin_rapport,
-        "arbo_c3a":arbo_c3a,
-        "format_arbo_c7":format_arbo_c7,
-        "chemin_c3a":chemin_c3a,
-        "format_chemin_c7":format_chemin_c7,
-        "exe_projet":exe_projet
-    }
-    
-    #if "testv2" in environnement:
-    #chemin_exe=os.path.join(chemin_courant,"Commande d'accès")
-    #commande_orange_path=chemin_exe
-    #cable_infra_csv_path=os.path.join(chemin_exe,"CABLE_INFRA.csv")
-    #appui_orange_path=os.path.join(chemin_exe,"Appui aérien")
-    #chemin_rapport=os.path.join(chemin_courant,"rapports")
-    #arbo_c3a="*C3A*.xls*"
-    #format_arbo_c7="*{}*C7*.xls*"
-    #chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
-    #format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
-    #exe_projet=r"C:\Users\PTPC9452\Documents\EXE test\04 - Projet\SRO21024SEM_1_Projet"
-        
-except Exception as e:
-    log(e,15)
-    
 #Gestion de l'exception lors de la création de la fonction de log, qui permettra de généraliser
 ##la gestion des erreurs
 try:
@@ -101,7 +25,7 @@ try:
     
     #Préparation des variables utilisées par la fonction log dont un format d'affichage
     log_path=os.path.join(*[chemin_courant,"python","log"])
-    nom_log="log.txt"
+    nom_log="log"
     format_log="{}: [ligne {} / code {} / erreur {}] - {}\n{}\n\n"
 
     #Lors d'une exception, permet d'afficher le message d'erreur dans le fichier log.txt.
@@ -129,14 +53,120 @@ try:
             msg.exec_()
         except Exception as e:
             print("Une erreur est survenue (code: {})".format(str(code)))
-            exit(code)
     
 except Exception as e:
     print ("Une erreur est survenue (code: 1)")
-    exit(11)
+
+try:    
+    #chemin_exe=os.path.join(chemin_courant,"exe")
+    #exe_projet_racine=os.path.join(chemin_exe,"04 - Projet")
     
+    #Avant de récupérer le chemin du projet de l'exe, vérifier que l'exe est présent
+    #try:
+    #    nom_projet=os.listdir(exe_projet_racine)[0]
+    #except Exception as e:
+    #    log(e,12)
+        
+    #exe_projet=os.path.join(exe_projet_racine,nom_projet)
+    #commande_orange_path=os.path.join(chemin_exe,"09 - Commande_Orange")
+    #chemin_layers=os.path.join(exe_projet,"LAYERS")
+    #cable_infra_csv_path=os.path.join(chemin_layers,"CABLE_INFRA.csv")
+    #point_technique_path=os.path.join(chemin_layers,"POINT_TECHNIQUE.shp")
+    #appui_orange_path=os.path.join(chemin_exe,"07 - Appui","Appui Orange - CAPFT","POTEAU")
+    #arbo_c3a="**/**/*C3A*.xls*"
+    #format_arbo_c7="*{}*C7*.xls*"
+    #chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
+    #format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
+    
+    #conf_dpt["CD21"]={
+    #    "dpt":"CD21",
+    #    "chemin_exe":chemin_exe,
+    #    "exe_projet_racine":exe_projet_racine,
+    #    "nom_projet":nom_projet,
+    #    "exe_projet":exe_projet,
+    #    "commande_orange_path":commande_orange_path,
+    #    "chemin_layers":chemin_layers,
+    #    "cable_infra_csv_path":cable_infra_csv_path,
+    #    "point_technique_path":point_technique_path,
+    #    "appui_orange_path":appui_orange_path,
+    #    "arbo_c3a":arbo_c3a,
+    #    "format_arbo_c7":format_arbo_c7,
+    #    "chemin_c3a":chemin_c3a,
+    #    "format_chemin_c7":format_chemin_c7
+    #}
+
+    chemin_exe=os.path.join(chemin_courant,"Commande")
+    commande_orange_path=chemin_exe
+    cable_infra_csv_path=os.path.join(chemin_exe,"CABLE_INFRA.csv")
+    appui_orange_path=os.path.join(chemin_exe,"Appui aérien")
+    arbo_c3a="*C3A*.xls*"
+    format_arbo_c7="*{}*C7*.xls*"
+    chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
+    format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
+    
+    conf_dpt["testv1"]={
+        "dpt":"testv1",
+        "chemin_exe":chemin_exe,
+        "commande_orange_path":commande_orange_path,
+        "cable_infra_csv_path":cable_infra_csv_path,
+        "appui_orange_path":appui_orange_path,
+        "arbo_c3a":arbo_c3a,
+        "format_arbo_c7":format_arbo_c7,
+        "chemin_c3a":chemin_c3a,
+        "format_chemin_c7":format_chemin_c7
+    }
+    
+    chemin_exe=os.path.join(chemin_courant,"Commande")
+    commande_orange_path=chemin_exe
+    cable_infra_csv_path=os.path.join(chemin_exe,"CABLE_INFRA.csv")
+    appui_orange_path=os.path.join(chemin_exe,"Appui aérien")
+    arbo_c3a="*C3A*.xls*"
+    format_arbo_c7="*{}*C7*.xls*"
+    chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
+    format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
+    point_technique_path=os.path.join(chemin_exe,"POINT_TECHNIQUE.shp")
+    
+    conf_dpt["testv2"]={
+        "dpt":"testv2",
+        "chemin_exe":chemin_exe,
+        "commande_orange_path":commande_orange_path,
+        "cable_infra_csv_path":cable_infra_csv_path,
+        "appui_orange_path":appui_orange_path,
+        "arbo_c3a":arbo_c3a,
+        "format_arbo_c7":format_arbo_c7,
+        "chemin_c3a":chemin_c3a,
+        "format_chemin_c7":format_chemin_c7,
+        "point_technique_path":point_technique_path
+    }
+    
+    #if "testv2" in environnement:
+    #chemin_exe=os.path.join(chemin_courant,"Commande d'accès")
+    #commande_orange_path=chemin_exe
+    #cable_infra_csv_path=os.path.join(chemin_exe,"CABLE_INFRA.csv")
+    #appui_orange_path=os.path.join(chemin_exe,"Appui aérien")
+    #chemin_rapport=os.path.join(chemin_courant,"rapports")
+    #arbo_c3a="*C3A*.xls*"
+    #format_arbo_c7="*{}*C7*.xls*"
+    #chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
+    #format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
+    #exe_projet=r"C:\Users\PTPC9452\Documents\EXE test\04 - Projet\SRO21024SEM_1_Projet"
+        
+except Exception as e:
+    log(e,15)
+    
+   
 try:
-    dpts = ("CD21","CD39","CD58","CD70")
+    dpts = ("CD21","CD39","CD58","CD70","CD71")
+    col_dpt={
+        "CD21":10,
+        "CD39":12,
+        "CD58":14,
+        "CD70":16,
+        "CD71":16,
+        "testv1":10,
+        "testv2":10,
+    }
+    
     qgis_prefix_path=r".\lib\qgis"
     
     ind_premiere_ligne_c3a=12-1
