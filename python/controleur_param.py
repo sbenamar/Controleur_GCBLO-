@@ -1,21 +1,8 @@
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
-import os,sys
-from PyQt5.QtCore import QFileInfo
-from qgis.core import *
-from importlib import reload
-
-init=False
+from controles import *
 
 #QgsApplication.setPrefixPath(qgis_prefix_path,True)
 qgs = QgsApplication([], False)
 qgs.initQgis()
-
-try:
-    from controles import *
-except Exception as e:
-    log(e,41)
 
 #warning d'un module pour une bibliothèque bientôt obsolète
 warnings.simplefilter("ignore")
@@ -53,16 +40,14 @@ list_controle_exe={
 def update_conf_param(config):
     exec("global conf,libelle_rapport_csv;conf=config;libelle_rapport_csv=set_libelle_rapport_csv()")
 
-def lancer_controles(widget):  
-    pbar = QProgressBar(widget)
-    pbar.setMinimum(0)
-    pbar.setMaximum(100)
-    pbar.setAlignment(Qt.AlignHCenter)
-    pbar.move(66,104)
-    pbar.show()
+def lancer_controles(widget):
+    pbar=init_pbar(widget)
     
-    #list_controle_exe=get_liste_controle_dpt(conf["dpt"])
-    
+    #try:
+    #    list_controle_exe=get_liste_controle_dpt(conf["dpt"])
+    #except Exception as e:
+    #    return log(e,411)
+     
     #Création du rapport, initialisé avec l'entête
     alim_rapport_csv()
     
@@ -76,31 +61,31 @@ def lancer_controles(widget):
             #msg_succes()
             #return
         
-        pbar.setValue(float(1)/len(list_controle_exe)*100)
+        pbar_chargement(pbar,1,len(list_controle_exe))
     except Exception as e:
         return log(e,42)
     
     try:
         corresp_cable_infra_c3a(list_controle_exe[2],list_controle_exe[3])
-        pbar.setValue(float(3)/len(list_controle_exe)*100)
+        pbar_chargement(pbar,3,len(list_controle_exe))
     except Exception as e:
         return log(e,43)
     
     try:
         corresp_poteau_c3a(list_controle_exe[4])
-        pbar.setValue(float(4)/len(list_controle_exe)*100)
+        pbar_chargement(pbar,4,len(list_controle_exe))
     except Exception as e:
         return log(e,44)
     
     try:
         verif_point_technique_c3a(list_controle_exe[5])
-        pbar.setValue(float(5)/len(list_controle_exe)*100)
+        pbar_chargement(pbar,5,len(list_controle_exe))
     except Exception as e:
         return log(e,410)
     
     try:
         info_sous_tubage(list_controle_exe[6])
-        pbar.setValue(float(6)/len(list_controle_exe)*100)
+        pbar_chargement(pbar,6,len(list_controle_exe))
     except Exception as e:
         return log(e,45)
     
@@ -110,19 +95,19 @@ def lancer_controles(widget):
             list_controle_exe[8],
             list_controle_exe[12]
         )
-        pbar.setValue(float(7)/len(list_controle_exe)*100)
+        pbar_chargement(pbar,7,len(list_controle_exe))
     except Exception as e:
         return log(e,46)
     
     try:
         verif_liste_colonnes(list_controle_exe[9])
-        pbar.setValue(float(9)/len(list_controle_exe)*100)
+        pbar_chargement(pbar,9,len(list_controle_exe))
     except Exception as e:
         return log(e,47)
     
     try:
         verif_c7_travaux_existe(list_controle_exe[10],list_controle_exe[11])
-        pbar.setValue(float(10)/len(list_controle_exe)*100)
+        pbar_chargement(pbar,10,len(list_controle_exe))
     except Exception as e:
         return log(e,48)
         

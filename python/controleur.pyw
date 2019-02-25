@@ -1,8 +1,4 @@
-﻿import os,sys
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
-from controleur_param import *
+﻿from controleur_param import *
 
 locale = QLocale.system().name()
 
@@ -15,22 +11,22 @@ def main(args) :
     button.resize(120,60)
     button.move(60,45)
     widget.setFixedSize(widget.size())
-    button.clicked.connect(lambda: test(widget))
+    button.clicked.connect(lambda: controle_dpt(widget))
     widget.show()
     app.exec_()
 
-def test(widget):
+def controle_dpt(widget):
     dpt, ok = QInputDialog.getItem(widget,"Sélection du département", "Liste des départements", dpts, 0, False)
     
     if not(ok and dpt):
-        return log(None,411)
+        return log(None,51)
 
-    dpt="testv1"
+    #dpt="testv1"
     
     try:
         update_conf(conf_dpt[dpt])
     except Exception as e:
-        return log(e,412)
+        return log(e,52)
         
     lancer_controles(widget)
 

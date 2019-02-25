@@ -1,19 +1,18 @@
-import csv,glob
-from functools import reduce
-
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import pyqtSlot
-
-try:
-    from definitions import *
-except Exception as e:
-    log(e,21)
+from definitions import *
 
 try:
     import xlrd
 except Exception as e:
     log(e,22)
+
+def msg_erreur(code):
+    msg = QMessageBox()
+    msg.setIcon(QMessageBox.Critical)
+    msg.setText("Une erreur est survenue")
+    msg.setWindowTitle("Erreur")
+    msg.setDetailedText("Code d'erreur: {}".format(str(code)))
+    msg.setStandardButtons(QMessageBox.Close)
+    msg.exec_()
 
 def msg_succes():
     msg = QMessageBox()
@@ -24,12 +23,24 @@ def msg_succes():
     msg.setStandardButtons(QMessageBox.Close)
     msg.exec_()
 
+def pbar_chargement(pbar,num,total):
+    pbar.setValue(float(num)/total*100)
+
+def init_pbar(widget):
+    pbar = QProgressBar(widget)
+    pbar.setMinimum(0)
+    pbar.setMaximum(100)
+    pbar.setAlignment(Qt.AlignHCenter)
+    pbar.move(66,104)
+    pbar.show()
+    return pbar
+
 def update_conf_fct(config):
     exec("global conf,libelle_rapport_csv;conf=config;libelle_rapport_csv=set_libelle_rapport_csv()")
 
 #Retourne l'indice d'une colonne csv selon la lettre donnée
 def pos_xl(lettre):
-    return ord(lettre.lower()) - 96 -1
+    return ord(lettre.lower()) - 96 - 1
 
 #Supprimer le contenu d'un rapport s'il y a une exception
 def vider_rapport_csv():
@@ -53,17 +64,16 @@ def log(err,code=0):
             ))
     
     try:
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Critical)
-        msg.setText("Une erreur est survenue")
-        msg.setWindowTitle("Erreur")
-        msg.setDetailedText("Code d'erreur: {}".format(str(code)))
-        msg.setStandardButtons(QMessageBox.Close)
-        msg.exec_()
+        msg_erreur(str(code))
     except Exception as e:
         print(e)
         print("Une erreur est survenue (code: {})".format(str(code)))
         exit(code)
+
+def appui_from_c7(c3a):
+    (nom_c7,feuille) = get_feuille_c7(c3a)
+    cmd_c7 = ouvrir_c7(feuille)
+    return [str(appui[0].value).replace("_","/") for appui in cmd_c7]
 
 def code_type_point(type_point,prop):
     return "{}{}".format(
@@ -73,7 +83,11 @@ def code_type_point(type_point,prop):
 
 #Retourne tous les chemins menants vers des fichier C3A pour le projet
 def get_c3a_list():
-    return [f for f in glob.iglob(conf["chemin_c3a"], recursive=True) if "~$" not in f]
+    liste=[f for f in glob.iglob(conf["chemin_c3a"], recursive=True) if "~$" not in f]
+    if liste:
+        return liste
+    else:
+        raise FileNotFoundError("fichiers C3A manquants")
 
 #Retourne le nom du fichier selon le chemin
 def nom_fichier(chemin,extension=False):

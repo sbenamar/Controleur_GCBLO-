@@ -1,8 +1,5 @@
 #Pour l'explication des contrôles, se réferer au fichier Controlleur.xlsx dans le dossier Documentation
-try:
-    from fonctions import *
-except Exception as e:
-    log(e,33)
+from fonctions import *
 
 def update_conf_ctrl(config):
     exec("global conf,libelle_rapport_csv;conf=config;libelle_rapport_csv=set_libelle_rapport_csv()")
@@ -83,7 +80,6 @@ def version_c3a(controle=True):
         return 
     
     erreurs=[]
-    
     #Parcours des c3a
     for f in get_c3a_list():
         c3a=get_feuille_commande(f)
@@ -94,7 +90,7 @@ def version_c3a(controle=True):
         
         if version != version_c3a_en_cours:
             erreurs+=[modele_erreur(num_controle,[chemin,"",""])]
-    
+            
     alim_rapport_csv(erreurs)
     return len(erreurs)
 
@@ -475,10 +471,8 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
             #Contrôle 11 pour colonne M
             num_controle=11
             try:
-                (nom_c7,feuille) = get_feuille_c7(c3a)
-                cmd_c7 = ouvrir_c7(feuille)
-
-                if prestation[3].ctype and prestation[3].value not in [appui[0].value.replace("_","/") for appui in cmd_c7]:
+                appuis=appui_from_c7(c3a)
+                if prestation[3].ctype and str(prestation[3].value) not in appuis:
                     erreurs[1].append(
                                     modele_erreur_c3a(
                                         num_controle,
@@ -489,7 +483,7 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
                                         1
                                     )
                                 )
-            except Exception as e:
+            except IndexError as e:
                 #Contrôle 10 pour colonne M
                 num_controle=10
                 erreurs[0].append(
@@ -506,10 +500,8 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
             #Contrôle 11 pour colonne N
             num_controle=11
             try:
-                (nom_c7,feuille) = get_feuille_c7(c3a)
-                cmd_c7 = ouvrir_c7(feuille)
-                
-                if prestation[5].ctype and prestation[5].value not in [appui[0].value.replace("_","/") for appui in cmd_c7]:
+                appuis=appui_from_c7(c3a)
+                if prestation[5].ctype and str(prestation[5].value) not in appuis:
                     erreurs[1].append(
                                     modele_erreur_c3a(
                                         num_controle,
