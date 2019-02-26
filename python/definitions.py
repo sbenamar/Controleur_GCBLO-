@@ -93,8 +93,8 @@ format_arbo_c7="*{}*C7*.xls*"
 chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
 format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
 
-conf_dpt["EXE"]={
-    "dpt":"EXE",
+conf_dpt["CD21"]={
+    "dpt":"CD21",
     "chemin_exe":chemin_exe,
     "exe_projet_racine":exe_projet_racine,
     "nom_projet":nom_projet,
@@ -167,7 +167,7 @@ conf_dpt["testv2"]={
 #exe_projet=r"C:\Users\PTPC9452\Documents\EXE test\04 - Projet\SRO21024SEM_1_Projet"
     
 try:
-    dpts = ("CD21","CD39","CD58","CD70","CD71","testv1","testv2","EXE")
+    dpts = ("CD21","CD39","CD58","CD70","CD71","testv1","testv2")
     col_dpt={
         "CD21":10,
         "CD39":12,
@@ -175,9 +175,35 @@ try:
         "CD70":16,
         "CD71":16,
         "testv1":10,
-        "testv2":10,
-        "EXE":10
+        "testv2":10
     }
+    
+    types_lvrb = ("EXE","PRO","RBAL","AVP")
+    
+    zones = ("NRO","Transport","SRO","Distributeur")
+    
+    col_param={
+        "NRO":{
+            "AVP":1,
+            "PRO":2,
+            "EXE":3
+        },
+        "Transport":{
+            "EXE":4,
+            "PRO":5
+        },
+        "SRO":{
+            "PRO":6,
+            "EXE":7
+        },
+        "Distributeur":{
+            "RBAL":8,
+            "PRO":9,
+            "EXE":10
+        }
+    }
+    
+    param_format="{} {}"
     
     qgis_prefix_path=r".\lib\qgis"
     
@@ -375,5 +401,12 @@ except Exception as e:
 def set_libelle_rapport_csv():
     return prefixe_rapport_csv+'_'+str(datetime.now()).split('.')[0].replace(' ','_').replace(':','-')+'.csv'
 
-def update_conf_def(config):
-    exec("global conf,libelle_rapport_csv;conf=config;libelle_rapport_csv=set_libelle_rapport_csv()")
+update_conf_exec="""
+global conf,libelle_rapport_csv;
+conf=config;
+conf['type_lvrb']=type_lvrb;
+conf['zone']=zone;
+libelle_rapport_csv=set_libelle_rapport_csv();
+"""
+def update_conf_def(config,type_lvrb,zone):
+    exec(update_conf_exec)

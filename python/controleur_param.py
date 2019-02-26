@@ -37,16 +37,16 @@ list_controle_exe={
     24:True
 }
 
-def update_conf_param(config):
-    exec("global conf,libelle_rapport_csv;conf=config;libelle_rapport_csv=set_libelle_rapport_csv()")
+def update_conf_param(config,type_lvrb,zone):
+    exec(update_conf_exec)
 
 def lancer_controles(widget):
     pbar=init_pbar(widget)
     
-    #try:
-    #    list_controle_exe=get_liste_controle_dpt(conf["dpt"])
-    #except Exception as e:
-    #    return log(e,411)
+    try:
+        list_controle_exe=get_liste_controle_dpt(conf["dpt"],conf["type_lvrb"],conf["zone"])
+    except Exception as e:
+        return log(e,411)
      
     #Création du rapport, initialisé avec l'entête
     alim_rapport_csv()

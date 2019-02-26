@@ -31,12 +31,12 @@ def init_pbar(widget):
     pbar.setMinimum(0)
     pbar.setMaximum(100)
     pbar.setAlignment(Qt.AlignHCenter)
-    pbar.move(66,104)
+    pbar.move(72,159)
     pbar.show()
     return pbar
 
-def update_conf_fct(config):
-    exec("global conf,libelle_rapport_csv;conf=config;libelle_rapport_csv=set_libelle_rapport_csv()")
+def update_conf_fct(config,type_lvrb,zone):
+    exec(update_conf_exec)
 
 #Retourne l'indice d'une colonne csv selon la lettre donnée
 def pos_xl(lettre):
@@ -127,14 +127,14 @@ def ouvrir_c3a(feuille_commandes):
         ]
     return commandes
 
-def get_feuille_doc_controleur():
+def get_feuille_doc_controleur(dpt):
     c3a_xls = xlrd.open_workbook(chemin_doc_controleur)
-    return c3a_xls.sheet_by_index(0)
+    return c3a_xls.sheet_by_name(dpt)
 
 #Récupération des lignes de la feuille de la C3A
-def get_liste_controle_dpt(dpt):
-    feuille=get_feuille_doc_controleur()
-    controles_dpt=list(map(bool,feuille.col_values(col_dpt[dpt])[1:]))
+def get_liste_controle_dpt(dpt,type_lvrb,zone):
+    feuille=get_feuille_doc_controleur(dpt)
+    controles_dpt=list(map(bool,feuille.col_values(col_param[zone][type_lvrb])[1:]))
     identifiants=map(int,feuille.col_values(0)[1:])
     return dict(zip(identifiants,controles_dpt))
 

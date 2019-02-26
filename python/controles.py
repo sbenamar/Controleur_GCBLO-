@@ -1,8 +1,8 @@
 #Pour l'explication des contrôles, se réferer au fichier Controlleur.xlsx dans le dossier Documentation
 from fonctions import *
 
-def update_conf_ctrl(config):
-    exec("global conf,libelle_rapport_csv;conf=config;libelle_rapport_csv=set_libelle_rapport_csv()")
+def update_conf_ctrl(config,type_lvrb,zone):
+    exec(update_conf_exec)
 
 #Contrôle 2 / Contrôle 3: possibilité de selection du/des contrôle(s) à réaliser
 def corresp_cable_infra_c3a(parcours_infra=True,parcours_c3a=True):
