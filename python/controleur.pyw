@@ -13,7 +13,7 @@ def main(args) :
     widget.setPalette(pal)
     
     formGroupBox = QGroupBox("Paramètres",widget)
-    formGroupBox.move(33,10)
+    formGroupBox.move(20,5)
     
     dpt = QComboBox()
     for item in dpts:
@@ -30,7 +30,7 @@ def main(args) :
     layout = QFormLayout()
     layout.addRow(QLabel("Département:"), dpt)
     layout.addRow(QLabel("Type de livrable:"),type_lvrb)
-    layout.addRow(QLabel("Zone:"), zone)
+    layout.addRow(QLabel("Référence de livrable:"), zone)
     formGroupBox.setLayout(layout)
     
     button = QPushButton("Lancer les contrôles", widget)

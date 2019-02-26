@@ -184,22 +184,22 @@ try:
     
     col_param={
         "NRO":{
-            "AVP":1,
-            "PRO":2,
-            "EXE":3
+            "AVP":3,
+            "PRO":4,
+            "EXE":5
         },
         "Transport":{
-            "EXE":4,
-            "PRO":5
-        },
-        "SRO":{
             "PRO":6,
             "EXE":7
         },
+        "SRO":{
+            "PRO":8,
+            "EXE":9
+        },
         "Distributeur":{
-            "RBAL":8,
-            "PRO":9,
-            "EXE":10
+            "RBAL":10,
+            "PRO":11,
+            "EXE":12
         }
     }
     
