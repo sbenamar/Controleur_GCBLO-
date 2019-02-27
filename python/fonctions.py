@@ -73,7 +73,11 @@ def log(err,code=0):
 def appui_from_c7(c3a):
     (nom_c7,feuille) = get_feuille_c7(c3a)
     cmd_c7 = ouvrir_c7(feuille)
-    return [str(appui[0].value).replace("_","/") for appui in cmd_c7]
+    return (nom_c7,[str(appui[0].value).replace("_","/").split(".")[0] for appui in cmd_c7])
+
+def appui_from_c7_nom(c3a):
+    (nom_c7,appuis) = appui_from_c7(c3a)
+    return (nom_c7,[appui.split("_")[-1] for appui in appuis])
 
 def code_type_point(type_point,prop):
     return "{}{}".format(
@@ -204,7 +208,7 @@ def get_poteaux_nom():
     #pattern=re.compile("^\W*\w*\d{5}\w*\W*$")
     #return [re.findall("[0-9]{5}",poteau)[-1] for poteau in get_poteaux_fiche()
     #        if pattern.match(poteau)]
-    return [poteau.split("_")[-1] if "_" in poteau else poteau.replace("FicheAppui","") for poteau in get_poteaux_fiche()]
+    return [poteau.split("_")[-1].replace("FicheAppui","") for poteau in get_poteaux_fiche()]
 
 #Modèle de ligne d'erreur dans le fichier rapport, contenant les informations de contrôle pré-enregistrés
 #selon le numéro de contrôle.

@@ -137,8 +137,7 @@ def corresp_poteau_c3a(controle=True):
             #Permet d'avoir le même format pour comparer
             point_a=prestation[3].value.split("/")[-1] if "/" in str(prestation[3].value) else prestation[3].value
             point_b=prestation[5].value.split("/")[-1] if "/" in str(prestation[5].value) else prestation[5].value
-            print(poteaux)
-            print(point_a)
+
             if prestation[2].value == "A" and str(point_a) not in poteaux and point_a not in c3a_poteaux and len(point_a):
                 erreurs.append(
                     modele_erreur_c3a(num_controle,c3a,prestation[3].value,"",poteau_list_libelle,1)
@@ -493,8 +492,8 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
             #Contrôle 11 pour colonne M
             num_controle=11
             try:
-                appuis=appui_from_c7(c3a)
-                if prestation[3].ctype and str(prestation[3].value) not in appuis:
+                (nom_c7,appuis)=appui_from_c7_nom(c3a)
+                if prestation[3].ctype and str(prestation[3].value).split("/")[-1] not in appuis:
                     erreurs[1].append(
                                     modele_erreur_c3a(
                                         num_controle,
@@ -522,8 +521,8 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
             #Contrôle 11 pour colonne N
             num_controle=11
             try:
-                appuis=appui_from_c7(c3a)
-                if prestation[5].ctype and str(prestation[5].value) not in appuis:
+                (nom_c7,appuis)=appui_from_c7_nom(c3a)
+                if prestation[5].ctype and str(prestation[5].value).split("/")[-1] not in appuis:
                     erreurs[1].append(
                                     modele_erreur_c3a(
                                         num_controle,

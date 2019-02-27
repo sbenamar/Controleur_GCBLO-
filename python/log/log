@@ -12,3 +12,36 @@ Traceback (most recent call last):
 NameError: name 'msg_erreur_controle14_25' is not defined
 
 
+2019-02-27 14:31:58.339648: [ligne 114 / code 48 / erreur <class 'NameError'>] - name 'nom_c7' is not defined
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 114, in lancer_controles
+    verif_c7_travaux_existe(list_controle_exe[10],list_controle_exe[11])
+  File "C:\Applications\Controleur\python\controles.py", line 532, in verif_c7_travaux_existe
+    nom_c7,
+NameError: name 'nom_c7' is not defined
+
+
+2019-02-27 14:38:01.723013: [ligne 114 / code 48 / erreur <class 'ValueError'>] - too many values to unpack (expected 2)
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 114, in lancer_controles
+    verif_c7_travaux_existe(list_controle_exe[10],list_controle_exe[11])
+  File "C:\Applications\Controleur\python\controles.py", line 524, in verif_c7_travaux_existe
+    (nom_c7,appuis)=appui_from_c7_nom(c3a)
+  File "C:\Applications\Controleur\python\fonctions.py", line 79, in appui_from_c7_nom
+    (nom_c7,appuis) = appui_from_c7(c3a)
+ValueError: too many values to unpack (expected 2)
+
+
+2019-02-27 14:39:09.446799: [ligne 114 / code 48 / erreur <class 'AttributeError'>] - 'str' object has no attribute 'value'
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 114, in lancer_controles
+    verif_c7_travaux_existe(list_controle_exe[10],list_controle_exe[11])
+  File "C:\Applications\Controleur\python\controles.py", line 524, in verif_c7_travaux_existe
+    (nom_c7,appuis)=appui_from_c7_nom(c3a)
+  File "C:\Applications\Controleur\python\fonctions.py", line 80, in appui_from_c7_nom
+    return (nom_c7,[str(appui[0].value).split("_")[-1] for appui in appuis])
+  File "C:\Applications\Controleur\python\fonctions.py", line 80, in <listcomp>
+    return (nom_c7,[str(appui[0].value).split("_")[-1] for appui in appuis])
+AttributeError: 'str' object has no attribute 'value'
+
+
