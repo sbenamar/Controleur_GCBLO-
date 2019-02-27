@@ -94,6 +94,25 @@ def version_c3a(controle=True):
     alim_rapport_csv(erreurs)
     return len(erreurs)
 
+def check_format_fiches_poteau(controle=True):
+    if not controle:
+        return 
+    
+    num_controle=25
+    
+    poteaux = get_poteaux_fiche()
+    pattern = re.compile("^\d{5}_\w+")
+    
+    erreurs=[
+            modele_erreur(
+                num_controle,
+                [poteau_list_libelle,"",poteau]
+            )
+            for poteau in poteaux if not pattern.match(poteau)
+        ]
+        
+    alim_rapport_csv(erreurs)
+
 #Contrôle 4
 def corresp_poteau_c3a(controle=True):
     if not controle:
@@ -101,7 +120,9 @@ def corresp_poteau_c3a(controle=True):
     
     num_controle=4
     
-    poteaux = get_poteaux_fiche()
+    poteaux = get_poteaux_nom()
+    noms_poteaux =""
+    
     commandes_groupe = get_commandes_groupe()
     
     erreurs=[]
@@ -114,16 +135,17 @@ def corresp_poteau_c3a(controle=True):
         for (num_prestation,prestation) in enumerate(commandes):
             
             #Permet d'avoir le même format pour comparer
-            point_a=prestation[3].value.replace("/","_")
-            point_b=prestation[5].value.replace("/","_")
-
-            if prestation[2].value == "A" and point_a not in poteaux and point_a not in c3a_poteaux and len(point_a):
+            point_a=prestation[3].value.split("/")[-1] if "/" in str(prestation[3].value) else prestation[3].value
+            point_b=prestation[5].value.split("/")[-1] if "/" in str(prestation[5].value) else prestation[5].value
+            print(poteaux)
+            print(point_a)
+            if prestation[2].value == "A" and str(point_a) not in poteaux and point_a not in c3a_poteaux and len(point_a):
                 erreurs.append(
                     modele_erreur_c3a(num_controle,c3a,prestation[3].value,"",poteau_list_libelle,1)
                 )
                 c3a_poteaux.append(point_a)
                 
-            elif prestation[4].value == "A" and point_b not in poteaux and point_b not in c3a_poteaux and len(point_b):
+            elif prestation[4].value == "A" and str(point_b) not in poteaux and point_b not in c3a_poteaux and len(point_b):
                 erreurs.append(
                     modele_erreur_c3a(num_controle,c3a,"",prestation[5].value,poteau_list_libelle,1)
                 )

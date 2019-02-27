@@ -198,8 +198,13 @@ def liaisons_commande(commandes_joint):
 #Récupère la liste des poteaux en explorant la liste des fichiers de poteaux et en récupérant leur nom 
 def get_poteaux_fiche():
     return [os.path.splitext(os.path.basename(f))[0]
-            for f in glob.iglob(os.path.join(conf["appui_orange_path"],"*.xls*"))
-    ]
+            for f in glob.iglob(os.path.join(conf["appui_orange_path"],"*.xls*"))]
+
+def get_poteaux_nom():
+    #pattern=re.compile("^\W*\w*\d{5}\w*\W*$")
+    #return [re.findall("[0-9]{5}",poteau)[-1] for poteau in get_poteaux_fiche()
+    #        if pattern.match(poteau)]
+    return [poteau.split("_")[-1] if "_" in poteau else poteau.replace("FicheAppui","") for poteau in get_poteaux_fiche()]
 
 #Modèle de ligne d'erreur dans le fichier rapport, contenant les informations de contrôle pré-enregistrés
 #selon le numéro de contrôle.

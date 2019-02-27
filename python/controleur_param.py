@@ -72,6 +72,11 @@ def lancer_controles(widget):
         return log(e,43)
     
     try:
+        check_format_fiches_poteau(list_controle_exe[25])
+    except Exception as e:
+        return log(e,412)
+    
+    try:
         corresp_poteau_c3a(list_controle_exe[4])
         pbar_chargement(pbar,4,len(list_controle_exe))
     except Exception as e:
@@ -113,7 +118,7 @@ def lancer_controles(widget):
         
     try:
         #Pour les contrôles 13,15,16,...24
-        valeurs_selon_liaisons({k: v for k, v in list_controle_exe.items() if 13 <= k <= 25 and k != 14})
+        valeurs_selon_liaisons({k: v for k, v in list_controle_exe.items() if 13 <= k <= 24 and k != 14})
         pbar.setValue(100)
     except Exception as e:
         return log(e,49)

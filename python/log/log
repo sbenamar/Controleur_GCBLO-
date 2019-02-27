@@ -1,0 +1,14 @@
+2019-02-26 16:20:10.575209: [ligne 75 / code 412 / erreur <class 'KeyError'>] - 25
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 75, in lancer_controles
+    check_format_fiches_poteau(list_controle_exe[25])
+KeyError: 25
+
+
+2019-02-26 16:34:53.340313: [ligne 241 / code 34 / erreur <class 'NameError'>] - name 'msg_erreur_controle14_25' is not defined
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controles.py", line 241, in valeurs_selon_liaisons
+    raise ValueError(msg_erreur_controle14_25.format(str(controles)))
+NameError: name 'msg_erreur_controle14_25' is not defined
+
+

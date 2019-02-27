@@ -1,5 +1,5 @@
 import os,sys
-import warnings,os,sys,traceback,csv,glob
+import warnings,os,sys,traceback,csv,glob,re
 from datetime import datetime
 from functools import reduce
 from PyQt5.QtWidgets import *
@@ -247,11 +247,13 @@ try:
     erreur_controle22='La colonne F doit être vide'
     erreur_controle23='Les colonne B et D doivent être vide'
     erreur_controle24='La colonne H doit contenir la valeur "transition"'
+    erreur_controle25='Nom de fiche poteau incorrect'
     
     criticite={
         "mineure":"Mineure",
         "majeure":"Majeure",
-        "bloquant":"Bloquant"
+        "bloquant":"Bloquant",
+        "avertissement":"Avertissement"
     }
     
     entete_rapport_csv = [
@@ -284,7 +286,6 @@ try:
         11:pre_entete_3,
         12:pre_entete_3,
         13:pre_entete_3,
-        14:pre_entete_3,
         15:pre_entete_3,
         16:pre_entete_3,
         17:pre_entete_3,
@@ -295,7 +296,7 @@ try:
         22:pre_entete_3,
         23:pre_entete_3,
         24:pre_entete_3,
-        25:pre_entete_3
+        25:pre_entete_2
     }
     
     post_entete_controle1=[erreur_controle1,criticite['bloquant']]
@@ -322,6 +323,7 @@ try:
     post_entete_controle22=[erreur_controle22,criticite['mineure']]
     post_entete_controle23=[erreur_controle23,criticite['mineure']]
     post_entete_controle24=[erreur_controle24,criticite['mineure']]
+    post_entete_controle25=[erreur_controle25,criticite['avertissement']]
     
     lib_nb_erreurs="Nombre d'erreurs"
     c3a_list_libelle="Ensemble des C3A"
