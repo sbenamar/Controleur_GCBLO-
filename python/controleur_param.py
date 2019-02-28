@@ -83,7 +83,7 @@ def lancer_controles(widget):
         return log(e,44)
     
     try:
-        verif_point_technique_c3a(list_controle_exe[5])
+        verif_point_technique_c3a(list_controle_exe[5],list_controle_exe[26])
         pbar_chargement(pbar,5,len(list_controle_exe))
     except Exception as e:
         return log(e,410)

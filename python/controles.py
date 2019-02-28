@@ -550,10 +550,12 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
     alim_rapport_csv(erreurs[0])
     alim_rapport_csv(erreurs[1])
 
-def verif_point_technique_c3a(controle=True):
-    if not controle:
+def verif_point_technique_c3a(controle5=True,controle26=True):
+    if not controle5 and not controle26:
         return
-    num_controle=5
+    
+    erreur5=erreur26=[]
+    num_controle=26
     
     layer = QgsVectorLayer(conf["point_technique_path"], "POINT TECHNIQUE" , "ogr")
     
@@ -561,34 +563,43 @@ def verif_point_technique_c3a(controle=True):
         raise Exception("Shape non valide: {}".format(conf["point_technique_path"]))
     else:
         iter = layer.getFeatures()
-        points_techniques=[
-            (
-                code_type_point(feature['pt_typephy'],feature['pt_prop']),
-                format_id_pt(str(feature['NOM']),str(feature['CODE_INSEE'])) if 'CODE_INSEE' in feature else str(feature['NOM'])
-            ) for feature in iter
-        ]
+        
+        #controle26
+        if controle26 and not all(key in layer.fields().names() for key in champs_point_technique):
+            erreurs26 = [
+                modele_erreur(
+                    num_controle,
+                    [chemin_fichier_application(conf["point_technique_path"]),"",""]
+                )
+            ]
+            alim_rapport_csv(erreurs26)
             
-        
-        commandes = reduce(
-                lambda x,y:x+y,
-                [
-                    (
-                        (str(prestation[2].value),str(prestation[3].value).replace("/","_")),
-                        (str(prestation[4].value),str(prestation[5].value).replace("/","_"))
-                    )
-                    for c3a,num,prestation in get_commande_groupe_ligne()
-                ]
-        )
-
-        erreurs=[
-            modele_erreur(
-                num_controle,
-                [chemin_fichier_application(conf["point_technique_path"]),c3a_list_libelle,commande[1].replace("_","/")]
+        if controle5:
+            num_controle=5
+            points_techniques=[
+                (
+                    code_type_point(feature['pt_typephy'],feature['pt_prop']),
+                    format_id_pt(str(feature['NOM']),str(feature['CODE_INSEE'])) if 'CODE_INSEE' in feature else str(feature['NOM'])
+                ) for feature in iter
+            ]
+            
+            commandes = reduce(
+                    lambda x,y:x+y,
+                    [
+                        (
+                            (str(prestation[2].value),str(prestation[3].value).replace("/","_")),
+                            (str(prestation[4].value),str(prestation[5].value).replace("/","_"))
+                        )
+                        for c3a,num,prestation in get_commande_groupe_ligne()
+                    ]
             )
-            for commande in commandes if commande[1] and (commande not in points_techniques and (commande[0],commande[1].split("_")[-1]) not in points_techniques)
-        ]
-        
-        for commande in commandes:
-            print(commande[1])
-        
-        alim_rapport_csv(erreurs)
+    
+            erreurs5=[
+                modele_erreur(
+                    num_controle,
+                    [chemin_fichier_application(conf["point_technique_path"]),c3a_list_libelle,commande[1].replace("_","/")]
+                )
+                for commande in commandes if commande[1] and (commande not in points_techniques and (commande[0],commande[1].split("_")[-1]) not in points_techniques)
+            ]
+            
+            alim_rapport_csv(erreurs5)

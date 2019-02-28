@@ -1,58 +1,60 @@
-2019-02-26 16:20:10.575209: [ligne 75 / code 412 / erreur <class 'KeyError'>] - 25
-Traceback (most recent call last):
-  File "C:\Applications\Controleur\python\controleur_param.py", line 75, in lancer_controles
-    check_format_fiches_poteau(list_controle_exe[25])
-KeyError: 25
-
-
-2019-02-26 16:34:53.340313: [ligne 241 / code 34 / erreur <class 'NameError'>] - name 'msg_erreur_controle14_25' is not defined
-Traceback (most recent call last):
-  File "C:\Applications\Controleur\python\controles.py", line 241, in valeurs_selon_liaisons
-    raise ValueError(msg_erreur_controle14_25.format(str(controles)))
-NameError: name 'msg_erreur_controle14_25' is not defined
-
-
-2019-02-27 14:31:58.339648: [ligne 114 / code 48 / erreur <class 'NameError'>] - name 'nom_c7' is not defined
-Traceback (most recent call last):
-  File "C:\Applications\Controleur\python\controleur_param.py", line 114, in lancer_controles
-    verif_c7_travaux_existe(list_controle_exe[10],list_controle_exe[11])
-  File "C:\Applications\Controleur\python\controles.py", line 532, in verif_c7_travaux_existe
-    nom_c7,
-NameError: name 'nom_c7' is not defined
-
-
-2019-02-27 14:38:01.723013: [ligne 114 / code 48 / erreur <class 'ValueError'>] - too many values to unpack (expected 2)
-Traceback (most recent call last):
-  File "C:\Applications\Controleur\python\controleur_param.py", line 114, in lancer_controles
-    verif_c7_travaux_existe(list_controle_exe[10],list_controle_exe[11])
-  File "C:\Applications\Controleur\python\controles.py", line 524, in verif_c7_travaux_existe
-    (nom_c7,appuis)=appui_from_c7_nom(c3a)
-  File "C:\Applications\Controleur\python\fonctions.py", line 79, in appui_from_c7_nom
-    (nom_c7,appuis) = appui_from_c7(c3a)
-ValueError: too many values to unpack (expected 2)
-
-
-2019-02-27 14:39:09.446799: [ligne 114 / code 48 / erreur <class 'AttributeError'>] - 'str' object has no attribute 'value'
-Traceback (most recent call last):
-  File "C:\Applications\Controleur\python\controleur_param.py", line 114, in lancer_controles
-    verif_c7_travaux_existe(list_controle_exe[10],list_controle_exe[11])
-  File "C:\Applications\Controleur\python\controles.py", line 524, in verif_c7_travaux_existe
-    (nom_c7,appuis)=appui_from_c7_nom(c3a)
-  File "C:\Applications\Controleur\python\fonctions.py", line 80, in appui_from_c7_nom
-    return (nom_c7,[str(appui[0].value).split("_")[-1] for appui in appuis])
-  File "C:\Applications\Controleur\python\fonctions.py", line 80, in <listcomp>
-    return (nom_c7,[str(appui[0].value).split("_")[-1] for appui in appuis])
-AttributeError: 'str' object has no attribute 'value'
-
-
-2019-02-27 17:39:31.303749: [ligne 86 / code 410 / erreur <class 'AttributeError'>] - 'tuple' object has no attribute 'split'
+2019-02-28 14:05:06.341680: [ligne 86 / code 410 / erreur <class 'NameError'>] - name 'ft' is not defined
 Traceback (most recent call last):
   File "C:\Applications\Controleur\python\controleur_param.py", line 86, in lancer_controles
     verif_point_technique_c3a(list_controle_exe[5])
-  File "C:\Applications\Controleur\python\controles.py", line 588, in verif_point_technique_c3a
-    for commande in commandes if commande not in points_techniques or commande.split("/")[-1] not in points_techniques
-  File "C:\Applications\Controleur\python\controles.py", line 588, in <listcomp>
-    for commande in commandes if commande not in points_techniques or commande.split("/")[-1] not in points_techniques
-AttributeError: 'tuple' object has no attribute 'split'
+  File "C:\Applications\Controleur\python\controles.py", line 564, in verif_point_technique_c3a
+    print([dict(ft).keys() for fr in iter][1])
+  File "C:\Applications\Controleur\python\controles.py", line 564, in <listcomp>
+    print([dict(ft).keys() for fr in iter][1])
+NameError: name 'ft' is not defined
+
+
+2019-02-28 14:06:05.736448: [ligne 86 / code 410 / erreur <class 'NameError'>] - name 'ft' is not defined
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 86, in lancer_controles
+    verif_point_technique_c3a(list_controle_exe[5])
+  File "C:\Applications\Controleur\python\controles.py", line 564, in verif_point_technique_c3a
+    print([dict(ft).keys() for ftr in iter][1])
+  File "C:\Applications\Controleur\python\controles.py", line 564, in <listcomp>
+    print([dict(ft).keys() for ftr in iter][1])
+NameError: name 'ft' is not defined
+
+
+2019-02-28 14:08:01.084672: [ligne 86 / code 410 / erreur <class 'ValueError'>] - dictionary update sequence element #0 has length 7; 2 is required
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 86, in lancer_controles
+    verif_point_technique_c3a(list_controle_exe[5])
+  File "C:\Applications\Controleur\python\controles.py", line 564, in verif_point_technique_c3a
+    print([dict(ft).keys() for ft in iter][1])
+  File "C:\Applications\Controleur\python\controles.py", line 564, in <listcomp>
+    print([dict(ft).keys() for ft in iter][1])
+ValueError: dictionary update sequence element #0 has length 7; 2 is required
+
+
+2019-02-28 14:13:08.202464: [ligne 86 / code 410 / erreur <class 'TypeError'>] - QgsVectorLayer.getFeature(): not enough arguments
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 86, in lancer_controles
+    verif_point_technique_c3a(list_controle_exe[5])
+  File "C:\Applications\Controleur\python\controles.py", line 564, in verif_point_technique_c3a
+    print(layer.getFeature().attributes())
+TypeError: QgsVectorLayer.getFeature(): not enough arguments
+
+
+2019-02-28 14:24:01.434766: [ligne 86 / code 410 / erreur <class 'TypeError'>] - cannot convert dictionary update sequence element #0 to a sequence
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 86, in lancer_controles
+    verif_point_technique_c3a(list_controle_exe[5])
+  File "C:\Applications\Controleur\python\controles.py", line 564, in verif_point_technique_c3a
+    print(dict(layer.fields()))
+TypeError: cannot convert dictionary update sequence element #0 to a sequence
+
+
+2019-02-28 15:18:45.371018: [ligne 86 / code 410 / erreur <class 'NameError'>] - name 'champs_point_technique' is not defined
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 86, in lancer_controles
+    verif_point_technique_c3a(list_controle_exe[5],list_controle_exe[26])
+  File "C:\Applications\Controleur\python\controles.py", line 568, in verif_point_technique_c3a
+    if controle26 and not all(key in layer.fields().names() for key in champs_point_technique):
+NameError: name 'champs_point_technique' is not defined
 
 

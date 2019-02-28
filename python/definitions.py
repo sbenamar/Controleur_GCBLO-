@@ -139,7 +139,7 @@ arbo_c3a="*C3A*.xls*"
 format_arbo_c7="*{}*C7*.xls*"
 chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
 format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
-point_technique_path=os.path.join(chemin_exe,"POINT_TECHNIQUE.shp")
+point_technique_path=os.path.join(chemin_exe,"POINT TECHNIQUE.shp")
 
 conf_dpt["testv2"]={
     "dpt":"testv2",
@@ -248,6 +248,7 @@ try:
     erreur_controle23='Les colonne B et D doivent être vide'
     erreur_controle24='La colonne H doit contenir la valeur "transition"'
     erreur_controle25='Nom de fiche poteau incorrect'
+    erreur_controle26="La structuration des champs de la couche point contrôle est incorrecte"
     
     criticite={
         "mineure":"Mineure",
@@ -271,6 +272,7 @@ try:
     pre_entete_2= ["Commande d'accès","Complétude"]
     pre_entete_3= ["Commande d'accès","Règle GCBLO"]
     pre_entete_4= ["Commande d'accès","Cohérence"]
+    pre_entete_5= ["Commande d'accès","Structuration des couches"]
     
     pre_entete_lien={
         1:pre_entete_1,
@@ -296,7 +298,8 @@ try:
         22:pre_entete_3,
         23:pre_entete_3,
         24:pre_entete_3,
-        25:pre_entete_2
+        25:pre_entete_3,
+        26:pre_entete_5,
     }
     
     post_entete_controle1=[erreur_controle1,criticite['bloquant']]
@@ -324,6 +327,7 @@ try:
     post_entete_controle23=[erreur_controle23,criticite['mineure']]
     post_entete_controle24=[erreur_controle24,criticite['mineure']]
     post_entete_controle25=[erreur_controle25,criticite['avertissement']]
+    post_entete_controle26=[erreur_controle26,criticite['majeure']]
     
     lib_nb_erreurs="Nombre d'erreurs"
     c3a_list_libelle="Ensemble des C3A"
@@ -389,6 +393,28 @@ try:
     }
     
     point_tiers_liste=['APPUI','CHAMBRE','POTELET']
+    
+    champs_point_technique=[
+        'pt_code',
+        'pt_codeext',
+        'code_prop',
+        'pt_etiquet',
+        'pt_nd_code',
+        'pt_prop',
+        'pt_gest',
+        'ETAT',
+        'pt_avct',
+        'pt_typephy',
+        'pt_nature'
+        'pt_secu',
+        'nd_voie',
+        'pt_statut',
+        'nd_r1_code',
+        'nd_r2_code',
+        'nd_r3_code',
+        'nd_r4_code',
+        'pt_creadat'
+    ]
     
     liaison_c_c="C - C"
     liaison_c_imb="C - IMB"
