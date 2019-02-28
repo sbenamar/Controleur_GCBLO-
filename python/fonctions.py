@@ -102,7 +102,7 @@ def isnumber(variable):
     return str(variable).replace('.','',1).isdigit()
 
 def format_id_pt(id_pt,insee):
-    return id_pt if "_" in id_pt else "{}_{}".format(insee,id_pt)
+    return id_pt if "_" in id_pt or not insee else "{}_{}".format(insee,id_pt)
 
 #Récupération de la première feuille du fichier C7
 def get_feuille_c7(c3a):

@@ -45,3 +45,14 @@ Traceback (most recent call last):
 AttributeError: 'str' object has no attribute 'value'
 
 
+2019-02-27 17:39:31.303749: [ligne 86 / code 410 / erreur <class 'AttributeError'>] - 'tuple' object has no attribute 'split'
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 86, in lancer_controles
+    verif_point_technique_c3a(list_controle_exe[5])
+  File "C:\Applications\Controleur\python\controles.py", line 588, in verif_point_technique_c3a
+    for commande in commandes if commande not in points_techniques or commande.split("/")[-1] not in points_techniques
+  File "C:\Applications\Controleur\python\controles.py", line 588, in <listcomp>
+    for commande in commandes if commande not in points_techniques or commande.split("/")[-1] not in points_techniques
+AttributeError: 'tuple' object has no attribute 'split'
+
+
