@@ -83,7 +83,7 @@ def lancer_controles(widget):
         return log(e,44)
     
     try:
-        verif_point_technique_c3a(list_controle_exe[5],list_controle_exe[26])
+        verif_point_technique_c3a(list_controle_exe[5])
         pbar_chargement(pbar,5,len(list_controle_exe))
     except Exception as e:
         return log(e,410)
@@ -112,15 +112,21 @@ def lancer_controles(widget):
     
     try:
         verif_c7_travaux_existe(list_controle_exe[10],list_controle_exe[11])
-        pbar_chargement(pbar,10,len(list_controle_exe))
+        pbar_chargement(pbar,11,len(list_controle_exe))
     except Exception as e:
         return log(e,48)
         
     try:
         #Pour les contrôles 13,15,16,...24
         valeurs_selon_liaisons({k: v for k, v in list_controle_exe.items() if 13 <= k <= 24 and k != 14})
-        pbar.setValue(100)
+        pbar_chargement(pbar,11,len(list_controle_exe))
     except Exception as e:
         return log(e,49)
     
+    try:
+        verif_struct_shape(list_controle_exe[26],list_controle_exe[27])
+        pbar_chargement(pbar,100,100)
+    except Exception as e:
+        return log(e,413)
+
     msg_succes()

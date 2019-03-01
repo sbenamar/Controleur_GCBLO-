@@ -14,6 +14,15 @@ def msg_erreur(code):
     msg.setStandardButtons(QMessageBox.Close)
     msg.exec_()
 
+def msg_alerte(num_controle):
+    msg = QMessageBox()
+    msg.setIcon(QMessageBox.Warning)
+    msg.setText("Une ou plusieurs erreures doivent être corrigées afin d'effectuer la totalité des contrôles")
+    msg.setWindowTitle("Contrôles terminés")
+    msg.setDetailedText("Dernier contrôle effectué: {}".format(str(num_controle)))
+    msg.setStandardButtons(QMessageBox.Close)
+    msg.exec_()
+
 def msg_succes():
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Information)
@@ -103,6 +112,28 @@ def isnumber(variable):
 
 def format_id_pt(id_pt,insee):
     return id_pt if "_" in id_pt or not insee else "{}_{}".format(insee,id_pt)
+
+def get_shape(chemin,nom_shape):
+    layer = QgsVectorLayer(chemin, nom_shape , "ogr")
+    
+    if not layer.isValid():
+        raise Exception(format_shape_invalide.format(chemin))
+    
+    return layer,layer.getFeatures()
+
+def verif_champs_shape(num_controle,chemin_shape,nom_shape,champs):
+    erreur=[]
+    shape,list_point_technique = get_shape(chemin_shape,nom_shape)
+    champs_key=[k for k in champs if param_format.format(conf["zone"],conf["type_lvrb"]) in champs[k]]
+    
+    if not all(key in shape.fields().names() for key in champs_key):
+        erreurs = [
+            modele_erreur(
+                num_controle,
+                [chemin_fichier_application(chemin_shape),"",""]
+            )
+        ]
+        alim_rapport_csv(erreurs)
 
 #Récupération de la première feuille du fichier C7
 def get_feuille_c7(c3a):

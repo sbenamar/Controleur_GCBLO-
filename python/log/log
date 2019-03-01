@@ -1,60 +1,9 @@
-2019-02-28 14:05:06.341680: [ligne 86 / code 410 / erreur <class 'NameError'>] - name 'ft' is not defined
+2019-03-01 13:46:03.973916: [ligne 86 / code 410 / erreur <class 'KeyError'>] - 'point_technique_path'
 Traceback (most recent call last):
   File "C:\Applications\Controleur\python\controleur_param.py", line 86, in lancer_controles
     verif_point_technique_c3a(list_controle_exe[5])
-  File "C:\Applications\Controleur\python\controles.py", line 564, in verif_point_technique_c3a
-    print([dict(ft).keys() for fr in iter][1])
-  File "C:\Applications\Controleur\python\controles.py", line 564, in <listcomp>
-    print([dict(ft).keys() for fr in iter][1])
-NameError: name 'ft' is not defined
-
-
-2019-02-28 14:06:05.736448: [ligne 86 / code 410 / erreur <class 'NameError'>] - name 'ft' is not defined
-Traceback (most recent call last):
-  File "C:\Applications\Controleur\python\controleur_param.py", line 86, in lancer_controles
-    verif_point_technique_c3a(list_controle_exe[5])
-  File "C:\Applications\Controleur\python\controles.py", line 564, in verif_point_technique_c3a
-    print([dict(ft).keys() for ftr in iter][1])
-  File "C:\Applications\Controleur\python\controles.py", line 564, in <listcomp>
-    print([dict(ft).keys() for ftr in iter][1])
-NameError: name 'ft' is not defined
-
-
-2019-02-28 14:08:01.084672: [ligne 86 / code 410 / erreur <class 'ValueError'>] - dictionary update sequence element #0 has length 7; 2 is required
-Traceback (most recent call last):
-  File "C:\Applications\Controleur\python\controleur_param.py", line 86, in lancer_controles
-    verif_point_technique_c3a(list_controle_exe[5])
-  File "C:\Applications\Controleur\python\controles.py", line 564, in verif_point_technique_c3a
-    print([dict(ft).keys() for ft in iter][1])
-  File "C:\Applications\Controleur\python\controles.py", line 564, in <listcomp>
-    print([dict(ft).keys() for ft in iter][1])
-ValueError: dictionary update sequence element #0 has length 7; 2 is required
-
-
-2019-02-28 14:13:08.202464: [ligne 86 / code 410 / erreur <class 'TypeError'>] - QgsVectorLayer.getFeature(): not enough arguments
-Traceback (most recent call last):
-  File "C:\Applications\Controleur\python\controleur_param.py", line 86, in lancer_controles
-    verif_point_technique_c3a(list_controle_exe[5])
-  File "C:\Applications\Controleur\python\controles.py", line 564, in verif_point_technique_c3a
-    print(layer.getFeature().attributes())
-TypeError: QgsVectorLayer.getFeature(): not enough arguments
-
-
-2019-02-28 14:24:01.434766: [ligne 86 / code 410 / erreur <class 'TypeError'>] - cannot convert dictionary update sequence element #0 to a sequence
-Traceback (most recent call last):
-  File "C:\Applications\Controleur\python\controleur_param.py", line 86, in lancer_controles
-    verif_point_technique_c3a(list_controle_exe[5])
-  File "C:\Applications\Controleur\python\controles.py", line 564, in verif_point_technique_c3a
-    print(dict(layer.fields()))
-TypeError: cannot convert dictionary update sequence element #0 to a sequence
-
-
-2019-02-28 15:18:45.371018: [ligne 86 / code 410 / erreur <class 'NameError'>] - name 'champs_point_technique' is not defined
-Traceback (most recent call last):
-  File "C:\Applications\Controleur\python\controleur_param.py", line 86, in lancer_controles
-    verif_point_technique_c3a(list_controle_exe[5],list_controle_exe[26])
-  File "C:\Applications\Controleur\python\controles.py", line 568, in verif_point_technique_c3a
-    if controle26 and not all(key in layer.fields().names() for key in champs_point_technique):
-NameError: name 'champs_point_technique' is not defined
+  File "C:\Applications\Controleur\python\controles.py", line 559, in verif_point_technique_c3a
+    shape,list_point_technique = get_shape(conf["point_technique_path"],shape_point_technique_nom)
+KeyError: 'point_technique_path'
 
 

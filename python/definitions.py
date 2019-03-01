@@ -87,6 +87,7 @@ commande_orange_path=os.path.join(chemin_exe,"09 - Commande_Orange")
 chemin_layers=os.path.join(exe_projet,"LAYERS")
 cable_infra_csv_path=os.path.join(chemin_layers,"CABLE_INFRA.csv")
 point_technique_path=os.path.join(chemin_layers,"POINT_TECHNIQUE.shp")
+prises_path=os.path.join(chemin_layers,"PRISES.shp")
 appui_orange_path=os.path.join(chemin_exe,"07 - Appui","Appui Orange - CAPFT","POTEAU")
 arbo_c3a="**/**/*C3A*.xls*"
 format_arbo_c7="*{}*C7*.xls*"
@@ -103,27 +104,7 @@ conf_dpt["CD21"]={
     "chemin_layers":chemin_layers,
     "cable_infra_csv_path":cable_infra_csv_path,
     "point_technique_path":point_technique_path,
-    "appui_orange_path":appui_orange_path,
-    "arbo_c3a":arbo_c3a,
-    "format_arbo_c7":format_arbo_c7,
-    "chemin_c3a":chemin_c3a,
-    "format_chemin_c7":format_chemin_c7
-}
-
-chemin_exe=os.path.join(chemin_courant,"Commande")
-commande_orange_path=chemin_exe
-cable_infra_csv_path=os.path.join(chemin_exe,"CABLE_INFRA.csv")
-appui_orange_path=os.path.join(chemin_exe,"Appui aérien")
-arbo_c3a="*C3A*.xls*"
-format_arbo_c7="*{}*C7*.xls*"
-chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
-format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
-
-conf_dpt["testv1"]={
-    "dpt":"testv1",
-    "chemin_exe":chemin_exe,
-    "commande_orange_path":commande_orange_path,
-    "cable_infra_csv_path":cable_infra_csv_path,
+    "prises_path":prises_path,
     "appui_orange_path":appui_orange_path,
     "arbo_c3a":arbo_c3a,
     "format_arbo_c7":format_arbo_c7,
@@ -140,6 +121,32 @@ format_arbo_c7="*{}*C7*.xls*"
 chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
 format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
 point_technique_path=os.path.join(chemin_exe,"POINT TECHNIQUE.shp")
+prises_path=os.path.join(chemin_exe,"PRISES.shp")
+
+conf_dpt["testv1"]={
+    "dpt":"testv1",
+    "chemin_exe":chemin_exe,
+    "commande_orange_path":commande_orange_path,
+    "cable_infra_csv_path":cable_infra_csv_path,
+    "appui_orange_path":appui_orange_path,
+    "arbo_c3a":arbo_c3a,
+    "format_arbo_c7":format_arbo_c7,
+    "chemin_c3a":chemin_c3a,
+    "format_chemin_c7":format_chemin_c7,
+    "point_technique_path":point_technique_path,
+    "prises_path":prises_path
+}
+
+chemin_exe=os.path.join(chemin_courant,"Commande")
+commande_orange_path=chemin_exe
+cable_infra_csv_path=os.path.join(chemin_exe,"CABLE_INFRA.csv")
+appui_orange_path=os.path.join(chemin_exe,"Appui aérien")
+arbo_c3a="*C3A*.xls*"
+format_arbo_c7="*{}*C7*.xls*"
+chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
+format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
+point_technique_path=os.path.join(chemin_exe,"POINT TECHNIQUE.shp")
+prises_path=os.path.join(chemin_exe,"PRISES.shp")
 
 conf_dpt["testv2"]={
     "dpt":"testv2",
@@ -151,21 +158,10 @@ conf_dpt["testv2"]={
     "format_arbo_c7":format_arbo_c7,
     "chemin_c3a":chemin_c3a,
     "format_chemin_c7":format_chemin_c7,
-    "point_technique_path":point_technique_path
+    "point_technique_path":point_technique_path,
+    "prises_path":prises_path
 }
 
-#if "testv2" in environnement:
-#chemin_exe=os.path.join(chemin_courant,"Commande d'accès")
-#commande_orange_path=chemin_exe
-#cable_infra_csv_path=os.path.join(chemin_exe,"CABLE_INFRA.csv")
-#appui_orange_path=os.path.join(chemin_exe,"Appui aérien")
-#chemin_rapport=os.path.join(chemin_courant,"rapports")
-#arbo_c3a="*C3A*.xls*"
-#format_arbo_c7="*{}*C7*.xls*"
-#chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
-#format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
-#exe_projet=r"C:\Users\PTPC9452\Documents\EXE test\04 - Projet\SRO21024SEM_1_Projet"
-    
 try:
     dpts = ("CD21","CD39","CD58","CD70","CD71","testv1","testv2")
     col_dpt={
@@ -180,23 +176,28 @@ try:
     
     types_lvrb = ("EXE","PRO","RBAL","AVP")
     
-    zones = ("NRO","Transport","SRO","Distributeur")
+    nro_lib="NRO"
+    transport_lib="Transport"
+    sro_lib="SRO"
+    distributeur_lib="Distributeur"
+    
+    zones = (nro_lib,transport_lib,sro_lib,distributeur_lib)
     
     col_param={
-        "NRO":{
+        nro_lib:{
             "AVP":3,
             "PRO":4,
             "EXE":5
         },
-        "Transport":{
+        transport_lib:{
             "PRO":6,
             "EXE":7
         },
-        "SRO":{
+        sro_lib:{
             "PRO":8,
             "EXE":9
         },
-        "Distributeur":{
+        distributeur_lib:{
             "RBAL":10,
             "PRO":11,
             "EXE":12
@@ -204,6 +205,55 @@ try:
     }
     
     param_format="{} {}"
+    
+    champs_point_technique={
+        'pt_code':[param_format.format(distributeur_lib,"EXE")],
+        'pt_codeext':[param_format.format(distributeur_lib,"EXE")],
+        #'code_prop':[param_format.format(distributeur_lib,"EXE")],
+        'pt_etiquet':[param_format.format(distributeur_lib,"EXE")],
+        'pt_nd_code':[param_format.format(distributeur_lib,"EXE")],
+        'pt_prop':[param_format.format(distributeur_lib,"EXE")],
+        'pt_gest':[param_format.format(distributeur_lib,"EXE")],
+        'ETAT':[param_format.format(distributeur_lib,"EXE")],
+        'pt_avct':[param_format.format(distributeur_lib,"EXE")],
+        'pt_typephy':[param_format.format(distributeur_lib,"EXE")],
+        'pt_nature':[param_format.format(distributeur_lib,"EXE")],
+        'pt_secu':[param_format.format(distributeur_lib,"EXE")],
+        'nd_voie':[param_format.format(distributeur_lib,"EXE")],
+        'pt_statut':[param_format.format(distributeur_lib,"EXE")],
+        'nd_r1_code':[param_format.format(distributeur_lib,"EXE")],
+        'nd_r2_code':[param_format.format(distributeur_lib,"EXE")],
+        'nd_r3_code':[param_format.format(distributeur_lib,"EXE")],
+        'nd_r4_code':[param_format.format(distributeur_lib,"EXE")],
+        'pt_creadat':[param_format.format(distributeur_lib,"EXE")]
+    }
+    
+    champs_prises = {
+        'ad_code':[param_format.format(distributeur_lib,"EXE")],
+        'nom_sro':[param_format.format(distributeur_lib,"EXE")],
+        'ad_numero':[param_format.format(distributeur_lib,"EXE")],
+        'ad_rep':[param_format.format(distributeur_lib,"EXE")],
+        'ad_nomvoie':[param_format.format(distributeur_lib,"EXE")],
+        'ad_insee':[param_format.format(distributeur_lib,"EXE")],
+        'ad_postal':[param_format.format(distributeur_lib,"EXE")],
+        'ad_commune':[param_format.format(distributeur_lib,"EXE")],
+        'ad_nom_ld':[param_format.format(distributeur_lib,"EXE")],
+        'ad_idpar':[param_format.format(distributeur_lib,"EXE")],
+        'ad_nombat':[param_format.format(distributeur_lib,"EXE")],
+        'ad_nbprhab':[param_format.format(distributeur_lib,"EXE")],
+        'ad_nbprpro':[param_format.format(distributeur_lib,"EXE")],
+        'nb_prises':[param_format.format(distributeur_lib,"EXE")],
+        'ad_distinf':[param_format.format(distributeur_lib,"EXE")],
+        'LGR_CARTO':[param_format.format(distributeur_lib,"EXE")],
+        'Racco_long':[param_format.format(distributeur_lib,"EXE")],
+        'ad_racc':[param_format.format(distributeur_lib,"EXE")],
+        'ad_ietat':[param_format.format(distributeur_lib,"EXE")],
+        'ad_itypeim':[param_format.format(distributeur_lib,"EXE")],
+        'Nom_Pro':[param_format.format(distributeur_lib,"EXE")],
+        'ebp_code':[param_format.format(distributeur_lib,"EXE")],
+        'ad_creadat':[param_format.format(distributeur_lib,"EXE")],
+        'Statut':[param_format.format(distributeur_lib,"EXE")]
+    }
     
     qgis_prefix_path=r".\lib\qgis"
     
@@ -222,6 +272,8 @@ try:
     erreur_format_controle7="Format de nommage incorrect"
     erreur_format_controle8=""
     erreur_format_controle12="Combinaison interdite"
+    
+    format_shape_invalide="Shape non valide: {}"
     
     erreur_controle1="Mauvaise version de la C3A"
     erreur_controle2="Liaison manquante dans la C3A"
@@ -249,6 +301,7 @@ try:
     erreur_controle24='La colonne H doit contenir la valeur "transition"'
     erreur_controle25='Nom de fiche poteau incorrect'
     erreur_controle26="La structuration des champs de la couche point contrôle est incorrecte"
+    erreur_controle27="La structuration des champs de la couche prises est incorrecte"
     
     criticite={
         "mineure":"Mineure",
@@ -300,6 +353,7 @@ try:
         24:pre_entete_3,
         25:pre_entete_3,
         26:pre_entete_5,
+        27:pre_entete_5
     }
     
     post_entete_controle1=[erreur_controle1,criticite['bloquant']]
@@ -328,6 +382,7 @@ try:
     post_entete_controle24=[erreur_controle24,criticite['mineure']]
     post_entete_controle25=[erreur_controle25,criticite['avertissement']]
     post_entete_controle26=[erreur_controle26,criticite['majeure']]
+    post_entete_controle27=[erreur_controle27,criticite['majeure']]
     
     lib_nb_erreurs="Nombre d'erreurs"
     c3a_list_libelle="Ensemble des C3A"
@@ -339,6 +394,9 @@ try:
     msg_erreur=""
     msg=""
     rapport=""
+    
+    shape_point_technique_nom="POINT TECHNIQUE"
+    shape_prises_nom="PRISES"
     
     combinaison_type="{} - {}"
     num_ligne="Ligne {}"
@@ -393,28 +451,6 @@ try:
     }
     
     point_tiers_liste=['APPUI','CHAMBRE','POTELET']
-    
-    champs_point_technique=[
-        'pt_code',
-        'pt_codeext',
-        'code_prop',
-        'pt_etiquet',
-        'pt_nd_code',
-        'pt_prop',
-        'pt_gest',
-        'ETAT',
-        'pt_avct',
-        'pt_typephy',
-        'pt_nature'
-        'pt_secu',
-        'nd_voie',
-        'pt_statut',
-        'nd_r1_code',
-        'nd_r2_code',
-        'nd_r3_code',
-        'nd_r4_code',
-        'pt_creadat'
-    ]
     
     liaison_c_c="C - C"
     liaison_c_imb="C - IMB"
