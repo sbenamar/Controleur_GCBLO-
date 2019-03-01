@@ -1,9 +1,34 @@
-2019-03-01 13:46:03.973916: [ligne 86 / code 410 / erreur <class 'KeyError'>] - 'point_technique_path'
+2019-03-01 15:52:34.972747: [ligne 46 / code 53 / erreur <class 'KeyError'>] - <PyQt5.QtWidgets.QComboBox object at 0x0000015292219A68>
 Traceback (most recent call last):
-  File "C:\Applications\Controleur\python\controleur_param.py", line 86, in lancer_controles
-    verif_point_technique_c3a(list_controle_exe[5])
-  File "C:\Applications\Controleur\python\controles.py", line 559, in verif_point_technique_c3a
-    shape,list_point_technique = get_shape(conf["point_technique_path"],shape_point_technique_nom)
-KeyError: 'point_technique_path'
+  File "python/controleur.pyw", line 46, in controle_dpt
+    if not check_combi_menu(type_lrvb,zone):
+  File "C:\Applications\Controleur\python\fonctions.py", line 39, in check_combi_menu
+    return type_lrvb in col_param[zone]
+KeyError: <PyQt5.QtWidgets.QComboBox object at 0x0000015292219A68>
+
+
+2019-03-01 15:53:34.148539: [ligne 46 / code 53 / erreur <class 'KeyError'>] - <PyQt5.QtWidgets.QComboBox object at 0x000001EFA9AD9A68>
+Traceback (most recent call last):
+  File "python/controleur.pyw", line 46, in controle_dpt
+    if not check_combi_menu(type_lrvb,zone):
+  File "C:\Applications\Controleur\python\fonctions.py", line 39, in check_combi_menu
+    return type_lrvb in col_param[zone]
+KeyError: <PyQt5.QtWidgets.QComboBox object at 0x000001EFA9AD9A68>
+
+
+2019-03-01 15:54:15.108180: [ligne 47 / code 411 / erreur <class 'KeyError'>] - 'RBAL'
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 47, in lancer_controles
+    list_controle_exe=get_liste_controle_dpt(conf["dpt"],conf["type_lvrb"],conf["zone"])
+  File "C:\Applications\Controleur\python\fonctions.py", line 178, in get_liste_controle_dpt
+    controles_dpt=list(map(bool,feuille.col_values(col_param[zone][type_lvrb])[1:]))
+KeyError: 'RBAL'
+
+
+2019-03-01 16:46:21.155635: [ligne 54 / code 52 / erreur <class 'NameError'>] - name 'onf_dpt' is not defined
+Traceback (most recent call last):
+  File "python/controleur.pyw", line 54, in controle_dpt
+    print(onf_dpt[dpt.currentText()])
+NameError: name 'onf_dpt' is not defined
 
 

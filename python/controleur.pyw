@@ -29,8 +29,8 @@ def main(args) :
         
     layout = QFormLayout()
     layout.addRow(QLabel("Département:"), dpt)
-    layout.addRow(QLabel("Type de livrable:"),type_lvrb)
     layout.addRow(QLabel("Référence de livrable:"), zone)
+    layout.addRow(QLabel("Type de livrable:"),type_lvrb)
     formGroupBox.setLayout(layout)
     
     button = QPushButton("Lancer les contrôles", widget)
@@ -42,6 +42,13 @@ def main(args) :
     app.exec_()
 
 def controle_dpt(widget,dpt,type_lrvb,zone):
+    try:
+        if not check_combi_menu(type_lrvb.currentText(),zone.currentText()):
+            #raise KeyError("Ce type de livrable est inexistant pour cette référence de livrable")
+            return msg_erreur(53,"Ce type de livrable est inexistant pour cette référence de livrable")
+    except Exception as e:
+        return log(e,53)
+    
     try:
         update_conf(conf_dpt[dpt.currentText()],type_lrvb.currentText(),zone.currentText())
     except Exception as e:

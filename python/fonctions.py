@@ -5,12 +5,15 @@ try:
 except Exception as e:
     log(e,22)
 
-def msg_erreur(code):
+def msg_erreur(code,message=False):
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Critical)
     msg.setText("Une erreur est survenue")
     msg.setWindowTitle("Erreur")
-    msg.setDetailedText("Code d'erreur: {}".format(str(code)))
+    if not message:
+        msg.setDetailedText("Code d'erreur: {}".format(str(code)))
+    else:
+        msg.setDetailedText(str(message))
     msg.setStandardButtons(QMessageBox.Close)
     msg.exec_()
 
@@ -32,6 +35,9 @@ def msg_succes():
     msg.setStandardButtons(QMessageBox.Close)
     msg.exec_()
 
+def check_combi_menu(type_lrvb,zone):
+    return type_lrvb in col_param[zone]
+    
 def pbar_chargement(pbar,num,total):
     pbar.setValue(float(num)/total*100)
 

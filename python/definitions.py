@@ -162,8 +162,17 @@ conf_dpt["testv2"]={
     "prises_path":prises_path
 }
 
+
+conf_dpt["CD21"],conf_dpt["CD39"],conf_dpt["CD58"],conf_dpt["CD70"],conf_dpt["CD71"]=[conf_dpt["testv2"].copy() for nb in range(5)]
+conf_dpt["CD21"]["dpt"]="CD21"
+conf_dpt["CD39"]["dpt"]="CD39"
+conf_dpt["CD58"]["dpt"]="CD58"
+conf_dpt["CD70"]["dpt"]="CD70"
+conf_dpt["CD71"]["dpt"]="CD71"
+
+
 try:
-    dpts = ("CD21","CD39","CD58","CD70","CD71","testv1","testv2")
+    dpts = ("CD21","CD39","CD58","CD70","CD71")
     col_dpt={
         "CD21":10,
         "CD39":12,
@@ -174,14 +183,14 @@ try:
         "testv2":10
     }
     
-    types_lvrb = ("EXE","PRO","RBAL","AVP")
+    types_lvrb = ("AVP","RBAL","PRO","EXE")
     
     nro_lib="NRO"
     transport_lib="Transport"
     sro_lib="SRO"
-    distributeur_lib="Distributeur"
+    distribution_lib="Distribution"
     
-    zones = (nro_lib,transport_lib,sro_lib,distributeur_lib)
+    zones = (nro_lib,transport_lib,sro_lib,distribution_lib)
     
     col_param={
         nro_lib:{
@@ -197,7 +206,7 @@ try:
             "PRO":8,
             "EXE":9
         },
-        distributeur_lib:{
+        distribution_lib:{
             "RBAL":10,
             "PRO":11,
             "EXE":12
@@ -207,52 +216,51 @@ try:
     param_format="{} {}"
     
     champs_point_technique={
-        'pt_code':[param_format.format(distributeur_lib,"EXE")],
-        'pt_codeext':[param_format.format(distributeur_lib,"EXE")],
-        #'code_prop':[param_format.format(distributeur_lib,"EXE")],
-        'pt_etiquet':[param_format.format(distributeur_lib,"EXE")],
-        'pt_nd_code':[param_format.format(distributeur_lib,"EXE")],
-        'pt_prop':[param_format.format(distributeur_lib,"EXE")],
-        'pt_gest':[param_format.format(distributeur_lib,"EXE")],
-        'ETAT':[param_format.format(distributeur_lib,"EXE")],
-        'pt_avct':[param_format.format(distributeur_lib,"EXE")],
-        'pt_typephy':[param_format.format(distributeur_lib,"EXE")],
-        'pt_nature':[param_format.format(distributeur_lib,"EXE")],
-        'pt_secu':[param_format.format(distributeur_lib,"EXE")],
-        'nd_voie':[param_format.format(distributeur_lib,"EXE")],
-        'pt_statut':[param_format.format(distributeur_lib,"EXE")],
-        'nd_r1_code':[param_format.format(distributeur_lib,"EXE")],
-        'nd_r2_code':[param_format.format(distributeur_lib,"EXE")],
-        'nd_r3_code':[param_format.format(distributeur_lib,"EXE")],
-        'nd_r4_code':[param_format.format(distributeur_lib,"EXE")],
-        'pt_creadat':[param_format.format(distributeur_lib,"EXE")]
+        'pt_code':[param_format.format(distribution_lib,"EXE")],
+        'pt_codeext':[param_format.format(distribution_lib,"EXE")],
+        'pt_etiquet':[param_format.format(distribution_lib,"EXE")],
+        'pt_nd_code':[param_format.format(distribution_lib,"EXE")],
+        'pt_prop':[param_format.format(distribution_lib,"EXE")],
+        'pt_gest':[param_format.format(distribution_lib,"EXE")],
+        'ETAT':[param_format.format(distribution_lib,"EXE")],
+        'pt_avct':[param_format.format(distribution_lib,"EXE")],
+        'pt_typephy':[param_format.format(distribution_lib,"EXE")],
+        'pt_nature':[param_format.format(distribution_lib,"EXE")],
+        'pt_secu':[param_format.format(distribution_lib,"EXE")],
+        'nd_voie':[param_format.format(distribution_lib,"EXE")],
+        'pt_statut':[param_format.format(distribution_lib,"EXE")],
+        'nd_r1_code':[param_format.format(distribution_lib,"EXE")],
+        'nd_r2_code':[param_format.format(distribution_lib,"EXE")],
+        'nd_r3_code':[param_format.format(distribution_lib,"EXE")],
+        'nd_r4_code':[param_format.format(distribution_lib,"EXE")],
+        'pt_creadat':[param_format.format(distribution_lib,"EXE")]
     }
     
     champs_prises = {
-        'ad_code':[param_format.format(distributeur_lib,"EXE")],
-        'nom_sro':[param_format.format(distributeur_lib,"EXE")],
-        'ad_numero':[param_format.format(distributeur_lib,"EXE")],
-        'ad_rep':[param_format.format(distributeur_lib,"EXE")],
-        'ad_nomvoie':[param_format.format(distributeur_lib,"EXE")],
-        'ad_insee':[param_format.format(distributeur_lib,"EXE")],
-        'ad_postal':[param_format.format(distributeur_lib,"EXE")],
-        'ad_commune':[param_format.format(distributeur_lib,"EXE")],
-        'ad_nom_ld':[param_format.format(distributeur_lib,"EXE")],
-        'ad_idpar':[param_format.format(distributeur_lib,"EXE")],
-        'ad_nombat':[param_format.format(distributeur_lib,"EXE")],
-        'ad_nbprhab':[param_format.format(distributeur_lib,"EXE")],
-        'ad_nbprpro':[param_format.format(distributeur_lib,"EXE")],
-        'nb_prises':[param_format.format(distributeur_lib,"EXE")],
-        'ad_distinf':[param_format.format(distributeur_lib,"EXE")],
-        'LGR_CARTO':[param_format.format(distributeur_lib,"EXE")],
-        'Racco_long':[param_format.format(distributeur_lib,"EXE")],
-        'ad_racc':[param_format.format(distributeur_lib,"EXE")],
-        'ad_ietat':[param_format.format(distributeur_lib,"EXE")],
-        'ad_itypeim':[param_format.format(distributeur_lib,"EXE")],
-        'Nom_Pro':[param_format.format(distributeur_lib,"EXE")],
-        'ebp_code':[param_format.format(distributeur_lib,"EXE")],
-        'ad_creadat':[param_format.format(distributeur_lib,"EXE")],
-        'Statut':[param_format.format(distributeur_lib,"EXE")]
+        'ad_code':[param_format.format(distribution_lib,"EXE")],
+        'nom_sro':[param_format.format(distribution_lib,"EXE")],
+        'ad_numero':[param_format.format(distribution_lib,"EXE")],
+        'ad_rep':[param_format.format(distribution_lib,"EXE")],
+        'ad_nomvoie':[param_format.format(distribution_lib,"EXE")],
+        'ad_insee':[param_format.format(distribution_lib,"EXE")],
+        'ad_postal':[param_format.format(distribution_lib,"EXE")],
+        'ad_commune':[param_format.format(distribution_lib,"EXE")],
+        'ad_nom_ld':[param_format.format(distribution_lib,"EXE")],
+        'ad_idpar':[param_format.format(distribution_lib,"EXE")],
+        'ad_nombat':[param_format.format(distribution_lib,"EXE")],
+        'ad_nbprhab':[param_format.format(distribution_lib,"EXE")],
+        'ad_nbprpro':[param_format.format(distribution_lib,"EXE")],
+        'nb_prises':[param_format.format(distribution_lib,"EXE")],
+        'ad_distinf':[param_format.format(distribution_lib,"EXE")],
+        'LGR_CARTO':[param_format.format(distribution_lib,"EXE")],
+        'Racco_long':[param_format.format(distribution_lib,"EXE")],
+        'ad_racc':[param_format.format(distribution_lib,"EXE")],
+        'ad_ietat':[param_format.format(distribution_lib,"EXE")],
+        'ad_itypeim':[param_format.format(distribution_lib,"EXE")],
+        'Nom_Pro':[param_format.format(distribution_lib,"EXE")],
+        'bp_code':[param_format.format(distribution_lib,"EXE")],
+        'ad_creadat':[param_format.format(distribution_lib,"EXE")],
+        'Statut':[param_format.format(distribution_lib,"EXE")]
     }
     
     qgis_prefix_path=r".\lib\qgis"
