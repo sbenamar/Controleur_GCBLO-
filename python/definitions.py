@@ -15,20 +15,27 @@ libelle_rapport_csv=prefixe_rapport_csv+'.csv'
 chemin_rapport=os.path.join(chemin_courant,"rapports")
 chemin_doc_controleur=os.path.join(chemin_courant,*["Documentation","controleur.xlsx"])
 
+#Variable contenant les configurations (chemin, libelle,etc...) à utiliser
 conf={}
+#Variable contenant ces configurations par département. conf prendra la valeur d'un conf_dpt lorsqu'on change de département
 conf_dpt={}
 
-update_conf_exec="global conf,libelle_rapport_csv;conf=config;libelle_rapport_csv=set_libelle_rapport_csv()"
 
-def msg_erreur(code):
+#Fenêtre de message d'erreur avec un code d'identification
+#Possibilité d'intégrer un message spécifique en renseignant le message
+def msg_erreur(code,message=False):
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Critical)
     msg.setText("Une erreur est survenue")
     msg.setWindowTitle("Erreur")
-    msg.setDetailedText("Code d'erreur: {}".format(str(code)))
+    if not message:
+        msg.setDetailedText("Code d'erreur: {}".format(str(code)))
+    else:
+        msg.setDetailedText(str(message))
     msg.setStandardButtons(QMessageBox.Close)
     msg.exec_()
 
+#Message de réussite à la fin du programme
 def msg_succes():
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Information)
@@ -473,6 +480,10 @@ except Exception as e:
 def set_libelle_rapport_csv():
     return prefixe_rapport_csv+'_'+str(datetime.now()).split('.')[0].replace(' ','_').replace(':','-')+'.csv'
 
+
+#La fonction update_conf contient le même code dans chaque fichier donc pour éviter les doublons,
+#on a le code en chaîne de caracère afin
+
 update_conf_exec="""
 global conf,libelle_rapport_csv;
 conf=config;
@@ -480,5 +491,7 @@ conf['type_lvrb']=type_lvrb;
 conf['zone']=zone;
 libelle_rapport_csv=set_libelle_rapport_csv();
 """
+
+#Mise à jour du dictionnaire de configuration avec le nouveaux généré après sélection du département
 def update_conf_def(config,type_lvrb,zone):
     exec(update_conf_exec)

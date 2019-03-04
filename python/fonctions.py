@@ -5,6 +5,8 @@ try:
 except Exception as e:
     log(e,22)
 
+#Fenêtre de message d'erreur avec un code d'identification
+#Possibilité d'intégrer un message spécifique en renseignant le message
 def msg_erreur(code,message=False):
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Critical)
@@ -17,6 +19,7 @@ def msg_erreur(code,message=False):
     msg.setStandardButtons(QMessageBox.Close)
     msg.exec_()
 
+#Message d'avertissement, indiquant la fin des contrôles en n'ayant pas executé la totalité car un contrôle est bloquant
 def msg_alerte(num_controle):
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Warning)
@@ -26,6 +29,7 @@ def msg_alerte(num_controle):
     msg.setStandardButtons(QMessageBox.Close)
     msg.exec_()
 
+#Message de réussite à la fin du programme
 def msg_succes():
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Information)
@@ -35,9 +39,22 @@ def msg_succes():
     msg.setStandardButtons(QMessageBox.Close)
     msg.exec_()
 
+#Retourne le nombre de controles effectués dans une fonction de contrôle
+def get_nb_controles(args):
+    keys=args.keys()
+    
+    if "controle" in keys:
+        return 1
+    elif "controles" in keys:
+        return list(args["controles"].values()).count(True)
+    else:
+        return list(args.values()).count(True)
+
+#Vérifie si la combinaison type de livrable et réference livrable est existante
 def check_combi_menu(type_lrvb,zone):
     return type_lrvb in col_param[zone]
-    
+
+#Mise à jour de la barre d'avancement selon le numéro de contrôle et le nombre de contrôles
 def pbar_chargement(pbar,num,total):
     pbar.setValue(float(num)/total*100)
 
@@ -50,6 +67,7 @@ def init_pbar(widget):
     pbar.show()
     return pbar
 
+#Mise à jour du dictionnaire de configuration avec le nouveaux généré après sélection du département
 def update_conf_fct(config,type_lvrb,zone):
     exec(update_conf_exec)
 
@@ -85,15 +103,18 @@ def log(err,code=0):
         print("Une erreur est survenue (code: {})".format(str(code)))
         exit(code)
 
+#Récupérer la liste des appuis contenus dans la C7
 def appui_from_c7(c3a):
     (nom_c7,feuille) = get_feuille_c7(c3a)
     cmd_c7 = ouvrir_c7(feuille)
     return (nom_c7,[str(appui[0].value).replace("_","/").split(".")[0] for appui in cmd_c7])
 
+#Récupération de la liste des appuis comme pour appui_from_c7 en récupérant que le nom
 def appui_from_c7_nom(c3a):
     (nom_c7,appuis) = appui_from_c7(c3a)
     return (nom_c7,[appui.split("_")[-1] for appui in appuis])
 
+#Création du code type sous la forme présente dans les C3A avec le type et le propriétaire
 def code_type_point(type_point,prop):
     return "{}{}".format(
         corr_point_lib_code[type_point if type_point in type_point_liste else 'ND'],
@@ -113,12 +134,15 @@ def nom_fichier(chemin,extension=False):
     nom=os.path.basename(chemin)
     return os.path.splitext(nom)[0] if not extension else nom
 
+#Vérifier que la variable est un nombre
 def isnumber(variable):
     return str(variable).replace('.','',1).isdigit()
 
+#Retourner l'identifiant d'un point selon la présence ou non de l'insee
 def format_id_pt(id_pt,insee):
     return id_pt if "_" in id_pt or not insee else "{}_{}".format(insee,id_pt)
 
+#Récupérer, ouvrir et lister les ligne d'une shape
 def get_shape(chemin,nom_shape):
     layer = QgsVectorLayer(chemin, nom_shape , "ogr")
     
@@ -127,6 +151,7 @@ def get_shape(chemin,nom_shape):
     
     return layer,layer.getFeatures()
 
+#Vérification de la présence des champs nécessaires dans une shape
 def verif_champs_shape(num_controle,chemin_shape,nom_shape,champs):
     erreur=[]
     shape,list_point_technique = get_shape(chemin_shape,nom_shape)

@@ -5,7 +5,7 @@ locale = QLocale.system().name()
 def main(args) :
     app = QApplication(args)
     widget = QWidget(None)
-    widget.setWindowTitle("Contrôleur v5")
+    widget.setWindowTitle("Contrôleur v6")
     widget.resize(250,185)
     widget.setFixedSize(widget.size())
     pal=widget.palette()
@@ -41,7 +41,9 @@ def main(args) :
     widget.show()
     app.exec_()
 
+#Lors du clic sur le bouton de contrôle, on récupère les informations sélectionnées, on paramètre en fonction et on lance les contrôles
 def controle_dpt(widget,dpt,type_lrvb,zone):
+    #Vérification de la validité des combinaisons de reference et type de livraison
     try:
         if not check_combi_menu(type_lrvb.currentText(),zone.currentText()):
             #raise KeyError("Ce type de livrable est inexistant pour cette référence de livrable")
@@ -49,6 +51,7 @@ def controle_dpt(widget,dpt,type_lrvb,zone):
     except Exception as e:
         return log(e,53)
     
+    #Mise à jour des variables de configuration spécifiques au département, avec les informations sélectionnées
     try:
         update_conf(conf_dpt[dpt.currentText()],type_lrvb.currentText(),zone.currentText())
     except Exception as e:
@@ -56,6 +59,7 @@ def controle_dpt(widget,dpt,type_lrvb,zone):
         
     lancer_controles(widget)
 
+#Met à jour le dictionnaire de configuration dans chaque fichier selon le choix du menu de sélection
 def update_conf(conf_dpt,type_lrvb,zone):
     update_conf_param(conf_dpt,type_lrvb,zone)
     update_conf_ctrl(conf_dpt,type_lrvb,zone)

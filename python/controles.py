@@ -1,14 +1,19 @@
 #Pour l'explication des contrôles, se réferer au fichier Controlleur.xlsx dans le dossier Documentation
 from fonctions import *
 
+#Mise à jour du dictionnaire de configuration avec le nouveaux généré après sélection du département
 def update_conf_ctrl(config,type_lvrb,zone):
     exec(update_conf_exec)
 
 #Contrôle 2 / Contrôle 3: possibilité de selection du/des contrôle(s) à réaliser
 def corresp_cable_infra_c3a(parcours_infra=True,parcours_c3a=True):
+    #On arrête la fonction si aucun contrôle n'est sélectionné
     if not parcours_infra and not parcours_c3a:
-        return 
-    
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+
+        
     #Récupération des C3A sous plusieurs formats
     ##C3A pour le contrôle 3
     commandes_groupe = get_commandes_groupe()
@@ -70,14 +75,20 @@ def corresp_cable_infra_c3a(parcours_infra=True,parcours_c3a=True):
                 for (num_prestation,prestation) in enumerate(commandes)
                 if prestation not in cables and prestation not in sorted(cables)
             ]
+            
+        #Le rapport csv est mis à jour avec les eventuelles erreurs
         alim_rapport_csv(erreurs_c3a)
-
+        
+    return nb_controles
 #Contrôle 1
 def version_c3a(controle=True):
     num_controle=1
     
     if not controle:
-        return 
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+
     
     erreurs=[]
     #Parcours des c3a
@@ -88,19 +99,27 @@ def version_c3a(controle=True):
         #Récupération du nom de fichier seulement, sans le chemin
         chemin=chemin_fichier_application(f)
         
+        #Si la version n'est pas celle en cours, on génère une erreur
         if version != version_c3a_en_cours:
             erreurs+=[modele_erreur(num_controle,[chemin,"",""])]
             
     alim_rapport_csv(erreurs)
     return len(erreurs)
 
+#Contrôle 25
 def check_format_fiches_poteau(controle=True):
     if not controle:
-        return 
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+
     
     num_controle=25
     
+    #Récupération des poteaux
     poteaux = get_poteaux_fiche()
+    
+    #Format attendu du nom des fiches poteaux
     pattern = re.compile("^\d{5}_\w+")
     
     erreurs=[
@@ -112,17 +131,24 @@ def check_format_fiches_poteau(controle=True):
         ]
         
     alim_rapport_csv(erreurs)
+    return nb_controles
 
 #Contrôle 4
 def corresp_poteau_c3a(controle=True):
     if not controle:
-        return 
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+
     
     num_controle=4
     
+    #Récupération des poteaux en ne récupérant que le nom de poteau,
+    #sans les autres eventuels caractères afin de faciliter la comparaison et la reconnaissance
     poteaux = get_poteaux_nom()
     noms_poteaux =""
     
+    #Récupération des lignes de C3A
     commandes_groupe = get_commandes_groupe()
     
     erreurs=[]
@@ -153,12 +179,15 @@ def corresp_poteau_c3a(controle=True):
                 pass
 
     alim_rapport_csv(erreurs)
-    return 
+    return nb_controles 
 
 #Contrôle 7 / Contrôle 8 / Contrôle 12: possibilité de selection du/des contrôle(s) à réaliser
 def regles_gcblo_c3a_majeurs(controle7=True,controle8=True,controle12=True):
     if not controle7 and not controle8 and not controle12:
-        return 
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+
     
     erreurs = []
     
@@ -226,11 +255,15 @@ def regles_gcblo_c3a_majeurs(controle7=True,controle8=True,controle12=True):
             ]
 
     alim_rapport_csv(erreurs)
+    return nb_controles
 
 #controle 6
 def info_sous_tubage(controle=True):
     if not controle:
-        return
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+
     
     num_controle=6
     
@@ -249,6 +282,7 @@ def info_sous_tubage(controle=True):
     ]
     
     alim_rapport_csv(erreurs)
+    return nb_controles
 
 #controle 13,15,16,17,18,19,20,21,22,23,24
 def valeurs_selon_liaisons(controles={}):
@@ -262,9 +296,13 @@ def valeurs_selon_liaisons(controles={}):
             raise ValueError(msg_erreur_controle14_25.format(str(controles)))
         except Exception as e:
             log(e,34)
-            
+    
+    #On stoppe si aucun contrôle n'est sélectionné       
     if not any(controles.values()):
-        return
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+
     
     #Initialisation du tableau d'erreur organisé par numéro de contrôle, afin de tout afficher à la suite
     erreurs={k:[] for k in controles.keys()}
@@ -417,11 +455,16 @@ def valeurs_selon_liaisons(controles={}):
     #Ecriture des erreurs pour chaque contrôle selectionné
     for ctrl in set(erreurs.keys()):
         alim_rapport_csv(erreurs[ctrl])
+    
+    return nb_controles
 
 #Contrôle 9
 def verif_liste_colonnes(controle=True):
     if not controle:
-        return
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+
     
     num_controle=9
     commandes = get_commande_groupe_ligne()
@@ -476,11 +519,15 @@ def verif_liste_colonnes(controle=True):
     ]
 
     alim_rapport_csv(erreurs)
+    return nb_controles
 
 #Contrôles 10 et 11
 def verif_c7_travaux_existe(controle10=True,controle11=True):
     if not controle10 and not controle11:
-        return
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+
     
     erreurs=[[],[]]
     commandes = get_commande_groupe_ligne()
@@ -552,13 +599,20 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
                 
     alim_rapport_csv(erreurs[0])
     alim_rapport_csv(erreurs[1])
+    return nb_controles
 
+#Contrôle 5
 def verif_point_technique_c3a(controle5=True):
     if not controle5:
-        return
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+    
     shape,list_point_technique = get_shape(conf["point_technique_path"],shape_point_technique_nom)
         
     num_controle=5
+    
+    #Récupération des points techniques en uniformisant la forme du nom selon l'insee
     points_techniques=[
         (
             code_type_point(ligne['pt_typephy'],ligne['pt_prop']),
@@ -566,6 +620,7 @@ def verif_point_technique_c3a(controle5=True):
         ) for ligne in list_point_technique
     ]
     
+    #Liste des lignes de C3A en séparant en 2 lignes les points A et B
     commandes = reduce(
             lambda x,y:x+y,
             [
@@ -585,11 +640,15 @@ def verif_point_technique_c3a(controle5=True):
         for commande in commandes if commande[1] and (commande not in points_techniques and (commande[0],commande[1].split("_")[-1]) not in points_techniques)
     ]
     
-    alim_rapport_csv(erreurs5)   
-        
+    alim_rapport_csv(erreurs5)
+    return nb_controles
+
+#Contrôles 26,27,28
 def verif_struct_shape(controle26=True,controle27=True):
     if not(controle26 or controle27):
-        return
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
     
     num_controle=26
     if controle26:
@@ -598,4 +657,6 @@ def verif_struct_shape(controle26=True,controle27=True):
     num_controle=27
     if controle27:
         verif_champs_shape(num_controle,conf["prises_path"],shape_prises_nom,champs_prises)
+    
+    return nb_controles
     

@@ -32,3 +32,93 @@ Traceback (most recent call last):
 NameError: name 'onf_dpt' is not defined
 
 
+2019-03-04 13:45:00.848276: [ligne 45 / code 42 / erreur <class 'UnboundLocalError'>] - local variable 'step_ctrl' referenced before assignment
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 45, in lancer_controles
+    step_ctrl+=1
+UnboundLocalError: local variable 'step_ctrl' referenced before assignment
+
+
+2019-03-04 13:48:08.357659: [ligne 46 / code 42 / erreur <class 'NameError'>] - name 'setp_ctrl' is not defined
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 46, in lancer_controles
+    pbar_chargement(pbar,setp_ctrl,nb_ctrl)
+NameError: name 'setp_ctrl' is not defined
+
+
+2019-03-04 13:49:35.096139: [ligne 52 / code 43 / erreur <class 'TypeError'>] - unsupported operand type(s) for +=: 'int' and 'NoneType'
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 52, in lancer_controles
+    step_ctrl+=corresp_cable_infra_c3a(list_controle_exe[2],list_controle_exe[3])
+TypeError: unsupported operand type(s) for +=: 'int' and 'NoneType'
+
+
+2019-03-04 13:50:48.731207: [ligne 52 / code 43 / erreur <class 'TypeError'>] - unsupported operand type(s) for +=: 'int' and 'NoneType'
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 52, in lancer_controles
+    step_ctrl+=corresp_cable_infra_c3a(list_controle_exe[2],list_controle_exe[3])
+TypeError: unsupported operand type(s) for +=: 'int' and 'NoneType'
+
+
+2019-03-04 13:55:22.605161: [ligne 38 / code 42 / erreur <class 'TypeError'>] - 'dict_keys' object is not callable
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 38, in lancer_controles
+    res=version_c3a(list_controle_exe[1])
+  File "C:\Applications\Controleur\python\controles.py", line 90, in version_c3a
+    nb_controles=get_nb_controles(locals())
+  File "C:\Applications\Controleur\python\fonctions.py", line 46, in get_nb_controles
+    if "controle" in keys():
+TypeError: 'dict_keys' object is not callable
+
+
+2019-03-04 13:59:37.586476: [ligne 58 / code 412 / erreur <class 'TypeError'>] - unsupported operand type(s) for +=: 'int' and 'NoneType'
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 58, in lancer_controles
+    step_ctrl+=check_format_fiches_poteau(list_controle_exe[25])
+TypeError: unsupported operand type(s) for +=: 'int' and 'NoneType'
+
+
+2019-03-04 14:02:50.289315: [ligne 85 / code 46 / erreur <class 'AttributeError'>] - 'dict_values' object has no attribute 'count'
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 85, in lancer_controles
+    list_controle_exe[12]
+  File "C:\Applications\Controleur\python\controles.py", line 189, in regles_gcblo_c3a_majeurs
+    nb_controles=get_nb_controles(locals())
+  File "C:\Applications\Controleur\python\fonctions.py", line 51, in get_nb_controles
+    return args.values().count(True)
+AttributeError: 'dict_values' object has no attribute 'count'
+
+
+2019-03-04 14:04:36.053047: [ligne 105 / code 49 / erreur <class 'AttributeError'>] - 'dict_values' object has no attribute 'count'
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 105, in lancer_controles
+    step_ctrl+=valeurs_selon_liaisons({k: v for k, v in list_controle_exe.items() if 13 <= k <= 24 and k != 14})
+  File "C:\Applications\Controleur\python\controles.py", line 304, in valeurs_selon_liaisons
+    nb_controles=get_nb_controles(locals())
+  File "C:\Applications\Controleur\python\fonctions.py", line 49, in get_nb_controles
+    return (args["controles"].values()).count(True)
+AttributeError: 'dict_values' object has no attribute 'count'
+
+
+2019-03-04 14:07:06.481423: [ligne 105 / code 49 / erreur <class 'AttributeError'>] - 'dict_values' object has no attribute 'count'
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 105, in lancer_controles
+    step_ctrl+=valeurs_selon_liaisons({k: v for k, v in list_controle_exe.items() if 13 <= k <= 24 and k != 14})
+  File "C:\Applications\Controleur\python\controles.py", line 304, in valeurs_selon_liaisons
+    nb_controles=get_nb_controles(locals())
+  File "C:\Applications\Controleur\python\fonctions.py", line 49, in get_nb_controles
+    print((args["controles"].values()).count(True))
+AttributeError: 'dict_values' object has no attribute 'count'
+
+
+2019-03-04 14:07:44.613213: [ligne 105 / code 49 / erreur <class 'AttributeError'>] - 'dict_values' object has no attribute 'count'
+Traceback (most recent call last):
+  File "C:\Applications\Controleur\python\controleur_param.py", line 105, in lancer_controles
+    step_ctrl+=valeurs_selon_liaisons({k: v for k, v in list_controle_exe.items() if 13 <= k <= 24 and k != 14})
+  File "C:\Applications\Controleur\python\controles.py", line 304, in valeurs_selon_liaisons
+    nb_controles=get_nb_controles(locals())
+  File "C:\Applications\Controleur\python\fonctions.py", line 50, in get_nb_controles
+    return (args["controles"].values()).count(True)
+AttributeError: 'dict_values' object has no attribute 'count'
+
+
