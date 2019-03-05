@@ -24,6 +24,7 @@ conf_dpt={}
 #Fenêtre de message d'erreur avec un code d'identification
 #Possibilité d'intégrer un message spécifique en renseignant le message
 def msg_erreur(code,message=False):
+    QApplication(args)
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Critical)
     msg.setText("Une erreur est survenue")
@@ -32,16 +33,6 @@ def msg_erreur(code,message=False):
         msg.setDetailedText("Code d'erreur: {}".format(str(code)))
     else:
         msg.setDetailedText(str(message))
-    msg.setStandardButtons(QMessageBox.Close)
-    msg.exec_()
-
-#Message de réussite à la fin du programme
-def msg_succes():
-    msg = QMessageBox()
-    msg.setIcon(QMessageBox.Information)
-    msg.setText("Tous les contrôles ont été effectués.")
-    msg.setWindowTitle("Contrôles terminés")
-    msg.setDetailedText('Le rapport des contrôles a été généré dans le dossier "rapports"')
     msg.setStandardButtons(QMessageBox.Close)
     msg.exec_()
 
@@ -95,6 +86,18 @@ chemin_layers=os.path.join(exe_projet,"LAYERS")
 cable_infra_csv_path=os.path.join(chemin_layers,"CABLE_INFRA.csv")
 point_technique_path=os.path.join(chemin_layers,"POINT_TECHNIQUE.shp")
 prises_path=os.path.join(chemin_layers,"PRISES.shp")
+sro_path=os.path.join(chemin_layers,"SRO.shp")
+infra_path=os.path.join(chemin_layers,"INFRASTRUCTURE.shp")
+boitier_path=os.path.join(chemin_layers,"BOITIER.shp")
+racco_client_path=os.path.join(chemin_layers,"RACCO_CLIENT.shp")
+cable_path=os.path.join(chemin_layers,"CABLE.shp")
+zpbo_path=os.path.join(chemin_layers,"ZPBO.shp")
+zsro_path=os.path.join(chemin_layers,"ZSRO.shp")
+zpec_path=os.path.join(chemin_layers,"ZPEC.shp")
+znro_path=os.path.join(chemin_layers,"ZNRO.shp")
+nro_path=os.path.join(chemin_layers,"NRO.shp")
+
+
 appui_orange_path=os.path.join(chemin_exe,"07 - Appui","Appui Orange - CAPFT","POTEAU")
 arbo_c3a="**/**/*C3A*.xls*"
 format_arbo_c7="*{}*C7*.xls*"
@@ -112,6 +115,16 @@ conf_dpt["CD21"]={
     "cable_infra_csv_path":cable_infra_csv_path,
     "point_technique_path":point_technique_path,
     "prises_path":prises_path,
+    "sro_path":sro_path,
+    "infra_path":infra_path,
+    "boitier_path":boitier_path,
+    "racco_client_path":racco_client_path,
+    "cable_path":cable_path,
+    "zpbo_path":zpbo_path,
+    "zsro_path":zsro_path,
+    "zpec_path":zpec_path,
+    "znro_path":znro_path,
+    "nro_path":nro_path,
     "appui_orange_path":appui_orange_path,
     "arbo_c3a":arbo_c3a,
     "format_arbo_c7":format_arbo_c7,
@@ -129,6 +142,16 @@ chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
 format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
 point_technique_path=os.path.join(chemin_exe,"POINT TECHNIQUE.shp")
 prises_path=os.path.join(chemin_exe,"PRISES.shp")
+sro_path=os.path.join(chemin_exe,"SRO.shp")
+infra_path=os.path.join(chemin_exe,"INFRASTRUCTURE.shp")
+boitier_path=os.path.join(chemin_exe,"BOITIER.shp")
+racco_client_path=os.path.join(chemin_exe,"RACCO_CLIENT.shp")
+cable_path=os.path.join(chemin_exe,"CABLE.shp")
+zpbo_path=os.path.join(chemin_exe,"ZPBO.shp")
+zsro_path=os.path.join(chemin_exe,"ZSRO.shp")
+zpec_path=os.path.join(chemin_exe,"ZPEC.shp")
+znro_path=os.path.join(chemin_exe,"ZNRO.shp")
+nro_path=os.path.join(chemin_exe,"NRO.shp")
 
 conf_dpt["testv1"]={
     "dpt":"testv1",
@@ -141,7 +164,17 @@ conf_dpt["testv1"]={
     "chemin_c3a":chemin_c3a,
     "format_chemin_c7":format_chemin_c7,
     "point_technique_path":point_technique_path,
-    "prises_path":prises_path
+    "prises_path":prises_path,
+    "sro_path":sro_path,
+    "infra_path":infra_path,
+    "boitier_path":boitier_path,
+    "racco_client_path":racco_client_path,
+    "cable_path":cable_path,
+    "zpbo_path":zpbo_path,
+    "zsro_path":zsro_path,
+    "zpec_path":zpec_path,
+    "znro_path":znro_path,
+    "nro_path":nro_path
 }
 
 chemin_exe=os.path.join(chemin_courant,"Commande")
@@ -152,8 +185,18 @@ arbo_c3a="*C3A*.xls*"
 format_arbo_c7="*{}*C7*.xls*"
 chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
 format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
-point_technique_path=os.path.join(chemin_exe,"POINT TECHNIQUE.shp")
+point_technique_path=os.path.join(chemin_exe,"POINT_TECHNIQUE.shp")
 prises_path=os.path.join(chemin_exe,"PRISES.shp")
+sro_path=os.path.join(chemin_exe,"SRO.shp")
+infra_path=os.path.join(chemin_exe,"INFRASTRUCTURE.shp")
+boitier_path=os.path.join(chemin_exe,"BOITIER.shp")
+racco_client_path=os.path.join(chemin_exe,"RACCO_CLIENT.shp")
+cable_path=os.path.join(chemin_exe,"CABLE.shp")
+zpbo_path=os.path.join(chemin_exe,"ZPBO.shp")
+zsro_path=os.path.join(chemin_exe,"ZSRO.shp")
+zpec_path=os.path.join(chemin_exe,"ZPEC.shp")
+znro_path=os.path.join(chemin_exe,"ZNRO.shp")
+nro_path=os.path.join(chemin_exe,"NRO.shp")
 
 conf_dpt["testv2"]={
     "dpt":"testv2",
@@ -166,7 +209,17 @@ conf_dpt["testv2"]={
     "chemin_c3a":chemin_c3a,
     "format_chemin_c7":format_chemin_c7,
     "point_technique_path":point_technique_path,
-    "prises_path":prises_path
+    "prises_path":prises_path,
+    "sro_path":sro_path,
+    "infra_path":infra_path,
+    "boitier_path":boitier_path,
+    "racco_client_path":racco_client_path,
+    "cable_path":cable_path,
+    "zpbo_path":zpbo_path,
+    "zsro_path":zsro_path,
+    "zpec_path":zpec_path,
+    "znro_path":znro_path,
+    "nro_path":nro_path
 }
 
 
@@ -222,52 +275,208 @@ try:
     
     param_format="{} {}"
     
+    param_distri_pro=param_format.format(distribution_lib,"PRO")
+    param_distri_exe=param_format.format(distribution_lib,"EXE")
+    param_distri_rbal=param_format.format(distribution_lib,"RBAL")
+    param_transport_exe=param_format.format(transport_lib,"EXE")
+    
     champs_point_technique={
-        'pt_code':[param_format.format(distribution_lib,"EXE")],
-        'pt_codeext':[param_format.format(distribution_lib,"EXE")],
-        'pt_etiquet':[param_format.format(distribution_lib,"EXE")],
-        'pt_nd_code':[param_format.format(distribution_lib,"EXE")],
-        'pt_prop':[param_format.format(distribution_lib,"EXE")],
-        'pt_gest':[param_format.format(distribution_lib,"EXE")],
-        'ETAT':[param_format.format(distribution_lib,"EXE")],
-        'pt_avct':[param_format.format(distribution_lib,"EXE")],
-        'pt_typephy':[param_format.format(distribution_lib,"EXE")],
-        'pt_nature':[param_format.format(distribution_lib,"EXE")],
-        'pt_secu':[param_format.format(distribution_lib,"EXE")],
-        'nd_voie':[param_format.format(distribution_lib,"EXE")],
-        'pt_statut':[param_format.format(distribution_lib,"EXE")],
-        'nd_r1_code':[param_format.format(distribution_lib,"EXE")],
-        'nd_r2_code':[param_format.format(distribution_lib,"EXE")],
-        'nd_r3_code':[param_format.format(distribution_lib,"EXE")],
-        'nd_r4_code':[param_format.format(distribution_lib,"EXE")],
-        'pt_creadat':[param_format.format(distribution_lib,"EXE")]
+        'pt_code':[param_distri_exe,param_distri_pro,param_distri_rbal,param_transport_exe],
+        'pt_codeext':[param_distri_exe,param_distri_pro,param_distri_rbal,param_transport_exe],
+        'pt_etiquet':[param_distri_exe,param_distri_pro,param_distri_rbal,param_transport_exe],
+        'pt_nd_code':[param_distri_exe,param_distri_pro,param_distri_rbal,param_transport_exe],
+        'pt_prop':[param_distri_exe,param_distri_pro,param_distri_rbal,param_transport_exe],
+        'pt_gest':[param_distri_exe,param_distri_pro,param_distri_rbal,param_transport_exe],
+        'ETAT':[param_distri_exe,param_distri_rbal,param_transport_exe],
+        'pt_avct':[param_distri_exe,param_distri_pro,param_distri_rbal,param_transport_exe],
+        'pt_typephy':[param_distri_exe,param_distri_pro,param_distri_rbal,param_transport_exe],
+        'pt_nature':[param_distri_exe,param_distri_pro,param_distri_rbal,param_transport_exe],
+        'pt_secu':[param_distri_exe,param_distri_pro,param_distri_rbal,param_transport_exe],
+        'nd_voie':[param_distri_exe,param_distri_pro,param_distri_rbal,param_transport_exe],
+        'pt_statut':[param_distri_exe,param_distri_pro,param_distri_rbal,param_transport_exe],
+        'nd_r1_code':[param_distri_exe,param_distri_pro,param_distri_rbal,param_transport_exe],
+        'nd_r2_code':[param_distri_exe,param_distri_pro,param_distri_rbal,param_transport_exe],
+        'nd_r3_code':[param_distri_exe,param_distri_pro,param_distri_rbal,param_transport_exe],
+        'nd_r4_code':[param_distri_exe,param_distri_pro,param_distri_rbal,param_transport_exe],
+        'pt_creadat':[param_distri_exe,param_distri_pro,param_distri_rbal,param_transport_exe]
     }
     
     champs_prises = {
-        'ad_code':[param_format.format(distribution_lib,"EXE")],
-        'nom_sro':[param_format.format(distribution_lib,"EXE")],
-        'ad_numero':[param_format.format(distribution_lib,"EXE")],
-        'ad_rep':[param_format.format(distribution_lib,"EXE")],
-        'ad_nomvoie':[param_format.format(distribution_lib,"EXE")],
-        'ad_insee':[param_format.format(distribution_lib,"EXE")],
-        'ad_postal':[param_format.format(distribution_lib,"EXE")],
-        'ad_commune':[param_format.format(distribution_lib,"EXE")],
-        'ad_nom_ld':[param_format.format(distribution_lib,"EXE")],
-        'ad_idpar':[param_format.format(distribution_lib,"EXE")],
-        'ad_nombat':[param_format.format(distribution_lib,"EXE")],
-        'ad_nbprhab':[param_format.format(distribution_lib,"EXE")],
-        'ad_nbprpro':[param_format.format(distribution_lib,"EXE")],
-        'nb_prises':[param_format.format(distribution_lib,"EXE")],
-        'ad_distinf':[param_format.format(distribution_lib,"EXE")],
-        'LGR_CARTO':[param_format.format(distribution_lib,"EXE")],
-        'Racco_long':[param_format.format(distribution_lib,"EXE")],
-        'ad_racc':[param_format.format(distribution_lib,"EXE")],
-        'ad_ietat':[param_format.format(distribution_lib,"EXE")],
-        'ad_itypeim':[param_format.format(distribution_lib,"EXE")],
-        'Nom_Pro':[param_format.format(distribution_lib,"EXE")],
-        'bp_code':[param_format.format(distribution_lib,"EXE")],
-        'ad_creadat':[param_format.format(distribution_lib,"EXE")],
-        'Statut':[param_format.format(distribution_lib,"EXE")]
+        'ad_code':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'nom_sro':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'ad_numero':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'ad_rep':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'ad_nomvoie':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'ad_insee':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'ad_postal':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'ad_commune':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'ad_nom_ld':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'ad_idpar':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'ad_nombat':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'ad_nbprhab':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'ad_nbprpro':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'nb_prises':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'ad_distinf':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'LGR_CARTO':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'Racco_long':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'ad_racc':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'ad_ietat':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'ad_itypeim':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'Nom_Pro':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'bp_code':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'ad_creadat':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'Statut':[param_distri_exe,param_distri_pro,param_distri_rbal]
+    }
+    
+    champs_sro = {
+        'ST_CODE':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'ST_ND_CODE':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'LT_CODE':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'LT_CODEEXT':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'ba_code_t':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'ba_code_d':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'ST_PROP':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'ST_GEST':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'ND_R1_CODE':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'ND_R2_CODE':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'ND_R3_CODE':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'ND_VOIE':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'ST_STATUT':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'ST_AVCT':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'ST_TYPEPHY':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'ST_TYPELOG':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'ba_type':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'TYPE':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'PRISES':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'RAL':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'revetement':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'POB_FTTE_T':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'POB_FTTH_T':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'POB_FTTE_D':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'MEB':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'POS':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'ST_CREADAT':[param_distri_exe,param_distri_pro,param_transport_exe]
+    }
+    
+    champs_boitier = {
+        'bp_code':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'bp_etiquet':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'bp_codeext':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'NB_PRISES':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'bp_pt_code':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'bp_statut':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'bp_avct':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'bp_typephy':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'bp_typelog':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'bp_creadat':[param_distri_exe,param_distri_pro,param_transport_exe]
+    }
+    
+    champs_infra = {
+        'PROPRIETAI':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'nb_conduite':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cm_code':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cm_ndcode1':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cm_ndcode2':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cm_typ_imp':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cm_typelog':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cm_long':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'Etat':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cm_statut':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cm_avct':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cm_r1_code':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cm_r2_code':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cm_r3_code':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cm_r4_code':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'coupe_type':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cm_creadat':[param_distri_exe,param_distri_pro,param_transport_exe]
+    }
+    
+    champs_racco_client = {
+        'AD_code':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'PBO':[param_distri_exe,param_distri_pro],
+        'type_infra':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'longueur':[param_distri_exe,param_distri_pro,param_distri_rbal]
+    }
+    
+    champs_cable = {
+        'cb_code':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cb_etiquet':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cb_nd1':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cb_nd2':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cb_bp1':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cb_bp2':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cb_r1_code':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cb_r2_code':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cb_r3_code':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cb_r4_code':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cb_prop':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cb_gest':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cb_statut':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cb_avct':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cb_typelog':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cb_creadat':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cb_lgreel':[param_distri_exe,param_distri_pro,param_transport_exe],
+        'cb_capafo':[param_distri_exe,param_distri_pro,param_transport_exe]
+    }
+    
+    champs_zpbo = {
+        'zp_code':[param_distri_exe,param_distri_pro],
+        'zp_nd_code':[param_distri_exe,param_distri_pro],
+        'zp_zs_code':[param_distri_exe,param_distri_pro],
+        'zp_r1_code':[param_distri_exe,param_distri_pro],
+        'zp_r2_code':[param_distri_exe,param_distri_pro],
+        'zp_r3_code':[param_distri_exe,param_distri_pro],
+        'zp_r4_code':[param_distri_exe,param_distri_pro],
+        'zp_bp_code':[param_distri_exe,param_distri_pro],
+        'nb_prises':[param_distri_exe,param_distri_pro],
+        'zp_creadat':[param_distri_exe,param_distri_pro]
+    }
+    
+    champs_zpec = {
+        'Bp_code':[param_distri_exe,param_distri_pro],
+        'nb_prises':[param_distri_exe,param_distri_pro]
+    }
+    
+    champs_zsro = {
+        'zs_code':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'zs_nd_code':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'zs_zn_code':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'zs_r1_code':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'zs_r2_code':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'zs_r3_code':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'zs_refpm':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'zs_etatpm':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'zs_capamax':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'zs_nblogmt':[param_distri_exe,param_distri_pro,param_distri_rbal],
+        'zs_creadat':[param_distri_exe,param_distri_pro,param_distri_rbal]
+    }
+    
+    champs_znro = {
+        'zn_code':[param_distri_exe,param_transport_exe],
+        'COMMUNE':[param_distri_exe,param_transport_exe],
+        'zn_nd_code':[param_distri_exe,param_transport_exe],
+        'zn_r1_code':[param_distri_exe,param_transport_exe],
+        'zn_r2_code':[param_distri_exe,param_transport_exe],
+        'zn_creadat':[param_distri_exe,param_transport_exe]
+    }
+    
+    champs_nro = {
+        'zn_code':[param_distri_exe,param_transport_exe],
+        'st_code':[param_distri_exe,param_transport_exe],
+        'st_nd_code':[param_distri_exe,param_transport_exe],
+        'st_codeext':[param_distri_exe,param_transport_exe],
+        'st_prop':[param_distri_exe,param_transport_exe],
+        'st_gest':[param_distri_exe,param_transport_exe],
+        'nd_r1_code':[param_distri_exe,param_transport_exe],
+        'nd_r2_code':[param_distri_exe,param_transport_exe],
+        'nd_voie':[param_distri_exe,param_transport_exe],
+        'st_statut':[param_distri_exe,param_transport_exe],
+        'st_avct':[param_distri_exe,param_transport_exe],
+        'st_typephy':[param_distri_exe,param_transport_exe],
+        'st_typelog':[param_distri_exe,param_transport_exe],
+        'st_creadat':[param_distri_exe,param_transport_exe],
+        'lt_code':[param_distri_exe,param_transport_exe],
+        'lt_code_ext':[param_distri_exe,param_transport_exe]
     }
     
     qgis_prefix_path=r".\lib\qgis"
@@ -315,8 +524,18 @@ try:
     erreur_controle23='Les colonne B et D doivent être vide'
     erreur_controle24='La colonne H doit contenir la valeur "transition"'
     erreur_controle25='Nom de fiche poteau incorrect'
-    erreur_controle26="La structuration des champs de la couche point contrôle est incorrecte"
+    erreur_controle26="La structuration des champs de la couche point technique est incorrecte"
     erreur_controle27="La structuration des champs de la couche prises est incorrecte"
+    erreur_controle28="La structuration des champs de la couche SRO est incorrecte"
+    erreur_controle29="La structuration des champs de la couche boitier est incorrecte"
+    erreur_controle30="La structuration des champs de la couche infrastructure est incorrecte"
+    erreur_controle31="La structuration des champs de la couche racco_client est incorrecte"
+    erreur_controle32="La structuration des champs de la couche cable est incorrecte"
+    erreur_controle33="La structuration des champs de la couche ZPBO est incorrecte"
+    erreur_controle34="La structuration des champs de la couche ZSRO est incorrecte"
+    erreur_controle35="La structuration des champs de la couche ZPEC est incorrecte"
+    erreur_controle36="La structuration des champs de la couche ZNRO est incorrecte"
+    erreur_controle37="La structuration des champs de la couche NRO est incorrecte"
     
     criticite={
         "mineure":"Mineure",
@@ -368,7 +587,17 @@ try:
         24:pre_entete_3,
         25:pre_entete_3,
         26:pre_entete_5,
-        27:pre_entete_5
+        27:pre_entete_5,
+        28:pre_entete_5,
+        29:pre_entete_5,
+        30:pre_entete_5,
+        31:pre_entete_5,
+        32:pre_entete_5,
+        33:pre_entete_5,
+        34:pre_entete_5,
+        35:pre_entete_5,
+        36:pre_entete_5,
+        37:pre_entete_5
     }
     
     post_entete_controle1=[erreur_controle1,criticite['bloquant']]
@@ -398,6 +627,17 @@ try:
     post_entete_controle25=[erreur_controle25,criticite['avertissement']]
     post_entete_controle26=[erreur_controle26,criticite['majeure']]
     post_entete_controle27=[erreur_controle27,criticite['majeure']]
+    post_entete_controle28=[erreur_controle28,criticite['majeure']]
+    post_entete_controle29=[erreur_controle29,criticite['majeure']]
+    post_entete_controle30=[erreur_controle30,criticite['majeure']]
+    post_entete_controle31=[erreur_controle31,criticite['majeure']]
+    post_entete_controle32=[erreur_controle32,criticite['majeure']]
+    post_entete_controle33=[erreur_controle33,criticite['majeure']]
+    post_entete_controle34=[erreur_controle34,criticite['majeure']]
+    post_entete_controle35=[erreur_controle35,criticite['majeure']]
+    post_entete_controle36=[erreur_controle36,criticite['majeure']]
+    post_entete_controle37=[erreur_controle37,criticite['majeure']]
+
     
     lib_nb_erreurs="Nombre d'erreurs"
     c3a_list_libelle="Ensemble des C3A"
@@ -412,6 +652,16 @@ try:
     
     shape_point_technique_nom="POINT TECHNIQUE"
     shape_prises_nom="PRISES"
+    shape_sro_nom="SRO"
+    shape_boitier_nom="BOITIER"
+    shape_infra_nom="INFRASTRUCTURE"
+    shape_racco_client_nom="RACCO_CLIENT"
+    shape_cable_nom="CABLE"
+    shape_zpbo_nom="ZPBO"
+    shape_zpec_nom="ZPEC"
+    shape_zsro_nom="ZSRO"
+    shape_znro_nom="ZNRO"
+    shape_nro_nom="NRO"
     
     combinaison_type="{} - {}"
     num_ligne="Ligne {}"

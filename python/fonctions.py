@@ -157,7 +157,7 @@ def verif_champs_shape(num_controle,chemin_shape,nom_shape,champs):
     shape,list_point_technique = get_shape(chemin_shape,nom_shape)
     champs_key=[k for k in champs if param_format.format(conf["zone"],conf["type_lvrb"]) in champs[k]]
     
-    if not all(key in shape.fields().names() for key in champs_key):
+    if not all(key.upper() in map(str.upper,shape.fields().names()) for key in champs_key):
         erreurs = [
             modele_erreur(
                 num_controle,

@@ -108,7 +108,7 @@ def lancer_controles(widget):
         return log(e,49)
     
     try:
-        step_ctrl+=verif_struct_shape(list_controle_exe[26],list_controle_exe[27])
+        step_ctrl+=verif_struct_shape({k: v for k, v in list_controle_exe.items() if 26 <= k <= 37})
         pbar_chargement(pbar,100,100)
     except Exception as e:
         return log(e,413)
