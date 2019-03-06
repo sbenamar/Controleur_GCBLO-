@@ -119,15 +119,12 @@ def check_format_fiches_poteau(controle=True):
     #Récupération des poteaux
     poteaux = get_poteaux_fiche()
     
-    #Format attendu du nom des fiches poteaux
-    pattern = re.compile("^\d{5}_\w+")
-    
     erreurs=[
             modele_erreur(
                 num_controle,
                 [poteau_list_libelle,"",poteau]
             )
-            for poteau in poteaux if not pattern.match(poteau)
+            for poteau in poteaux if not pattern_nom_point_souple.match(poteau)
         ]
         
     alim_rapport_csv(erreurs)
@@ -193,10 +190,8 @@ def regles_gcblo_c3a_majeurs(controle7=True,controle8=True,controle12=True):
     
     #Pour un algorithme plus lisible plus bas, les conditions d'erreur sont stockés ici en texte
     #Ils seront évalués par une fonction python
-    condition7_1 = '("/" in prestation[3].value and prestation[3].value.split("/")[0].isdigit()'
-    condition7_2 = ' and len(prestation[3].value.split("/")[0]) == 5)'
-    condition7_3 = '("/" in prestation[5].value and prestation[5].value.split("/")[0].isdigit()'
-    condition7_4 = ' and len(prestation[5].value.split("/")[0]) == 5)'
+    condition7_1 = 'pattern_nom_point.match(str(prestation[3].value))'
+    condition7_3 = 'pattern_nom_point.match(str(prestation[5].value))'
 
     condition8_1 = '(isinstance(prestation[6].value, (int, float)) or str(prestation[6].value).isdigit())'
     condition8_2 = ' and int(prestation[6].value) >= 1'
@@ -209,7 +204,7 @@ def regles_gcblo_c3a_majeurs(controle7=True,controle8=True,controle12=True):
         if controle7:
             num_controle=7
             for (num_prestation,prestation) in enumerate(commandes):
-                if prestation[3].ctype and not(eval(condition7_1+condition7_2)):
+                if prestation[3].ctype and not(eval(condition7_1)):
                     erreurs+=[
                         modele_erreur_c3a(
                             num_controle,
@@ -218,7 +213,7 @@ def regles_gcblo_c3a_majeurs(controle7=True,controle8=True,controle12=True):
                             prestation[5].value
                         )
                     ]
-                elif prestation[5].ctype and not(eval(condition7_3+condition7_4)):
+                elif prestation[5].ctype and not(eval(condition7_3)):
                     erreurs+=[
                         modele_erreur_c3a(
                             num_controle,
@@ -547,7 +542,7 @@ def verif_c7_travaux_existe(controle10=True,controle11=True,controle38=True):
                 erreurs[2]=[
                         modele_erreur(num_controle,[chemin_fichier_application(nom_c7),"",appui])
                         for appui in appui_from_c7(c3a)[1]
-                        if "_" not in str(appui) and "/" not in str(appui)
+                        if not pattern_nom_point_souple.match(str(appui))
                 ]
                 
                 num_controle=11
@@ -575,8 +570,7 @@ def verif_c7_travaux_existe(controle10=True,controle11=True,controle38=True):
                                         1
                                     )
                                 )
-                
-                
+                     
         if condition_b:
             #Contrôle 11 et 38 pour colonne N
             num_controle=38
@@ -586,7 +580,7 @@ def verif_c7_travaux_existe(controle10=True,controle11=True,controle38=True):
                     erreurs[2]=[
                         modele_erreur(num_controle,[chemin_fichier_application(nom_c7),"",appui])
                         for appui in appui_from_c7(c3a)[1]
-                        if "_" not in str(appui) and "/" not in str(appui)
+                        if not pattern_nom_point_souple.match(str(appui))
                     ]
                 
                 num_controle=11

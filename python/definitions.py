@@ -720,12 +720,17 @@ try:
     
     point_tiers_liste=['APPUI','CHAMBRE','POTELET']
     
+    #Types de liaisons
     liaison_c_c="C - C"
     liaison_c_imb="C - IMB"
     liaison_c_f="C - F"
     liaison_c_p="C - P"
     laison_c_pt="C - PT"
     laison_ct_p="CT - P"
+    
+    #Format attendu du nom des points et fiches poteaux
+    pattern_nom_point_souple = re.compile("^\d{5}[_/]\w+")
+    pattern_nom_point = re.compile("^\d{5}/\w+")
         
 except Exception as e:
     log(e,11)
