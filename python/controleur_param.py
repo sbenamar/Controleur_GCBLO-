@@ -95,7 +95,7 @@ def lancer_controles(widget):
         return log(e,47)
     
     try:
-        step_ctrl+=verif_c7_travaux_existe(list_controle_exe[10],list_controle_exe[11])
+        step_ctrl+=verif_c7_travaux_existe(list_controle_exe[10],list_controle_exe[11],list_controle_exe[38])
         pbar_chargement(pbar,step_ctrl,nb_ctrl)
     except Exception as e:
         return log(e,48)

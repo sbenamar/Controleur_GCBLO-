@@ -536,6 +536,7 @@ try:
     erreur_controle35="La structuration des champs de la couche ZPEC est incorrecte"
     erreur_controle36="La structuration des champs de la couche ZNRO est incorrecte"
     erreur_controle37="La structuration des champs de la couche NRO est incorrecte"
+    erreur_controle38="Le format du numéro d'appui dans la C7 est incorrect"
     
     criticite={
         "mineure":"Mineure",
@@ -597,7 +598,8 @@ try:
         34:pre_entete_5,
         35:pre_entete_5,
         36:pre_entete_5,
-        37:pre_entete_5
+        37:pre_entete_5,
+        38:pre_entete_3
     }
     
     post_entete_controle1=[erreur_controle1,criticite['bloquant']]
@@ -637,6 +639,7 @@ try:
     post_entete_controle35=[erreur_controle35,criticite['majeure']]
     post_entete_controle36=[erreur_controle36,criticite['majeure']]
     post_entete_controle37=[erreur_controle37,criticite['majeure']]
+    post_entete_controle38=[erreur_controle38,criticite['avertissement']]
 
     
     lib_nb_erreurs="Nombre d'erreurs"

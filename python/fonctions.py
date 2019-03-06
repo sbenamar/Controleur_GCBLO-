@@ -112,7 +112,7 @@ def appui_from_c7(c3a):
 #Récupération de la liste des appuis comme pour appui_from_c7 en récupérant que le nom
 def appui_from_c7_nom(c3a):
     (nom_c7,appuis) = appui_from_c7(c3a)
-    return (nom_c7,[appui.split("_")[-1] for appui in appuis])
+    return (nom_c7,[appui.split("_")[-1].split("/")[-1] for appui in appuis])
 
 #Création du code type sous la forme présente dans les C3A avec le type et le propriétaire
 def code_type_point(type_point,prop):
@@ -170,7 +170,7 @@ def verif_champs_shape(num_controle,chemin_shape,nom_shape,champs):
 def get_feuille_c7(c3a):
     nom = [f for f in glob.glob(conf["format_chemin_c7"].format(nom_fichier(c3a).split("C3")[0])) if "~$" not in f][0]
     c7_xls = xlrd.open_workbook(nom)
-    return nom_fichier(nom,True),c7_xls.sheet_by_index(0)
+    return chemin_fichier_application(nom),c7_xls.sheet_by_index(0)
 
 #Récupération des lignes de la feuille de la C7
 def ouvrir_c7(feuille):

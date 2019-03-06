@@ -521,28 +521,36 @@ def verif_liste_colonnes(controle=True):
     alim_rapport_csv(erreurs)
     return nb_controles
 
-#Contrôles 10 et 11
-def verif_c7_travaux_existe(controle10=True,controle11=True):
-    if not controle10 and not controle11:
+#Contrôles 10 et 11 et 38 
+def verif_c7_travaux_existe(controle10=True,controle11=True,controle38=True):
+    if not(controle10 or controle11 or controle38):
         return 0
     else:
         nb_controles=get_nb_controles(locals())
 
-    
-    erreurs=[[],[]]
+    erreurs=[[],[],[]]
     commandes = get_commande_groupe_ligne()
     
     for c3a,num,prestation in commandes:
         condition_a=prestation[pos_xl("M")].value in condition_travaux_c7
         condition_b=prestation[pos_xl("N")].value in condition_travaux_c7
+        nom_c7=""
         
         #Si l'ouverture de la C7 échoue, on attrape l'exception et ça signie donc que la C7 n'existe pas
         #et donc que le contrôle 10 est en erreur
         if condition_a:
-            #Contrôle 11 pour colonne M
-            num_controle=11
+            #Contrôle 11 et 38 pour colonne M
+            num_controle=38
             try:
                 (nom_c7,appuis)=appui_from_c7_nom(c3a)
+                
+                erreurs[2]=[
+                        modele_erreur(num_controle,[chemin_fichier_application(nom_c7),"",appui])
+                        for appui in appui_from_c7(c3a)[1]
+                        if "_" not in str(appui) and "/" not in str(appui)
+                ]
+                
+                num_controle=11
                 if prestation[3].ctype and str(prestation[3].value).split("/")[-1] not in appuis:
                     erreurs[1].append(
                                     modele_erreur_c3a(
@@ -550,7 +558,7 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
                                         c3a,
                                         prestation[3].value,
                                         "",
-                                        nom_c7,
+                                        chemin_fichier_application(nom_c7),
                                         1
                                     )
                                 )
@@ -567,11 +575,21 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
                                         1
                                     )
                                 )
+                
+                
         if condition_b:
-            #Contrôle 11 pour colonne N
-            num_controle=11
+            #Contrôle 11 et 38 pour colonne N
+            num_controle=38
             try:
-                (nom_c7,appuis)=appui_from_c7_nom(c3a)
+                if not nom_c7:
+                    (nom_c7,appuis)=appui_from_c7_nom(c3a)
+                    erreurs[2]=[
+                        modele_erreur(num_controle,[chemin_fichier_application(nom_c7),"",appui])
+                        for appui in appui_from_c7(c3a)[1]
+                        if "_" not in str(appui) and "/" not in str(appui)
+                    ]
+                
+                num_controle=11
                 if prestation[5].ctype and str(prestation[5].value).split("/")[-1] not in appuis:
                     erreurs[1].append(
                                     modele_erreur_c3a(
@@ -599,6 +617,7 @@ def verif_c7_travaux_existe(controle10=True,controle11=True):
                 
     alim_rapport_csv(erreurs[0])
     alim_rapport_csv(erreurs[1])
+    alim_rapport_csv(erreurs[2])
     return nb_controles
 
 #Contrôle 5
