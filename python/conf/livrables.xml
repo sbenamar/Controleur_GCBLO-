@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<livrable dpt="exemple">
+    <appuis>
+        <proprietaire nom="orange">
+            <appui chemin="SRO21271VEN_01_D_EXE/07 - Appui/Appui Orange - CAPFT/POTEAU" pre_insee_id="FicheAppui" separateur_insee_id="_" post_insee_id="-DONE"/>
+        </proprietaire>
+    </appuis>
+    <listeC3A>
+        <C3A chemin="SRO21271VEN_01_D_EXE/09 - Commande_Orange"/>
+    </listeC3A>
+    <listeC7>
+        <C7 chemin="SRO21271VEN_01_D_EXE/09 - Commande_Orange"/>
+    </listeC7>
+    <projet chemin="">
+        <couches chemin="SRO21271VEN_01_D_EXE/04 - Projet/PROJET_QGIS/LAYERS">
+            <couche id="point_technique" nom="POINT TECHNIQUE" fichier="POINT_TECHNIQUE.shp"/>
+            <couche id="prises" nom="PRISES" fichier="PRISES.shp"/>
+            <couche id="sro" nom="SRO" fichier="SRO.shp"/>
+            <couche id="infra" nom="INFRASTRUCTURE" fichier="INFRASTRUCTURE.shp"/>
+            <couche id="boitier" nom="BOITIER" fichier="BOITIER.shp"/>
+            <couche id="racco_client" nom="RACCO_CLIENT" fichier="RACCO_CLIENT.shp"/>
+            <couche id="cable" nom="CABLE" fichier="CABLE.shp"/>
+            <couche id="zpbo" nom="ZPBO" fichier="ZPBO.shp"/>
+            <couche id="zsro" nom="ZSRO" fichier="ZSRO.shp"/>
+            <couche id="zpec" nom="ZPEC" fichier="ZPEC.shp"/>
+            <couche id="znro" nom="ZNRO" fichier="ZNRO.shp"/>
+            <couche id="nro" nom="NRO" fichier="NRO.shp"/>
+            <couche id="cable_infra" nom="CABLE_INFRA" fichier="CABLE_INFRA.csv">
+                <jointure id="cable"/>
+                <jointure id="infra"/>
+            </couche>
+        </couches>
+    </projet>
+    <administratif>
+        <DT/>
+        <L49>
+            <dossier/>
+            <recepisse/>
+        </L49>
+        <PMV>
+            <poteau/>
+            <souterrain/>
+        </PMV>
+    </administratif>
+    <conventions>
+        <recap/>
+    </conventions>
+    <financier>
+        <BPU/>
+    </financier>
+    
+</livrable>

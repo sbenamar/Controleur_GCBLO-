@@ -1,0 +1,24 @@
+<!ELEMENT livrable (appuis?,listeC3A?,listeC7?,couches?)>
+<!ATTLIST livrable dpt (CD21|CD39|CD58|CD70|CD71) #REQUIRED>
+<!ELEMENT appuis (proprietaire+)>
+<!ELEMENT proprietaire (appui+)>
+<!ATTLIST proprietaire nom CDATA #REQUIRED>
+<!ELEMENT appui EMPTY>
+<!ATTLIST appui chemin CDATA #REQUIRED
+                pre_insee_id CDATA #IMPLIED
+                separateur_insee_id CDATA #REQUIRED
+                post_insee_id CDATA #IMPLIED>
+<!ELEMENT listC3A (C3A+)>
+<!ELEMENT C3A EMPTY>
+<!ATTLIST C3A chemin CDATA #REQUIRED>
+<!ELEMENT listC7 (C7+)>
+<!ELEMENT C7 EMPTY>
+<!ATTLIST C7 chemin CDATA #REQUIRED>
+<!ELEMENT couches (couche+)>
+<!ATTLIST couches chemin CDATA #REQUIRED>
+<!ELEMENT couche (jointure*)>
+<!ATTLIST couche id (point_technique|prises|sro|infra|boitier|racco_client|cable|zpbo|zsro|zpec|znro|nro|cable_infra) #REQUIRED
+		 nom CDATA #REQUIRED
+		 fichier CDATA #REQUIRED>
+<!ELEMENT jointure EMPTY>
+<!ATTLIST jointure id CDATA #REQUIRED>
