@@ -1,2 +1,13 @@
 *.xls
 /*.xlsx
+*
+*.cpg
+*.dbf
+*.prj
+*.qpj
+*.shp
+*.shx
+*.csv
+*.qgs
+*.pdf
+*.xlsx

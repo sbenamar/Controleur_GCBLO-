@@ -1,24 +1,193 @@
-<!ELEMENT livrable (appuis?,listeC3A?,listeC7?,couches?)>
-<!ATTLIST livrable dpt (CD21|CD39|CD58|CD70|CD71) #REQUIRED>
-<!ELEMENT appuis (proprietaire+)>
-<!ELEMENT proprietaire (appui+)>
-<!ATTLIST proprietaire nom CDATA #REQUIRED>
-<!ELEMENT appui EMPTY>
-<!ATTLIST appui chemin CDATA #REQUIRED
-                pre_insee_id CDATA #IMPLIED
-                separateur_insee_id CDATA #REQUIRED
-                post_insee_id CDATA #IMPLIED>
-<!ELEMENT listC3A (C3A+)>
-<!ELEMENT C3A EMPTY>
-<!ATTLIST C3A chemin CDATA #REQUIRED>
-<!ELEMENT listC7 (C7+)>
-<!ELEMENT C7 EMPTY>
-<!ATTLIST C7 chemin CDATA #REQUIRED>
-<!ELEMENT couches (couche+)>
-<!ATTLIST couches chemin CDATA #REQUIRED>
-<!ELEMENT couche (jointure*)>
-<!ATTLIST couche id (point_technique|prises|sro|infra|boitier|racco_client|cable|zpbo|zsro|zpec|znro|nro|cable_infra) #REQUIRED
-		 nom CDATA #REQUIRED
-		 fichier CDATA #REQUIRED>
-<!ELEMENT jointure EMPTY>
-<!ATTLIST jointure id CDATA #REQUIRED>
+
+<!ELEMENT listeC7  ( C7+ )>
+
+<!ELEMENT financier  ( BPU+ )>
+<!ATTLIST financier
+chemin CDATA #REQUIRED
+>
+
+<!ELEMENT BPU  EMPTY>
+<!ATTLIST BPU
+code_zasro CDATA #IMPLIED
+separateur_zasro_etr CDATA #IMPLIED
+code_etr CDATA #IMPLIED
+nom CDATA #REQUIRED
+>
+
+<!ELEMENT souterrain  EMPTY>
+<!ATTLIST souterrain
+code_zasro CDATA #IMPLIED
+pre_commune CDATA #REQUIRED
+post_commune CDATA #REQUIRED
+>
+
+<!ELEMENT recap  EMPTY>
+<!ATTLIST recap
+code_zasro CDATA #IMPLIED
+nom CDATA #REQUIRED
+>
+
+<!ELEMENT couches  ( couche+ )>
+<!ATTLIST couches
+chemin CDATA #REQUIRED
+>
+
+<!ELEMENT DT  EMPTY>
+<!ATTLIST DT
+chemin CDATA #REQUIRED
+>
+
+<!ELEMENT L49  ( dossier+ , recepisse+ )>
+<!ATTLIST L49
+chemin CDATA #REQUIRED
+>
+
+<!ELEMENT proprietaire  ( poteau+ )>
+<!ATTLIST proprietaire
+nom CDATA #REQUIRED
+>
+
+<!ELEMENT C7  EMPTY>
+<!ATTLIST C7
+chemin CDATA #REQUIRED
+>
+
+<!ELEMENT poteau  EMPTY>
+<!ATTLIST poteau
+code_zasro CDATA #IMPLIED
+pre_commune CDATA #IMPLIED
+post_commune CDATA #IMPLIED
+chemin CDATA #REQUIRED
+pre_insee_id CDATA #IMPLIED
+separateur_insee_id CDATA #REQUIRED
+post_insee_id CDATA #IMPLIED
+>
+
+<!ELEMENT projet  ( planTirage+ , couches )>
+<!ATTLIST projet
+chemin CDATA #REQUIRED
+>
+
+<!ELEMENT administratif  ( DT+ , L49 , PMV )>
+
+<!ELEMENT planTirage  EMPTY>
+<!ATTLIST planTirage
+code_zasro CDATA #IMPLIED
+nom CDATA #REQUIRED
+>
+
+<!ELEMENT FOA  ( chambre+ , annexeD15+ )>
+
+<!ELEMENT jointure  EMPTY>
+<!ATTLIST jointure
+id IDREF #REQUIRED
+>
+
+<!ELEMENT graceTHD  EMPTY>
+<!ATTLIST graceTHD
+chemin CDATA #REQUIRED
+branche_optique CDATA #IMPLIED
+nom CDATA #REQUIRED
+>
+
+<!ELEMENT syntheseEtude  EMPTY>
+<!ATTLIST syntheseEtude
+chemin CDATA #REQUIRED
+code_zasro CDATA #IMPLIED
+nom CDATA #REQUIRED
+>
+
+<!ELEMENT dossier  EMPTY>
+<!ATTLIST dossier
+code_zasro CDATA #IMPLIED
+pre_commune CDATA #IMPLIED
+post_comunne CDATA #IMPLIED
+>
+
+<!ELEMENT commande  ( listeC3A , listeC7 )>
+
+<!ELEMENT optique  ( carnet+ , synoptique+ , plansBoite+ )>
+<!ATTLIST optique
+chemin CDATA #REQUIRED
+>
+
+<!ELEMENT livrable  ( administratif , conventions , financier , projet , PlansGC+ , optique , appuis , FOA , commande , syntheseEtude+ , graceTHD+ )>
+<!ATTLIST livrable
+dpt (CD21|CD39|CD58|CD70|CD71) #REQUIRED
+>
+
+<!ELEMENT PlansGC  EMPTY>
+<!ATTLIST PlansGC
+chemin CDATA #REQUIRED
+code_zasro CDATA #IMPLIED
+nom CDATA #REQUIRED
+>
+
+<!ELEMENT chambre  EMPTY>
+<!ATTLIST chambre
+chemin CDATA #REQUIRED
+pre_insee_id CDATA #IMPLIED
+separateur_insee_id CDATA #REQUIRED
+post_insee_id CDATA #IMPLIED
+>
+
+<!ELEMENT plansBoite  EMPTY>
+<!ATTLIST plansBoite
+chemin CDATA #REQUIRED
+pre_zasro CDATA #IMPLIED
+code_zasro CDATA #IMPLIED
+pre_id CDATA #IMPLIED
+post_id CDATA #IMPLIED
+>
+
+<!ELEMENT C3A  EMPTY>
+<!ATTLIST C3A
+chemin CDATA #REQUIRED
+>
+
+<!ELEMENT couche  ( jointure* )>
+<!ATTLIST couche
+id ID #REQUIRED
+nom CDATA #REQUIRED
+fichier CDATA #REQUIRED
+>
+
+<!ELEMENT carnet  EMPTY>
+<!ATTLIST carnet
+type CDATA #REQUIRED
+code_zasro CDATA #IMPLIED
+nom CDATA #REQUIRED
+>
+
+<!ELEMENT listeC3A  ( C3A+ )>
+
+<!ELEMENT annexeD15  EMPTY>
+<!ATTLIST annexeD15
+chemin CDATA #REQUIRED
+pre_pt CDATA #IMPLIED
+separateur_pt1_pt2 CDATA #REQUIRED
+post_pt CDATA #IMPLIED
+>
+
+<!ELEMENT PMV  ( poteau , souterrain+ )>
+
+<!ELEMENT conventions  ( recap+ )>
+<!ATTLIST conventions
+chemin CDATA #REQUIRED
+>
+
+<!ELEMENT recepisse  EMPTY>
+<!ATTLIST recepisse
+code_zasro CDATA #IMPLIED
+pre_commune CDATA #IMPLIED
+post_comunne CDATA #IMPLIED
+>
+
+<!ELEMENT appuis  ( proprietaire+ )>
+
+<!ELEMENT synoptique  EMPTY>
+<!ATTLIST synoptique
+type CDATA #REQUIRED
+code_zasro CDATA #IMPLIED
+nom CDATA #REQUIRED
+>

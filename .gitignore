@@ -6,3 +6,6 @@
 /Commande/tests
 /Commande/tests/*.XLSX
 /livrable/*
+dist
+exe2
+exe
