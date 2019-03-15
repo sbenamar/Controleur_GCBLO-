@@ -724,4 +724,62 @@ def verif_struct_shape(controles={}):
         verif_champs_shape(num_controle,conf["nro_path"],shape_nro_nom,champs_nro)
     
     return nb_controles
+
+#Contrôle 39
+def verif_couches_exist(controle=True):
+    if not controle:
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
     
+    num_controle=39
+    erreurs=[
+        modele_erreur(
+            num_controle,
+            [conf["{}_path".format(point)],"",""]
+        )
+        for point in liste_couches if not get_shape(conf["{}_path".format(point)],exec("shape_{}_nom".format(point)),True)
+    ]
+    
+    alim_rapport_csv(erreurs)
+    return nb_controles
+
+#Contrôle 48
+def verif_plan_tirage_exist(controle=True):
+    if not controle:
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+    
+    num_controle=48
+    path=conf["projet_path"]
+    fichier=chemin_fichier_application(path)
+    erreurs=[
+        modele_erreur(
+            num_controle,
+            [fichier if fichier else projet_dossier_libelle,"",""]
+        )
+    ] if not find_plan_tirage(path,pattern_plan_tirage) else []
+    
+    alim_rapport_csv(erreurs)
+    return nb_controles
+
+#Contrôle 47
+def verif_dossier_qgis_exist(controle=True):
+    if not controle:
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+    
+    num_controle=47
+    path=conf["projet_path"]
+    fichier=chemin_fichier_application(path)
+    erreurs=[
+        modele_erreur(
+            num_controle,
+            [fichier if fichier else projet_dossier_libelle,"",""]
+        )
+    ] if not all([x in ''.join(glob.glob(os.path.join(path,"*"))) for x in ["LAYERS",".qgs"]]) else []
+    
+    alim_rapport_csv(erreurs)
+    return nb_controles

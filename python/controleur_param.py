@@ -1,6 +1,7 @@
 from controles import *
 
 #Initialisation du gestionnaire de QGIS
+QgsApplication.setPrefixPath(qgis_prefix_path,True)
 qgs = QgsApplication([], False)
 qgs.initQgis()
 
@@ -109,9 +110,27 @@ def lancer_controles(widget):
     
     try:
         step_ctrl+=verif_struct_shape({k: v for k, v in list_controle_exe.items() if 26 <= k <= 37})
-        pbar_chargement(pbar,100,100)
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
     except Exception as e:
         return log(e,413)
+    
+    try:
+        step_ctrl+=verif_couches_exist(list_controle_exe[39])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,416)
+    
+    try:
+        step_ctrl+=verif_dossier_qgis_exist(list_controle_exe[47])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,414)
+    
+    try:
+        step_ctrl+=verif_plan_tirage_exist(list_controle_exe[48])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,415)
     
     #Affichage du message de fin confirmant la réussite des controles
     msg_succes()

@@ -47,18 +47,18 @@
             <poteau chemin="A REMPLIR" pre_insee_id="OPTIONNEL" separateur_insee_id="A REMPLIR" post_insee_id="OPTIONNEL"/>
         </proprietaire>
     </appuis>
-<FOA>
-	<chambre chemin="A REMPLIR" pre_insee_id="OPTIONNEL" separateur_insee_id="A REMPLIR" post_insee_id="OPTIONNEL" />
-	<annexeD15 chemin="A REMPLIR" pre_pt="OPTIONNEL" separateur_pt1_pt2="A REMPLIR" post_pt="OPTIONNEL"/> 
-</FOA>
-<commande>
-	<listeC3A>
-        	<C3A chemin="A REMPLIR"/>
-    	</listeC3A>
-    	<listeC7>
-        	<C7 chemin="A REMPLIR"/>
-    	</listeC7>
-</commande>
-<syntheseEtude chemin="A REMPLIR" code_zasro="OPTIONNEL" nom="A REMPLIR" />
-<graceTHD chemin="A REMPLIR" branche_optique="OPTIONNEL" nom="A REMPLIR" />
+    <FOA>
+        <chambre chemin="A REMPLIR" pre_insee_id="OPTIONNEL" separateur_insee_id="A REMPLIR" post_insee_id="OPTIONNEL" />
+        <annexeD15 chemin="A REMPLIR" pre_pt="OPTIONNEL" separateur_pt1_pt2="A REMPLIR" post_pt="OPTIONNEL"/> 
+    </FOA>
+    <commande>
+        <listeC3A>
+                <C3A chemin="A REMPLIR"/>
+            </listeC3A>
+            <listeC7>
+                <C7 chemin="A REMPLIR"/>
+            </listeC7>
+    </commande>
+    <syntheseEtude chemin="A REMPLIR" code_zasro="OPTIONNEL" nom="A REMPLIR" />
+    <graceTHD chemin="A REMPLIR" branche_optique="OPTIONNEL" nom="A REMPLIR" />
 </livrable>

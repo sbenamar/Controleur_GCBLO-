@@ -143,18 +143,21 @@ def format_id_pt(id_pt,insee):
     return id_pt if "_" in id_pt or not insee else "{}_{}".format(insee,id_pt)
 
 #Récupérer, ouvrir et lister les ligne d'une shape
-def get_shape(chemin,nom_shape):
+def get_shape(chemin,nom_shape,check_exist=False):
     layer = QgsVectorLayer(chemin, nom_shape , "ogr")
     
     if not layer.isValid():
-        raise Exception(format_shape_invalide.format(chemin))
+        if check_exist:
+            return False
+        else:
+            raise Exception(format_shape_invalide.format(chemin))
     
     return layer,layer.getFeatures()
 
 #Vérification de la présence des champs nécessaires dans une shape
 def verif_champs_shape(num_controle,chemin_shape,nom_shape,champs):
     erreur=[]
-    shape,list_point_technique = get_shape(chemin_shape,nom_shape)
+    shape,list_points = get_shape(chemin_shape,nom_shape)
     champs_key=[k for k in champs if param_format.format(conf["zone"],conf["type_lvrb"]) in champs[k]]
     
     if not all(key.upper() in map(str.upper,shape.fields().names()) for key in champs_key):
@@ -302,6 +305,10 @@ def modele_erreur_c3a(num_controle,c3a,point_a,point_b,source_b="",nb_champs=2):
             ]
     
     return modele_erreur(num_controle,erreur)
+
+#Vérifier l'existance du fichier plan_tirange 
+def find_plan_tirage(path,pattern):
+    return any([pattern.match(str(fichier).lower()) for fichier in glob.glob(os.path.join(path,"*.pdf"))])
 
 #Annonce la fin du programme
 def fin_programme():

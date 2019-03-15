@@ -10,6 +10,11 @@ from qgis.core import *
 #chemin_courant permettra de servir de base pour la création des autres chemins
 chemin_courant=os.getcwd()
 
+if "python" in chemin_courant:
+    qgis_prefix_path=os.path.join(chemin_courant,*["lib","qgis"])
+else:
+    qgis_prefix_path=os.path.join(chemin_courant,*["python","lib","qgis"])
+                                  
 prefixe_rapport_csv="rapport_erreurs"
 libelle_rapport_csv=prefixe_rapport_csv+'.csv'
 chemin_rapport=os.path.join(chemin_courant,"rapports")
@@ -197,6 +202,11 @@ zsro_path=os.path.join(chemin_exe,"ZSRO.shp")
 zpec_path=os.path.join(chemin_exe,"ZPEC.shp")
 znro_path=os.path.join(chemin_exe,"ZNRO.shp")
 nro_path=os.path.join(chemin_exe,"NRO.shp")
+route_path=os.path.join(chemin_exe,"ROUTE.shp")
+bati_path=os.path.join(chemin_exe,"BATI.shp")
+cadastre_path=os.path.join(chemin_exe,"CADASTRE.shp")
+commune_path=os.path.join(chemin_exe,"COMMUNE.shp")
+projet_path=chemin_exe
 
 conf_dpt["testv2"]={
     "dpt":"testv2",
@@ -208,6 +218,7 @@ conf_dpt["testv2"]={
     "format_arbo_c7":format_arbo_c7,
     "chemin_c3a":chemin_c3a,
     "format_chemin_c7":format_chemin_c7,
+    "projet_path":projet_path,
     "point_technique_path":point_technique_path,
     "prises_path":prises_path,
     "sro_path":sro_path,
@@ -219,9 +230,14 @@ conf_dpt["testv2"]={
     "zsro_path":zsro_path,
     "zpec_path":zpec_path,
     "znro_path":znro_path,
-    "nro_path":nro_path
+    "route_path":route_path,
+    "bati_path":bati_path,
+    "cadastre_path":cadastre_path,
+    "commune_path":commune_path,
+    "nro_path":nro_path,
 }
 
+liste_couches=["point_technique","prises","sro","infra","boitier","racco_client","cable","zpbo","zsro","zpec","znro","nro","route","bati","cadastre","commune"]
 
 conf_dpt["CD21"],conf_dpt["CD39"],conf_dpt["CD58"],conf_dpt["CD70"],conf_dpt["CD71"]=[conf_dpt["testv2"].copy() for nb in range(5)]
 conf_dpt["CD21"]["dpt"]="CD21"
@@ -479,8 +495,6 @@ try:
         'lt_code_ext':[param_distri_exe,param_transport_exe]
     }
     
-    qgis_prefix_path=r".\lib\qgis"
-    
     ind_premiere_ligne_c3a=12-1
     ind_premiere_ligne_c7=20-1
     type_imp=["CONDUITE FT","AERIEN FT"]
@@ -537,6 +551,10 @@ try:
     erreur_controle36="La structuration des champs de la couche ZNRO est incorrecte"
     erreur_controle37="La structuration des champs de la couche NRO est incorrecte"
     erreur_controle38="Le format du numéro d'appui dans la C7 est incorrect"
+    erreur_controle39="La couche est manquante"
+    erreur_controle47="Le répertoire LAYERS ou le fichier .qgs est introuvable dans le répertoire PROJET_QGIS"
+    erreur_controle48="Le fichier de plan de tirage est introuvable dans le répertoire PROJET_QGIS"
+    
     
     criticite={
         "mineure":"Mineure",
@@ -561,6 +579,9 @@ try:
     pre_entete_3= ["Commande d'accès","Règle GCBLO"]
     pre_entete_4= ["Commande d'accès","Cohérence"]
     pre_entete_5= ["Commande d'accès","Structuration des couches"]
+    pre_entete_6= ["Complétude","Plan de tirage"]
+    pre_entete_7= ["Complétude","Projet QGIS"]
+    pre_entete_8= ["Complétude","QGIS"]
     
     pre_entete_lien={
         1:pre_entete_1,
@@ -599,7 +620,10 @@ try:
         35:pre_entete_5,
         36:pre_entete_5,
         37:pre_entete_5,
-        38:pre_entete_3
+        38:pre_entete_3,
+        39:pre_entete_8,
+        47:pre_entete_7,
+        48:pre_entete_6
     }
     
     post_entete_controle1=[erreur_controle1,criticite['bloquant']]
@@ -640,6 +664,9 @@ try:
     post_entete_controle36=[erreur_controle36,criticite['majeure']]
     post_entete_controle37=[erreur_controle37,criticite['majeure']]
     post_entete_controle38=[erreur_controle38,criticite['avertissement']]
+    post_entete_controle39=[erreur_controle39,criticite['majeure']]
+    post_entete_controle47=[erreur_controle47,criticite['majeure']]
+    post_entete_controle48=[erreur_controle48,criticite['majeure']]
 
     
     lib_nb_erreurs="Nombre d'erreurs"
@@ -647,6 +674,7 @@ try:
     c7_list_libelle="Ensemble des C7"
     poteau_list_libelle="Ensemble des fiches poteaux"
     cable_infra_list_libelle="Ensemble des cables infra"
+    projet_dossier_libelle="Dossier PROJET QGIS"
     lib_a="A"
     lib_b="B"
     msg_erreur=""
@@ -665,6 +693,10 @@ try:
     shape_zsro_nom="ZSRO"
     shape_znro_nom="ZNRO"
     shape_nro_nom="NRO"
+    shape_bati_nom="BATI"
+    shape_cadastre_nom="CADASTRE"
+    shape_route_nom="ROUTE"
+    shape_commune_nom="COMMUNE"
     
     combinaison_type="{} - {}"
     num_ligne="Ligne {}"
@@ -731,6 +763,8 @@ try:
     #Format attendu du nom des points et fiches poteaux
     pattern_nom_point_souple = re.compile("^\d{5}[_/]\w+")
     pattern_nom_point = re.compile("^\d{5}/\w+")
+    
+    pattern_plan_tirage=re.compile("^(.)*plan_tirage(.)*.pdf")
         
 except Exception as e:
     log(e,11)
