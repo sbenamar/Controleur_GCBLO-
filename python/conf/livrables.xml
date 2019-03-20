@@ -4,12 +4,12 @@
     <administratif>
         <DT chemin="01 - Administratif/1.1 - DT"/>
         <L49 chemin="01 - Administratif/1.2 - L49">
-            <dossier pre_commune="L49_" post_comunne="_dossier"/>
-            <recepisse pre_commune="L49_" post_comunne="_recepisse"/>
+            <dossier pre_commune="L49_" post_commune="_dossier"/>
+            <recepisse pre_commune="L49_" post_commune="_recepisse"/>
         </L49>
         <PMV>
-            <poteau pre_commune="_PMV_" post_commune="_aérien"/>
-            <souterrain pre_commune="_PMV_" post_commune="_conduite"/>
+            <poteau code_zasro="true" pre_commune="_PMV_" post_commune="_aérien"/>
+            <souterrain code_zasro="true" pre_commune="_PMV_" post_commune="_conduite"/>
         </PMV>
     </administratif>
     <conventions chemin="02 - Convention">
