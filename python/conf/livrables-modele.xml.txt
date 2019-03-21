@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<livrable dpt="A REMPLIR">
+    <administratif>
+        <DT chemin="A REMPLIR"/>
+        <L49 chemin="A REMPLIR">
+            <dossier code_zasro="OPTIONNEL" pre_commune="OPTIONNEL" post_comunne="OPTIONNEL"/>
+            <recepisse code_zasro="OPTIONNEL" pre_commune="OPTIONNEL" post_comunne="OPTIONNEL"/>
+        </L49>
+        <PMV>
+            <poteau code_zasro="OPTIONNEL" pre_commune="OPTIONNEL" post_commune="OPTIONNEL"/>
+            <souterrain code_zasro="OPTIONNEL" pre_commune="OPTIONNEL" post_commune="OPTIONNEL"/>
+        </PMV>
+    </administratif>
+    <conventions chemin="A REMPLIR">
+        <recap code_zasro="OPTIONNEL" nom="A REMPLIR"/>
+    </conventions>
+    <financier chemin="A REMPLIR" >
+        <BPU code_zasro="OPTIONNEL" separateur_zasro_etr="OPTIONNEL" code_etr="OPTIONNEL" nom="OBLIGATOIRE" />
+    </financier>
+        <projet chemin="A REMPLIR">
+    	<planTirage code_zasro="OPTIONNEL" nom="A REMPLIR"/>
+        <couches chemin="A REMPLIR">
+            <couche id="point_technique" nom="A REMPLIR" fichier="A REMPLIR"/>
+            <couche id="prises" nom="A REMPLIR" fichier="A REMPLIR"/>
+            <couche id="sro" nom="A REMPLIR" fichier="A REMPLIR"/>
+            <couche id="infra" nom="A REMPLIR" fichier="A REMPLIR"/>
+            <couche id="boitier" nom="A REMPLIR" fichier="A REMPLIR"/>
+            <couche id="racco_client" nom="A REMPLIR" fichier="A REMPLIR"/>
+            <couche id="cable" nom="A REMPLIR" fichier="A REMPLIR"/>
+            <couche id="zpbo" nom="A REMPLIR" fichier="A REMPLIR"/>
+            <couche id="zsro" nom="A REMPLIR" fichier="A REMPLIR"/>
+            <couche id="zpec" nom="A REMPLIR" fichier="A REMPLIR"/>
+            <couche id="znro" nom="A REMPLIR" fichier="A REMPLIR"/>
+            <couche id="nro" nom="A REMPLIR" fichier="A REMPLIR"/>
+        </couches>
+    </projet>
+    <PlansGC chemin="A REMPLIR" code_zasro="OPTIONNEL" nom="A REMPLIR"/>
+    <optique chemin="A REMPLIR">
+    	<carnet type="cable" code_zasro="OPTIONNEL" nom="A REMPLIR"/>
+    	<synoptique type="cable" code_zasro="OPTIONNEL" nom="A REMPLIR"/>
+    	<synoptique type="fibre" code_zasro="OPTIONNEL" nom="A REMPLIR"/>
+    	<plansBoite chemin="A REMPLIR" pre_code_zasro="OPTIONNEL" code_zasro="OPTIONNEL" pre_id="OPTIONNEL" post_id="OPTIONNEL" />
+    </optique>
+    <appuis>
+        <proprietaire nom="A REMPLIR">
+            <poteau chemin="A REMPLIR" pre_insee_id="OPTIONNEL" separateur_insee_id="A REMPLIR" post_insee_id="OPTIONNEL"/>
+        </proprietaire>
+    </appuis>
+    <FOA>
+        <chambre chemin="A REMPLIR" pre_insee_id="OPTIONNEL" separateur_insee_id="A REMPLIR" post_insee_id="OPTIONNEL" />
+        <annexeD15 chemin="A REMPLIR" pre_pt1_pt2="OPTIONNEL" separateur_pt1_pt2="A REMPLIR" post_pt1_pt2="OPTIONNEL"/> 
+    </FOA>
+    <commande>
+        <listeC3A>
+                <C3A chemin="A REMPLIR"/>
+            </listeC3A>
+            <listeC7>
+                <C7 chemin="A REMPLIR"/>
+            </listeC7>
+    </commande>
+    <syntheseEtude chemin="A REMPLIR" code_zasro="OPTIONNEL" nom="A REMPLIR" />
+    <graceTHD chemin="A REMPLIR" branche_optique="OPTIONNEL" nom="A REMPLIR" />
+</livrable>

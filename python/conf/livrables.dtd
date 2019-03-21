@@ -1,193 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
 
-<!ELEMENT listeC7  ( C7+ )>
+<!ELEMENT livrables (livrable)+>
+<!ATTLIST livrables
+  xmlns CDATA #FIXED ''>
 
-<!ELEMENT financier  ( BPU+ )>
-<!ATTLIST financier
-chemin CDATA #REQUIRED
->
-
-<!ELEMENT BPU  EMPTY>
-<!ATTLIST BPU
-code_zasro CDATA #IMPLIED
-separateur_zasro_etr CDATA #IMPLIED
-code_etr CDATA #IMPLIED
-nom CDATA #REQUIRED
->
-
-<!ELEMENT souterrain  EMPTY>
-<!ATTLIST souterrain
-code_zasro CDATA #IMPLIED
-pre_commune CDATA #REQUIRED
-post_commune CDATA #REQUIRED
->
-
-<!ELEMENT recap  EMPTY>
-<!ATTLIST recap
-code_zasro CDATA #IMPLIED
-nom CDATA #REQUIRED
->
-
-<!ELEMENT couches  ( couche+ )>
-<!ATTLIST couches
-chemin CDATA #REQUIRED
->
-
-<!ELEMENT DT  EMPTY>
-<!ATTLIST DT
-chemin CDATA #REQUIRED
->
-
-<!ELEMENT L49  ( dossier+ , recepisse+ )>
-<!ATTLIST L49
-chemin CDATA #REQUIRED
->
-
-<!ELEMENT proprietaire  ( poteau+ )>
-<!ATTLIST proprietaire
-nom CDATA #REQUIRED
->
-
-<!ELEMENT C7  EMPTY>
-<!ATTLIST C7
-chemin CDATA #REQUIRED
->
-
-<!ELEMENT poteau  EMPTY>
-<!ATTLIST poteau
-code_zasro CDATA #IMPLIED
-pre_commune CDATA #IMPLIED
-post_commune CDATA #IMPLIED
-chemin CDATA #REQUIRED
-pre_insee_id CDATA #IMPLIED
-separateur_insee_id CDATA #REQUIRED
-post_insee_id CDATA #IMPLIED
->
-
-<!ELEMENT projet  ( planTirage+ , couches )>
-<!ATTLIST projet
-chemin CDATA #REQUIRED
->
-
-<!ELEMENT administratif  ( DT+ , L49 , PMV )>
-
-<!ELEMENT planTirage  EMPTY>
-<!ATTLIST planTirage
-code_zasro CDATA #IMPLIED
-nom CDATA #REQUIRED
->
-
-<!ELEMENT FOA  ( chambre+ , annexeD15+ )>
-
-<!ELEMENT jointure  EMPTY>
-<!ATTLIST jointure
-id IDREF #REQUIRED
->
-
-<!ELEMENT graceTHD  EMPTY>
-<!ATTLIST graceTHD
-chemin CDATA #REQUIRED
-branche_optique CDATA #IMPLIED
-nom CDATA #REQUIRED
->
-
-<!ELEMENT syntheseEtude  EMPTY>
-<!ATTLIST syntheseEtude
-chemin CDATA #REQUIRED
-code_zasro CDATA #IMPLIED
-nom CDATA #REQUIRED
->
-
-<!ELEMENT dossier  EMPTY>
-<!ATTLIST dossier
-code_zasro CDATA #IMPLIED
-pre_commune CDATA #IMPLIED
-post_comunne CDATA #IMPLIED
->
-
-<!ELEMENT commande  ( listeC3A , listeC7 )>
-
-<!ELEMENT optique  ( carnet+ , synoptique+ , plansBoite+ )>
-<!ATTLIST optique
-chemin CDATA #REQUIRED
->
-
-<!ELEMENT livrable  ( administratif , conventions , financier , projet , PlansGC+ , optique , appuis , FOA , commande , syntheseEtude+ , graceTHD+ )>
+<!ELEMENT livrable (administratif,conventions,financier,projet,PlansGC,
+                    optique,appuis,FOA,commande,syntheseEtude,graceTHD)>
 <!ATTLIST livrable
-dpt (CD21|CD39|CD58|CD70|CD71) #REQUIRED
->
+  xmlns CDATA #FIXED ''
+  dpt NMTOKEN #REQUIRED>
 
-<!ELEMENT PlansGC  EMPTY>
-<!ATTLIST PlansGC
-chemin CDATA #REQUIRED
-code_zasro CDATA #IMPLIED
-nom CDATA #REQUIRED
->
+<!ELEMENT administratif (DT,L49,PMV)>
+<!ATTLIST administratif
+  xmlns CDATA #FIXED ''
+  chemin CDATA #IMPLIED>
 
-<!ELEMENT chambre  EMPTY>
-<!ATTLIST chambre
-chemin CDATA #REQUIRED
-pre_insee_id CDATA #IMPLIED
-separateur_insee_id CDATA #REQUIRED
-post_insee_id CDATA #IMPLIED
->
-
-<!ELEMENT plansBoite  EMPTY>
-<!ATTLIST plansBoite
-chemin CDATA #REQUIRED
-pre_zasro CDATA #IMPLIED
-code_zasro CDATA #IMPLIED
-pre_id CDATA #IMPLIED
-post_id CDATA #IMPLIED
->
-
-<!ELEMENT C3A  EMPTY>
-<!ATTLIST C3A
-chemin CDATA #REQUIRED
->
-
-<!ELEMENT couche  ( jointure* )>
-<!ATTLIST couche
-id ID #REQUIRED
-nom CDATA #REQUIRED
-fichier CDATA #REQUIRED
->
-
-<!ELEMENT carnet  EMPTY>
-<!ATTLIST carnet
-type CDATA #REQUIRED
-code_zasro CDATA #IMPLIED
-nom CDATA #REQUIRED
->
-
-<!ELEMENT listeC3A  ( C3A+ )>
-
-<!ELEMENT annexeD15  EMPTY>
-<!ATTLIST annexeD15
-chemin CDATA #REQUIRED
-pre_pt CDATA #IMPLIED
-separateur_pt1_pt2 CDATA #REQUIRED
-post_pt CDATA #IMPLIED
->
-
-<!ELEMENT PMV  ( poteau , souterrain+ )>
-
-<!ELEMENT conventions  ( recap+ )>
+<!ELEMENT conventions (recap)>
 <!ATTLIST conventions
-chemin CDATA #REQUIRED
->
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>
 
-<!ELEMENT recepisse  EMPTY>
-<!ATTLIST recepisse
-code_zasro CDATA #IMPLIED
-pre_commune CDATA #IMPLIED
-post_comunne CDATA #IMPLIED
->
+<!ELEMENT financier (BPU)>
+<!ATTLIST financier
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>
 
-<!ELEMENT appuis  ( proprietaire+ )>
+<!ELEMENT projet (planTirage,projetQGIS)>
+<!ATTLIST projet
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>
 
-<!ELEMENT synoptique  EMPTY>
+<!ELEMENT PlansGC (nommage)>
+<!ATTLIST PlansGC
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>
+
+<!ELEMENT optique (carnet,synoptique+,plansBoite)>
+<!ATTLIST optique
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>
+
+<!ELEMENT appuis (proprietaire)+>
+<!ATTLIST appuis
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT FOA (chambre,annexeD15)>
+<!ATTLIST FOA
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT commande (listeC3A,listeC7)>
+<!ATTLIST commande
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT syntheseEtude (nommage)>
+<!ATTLIST syntheseEtude
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>
+
+<!ELEMENT graceTHD (nommage)>
+<!ATTLIST graceTHD
+  xmlns CDATA #FIXED ''
+  chemin NMTOKEN #REQUIRED>
+
+<!ELEMENT DT EMPTY>
+<!ATTLIST DT
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>
+
+<!ELEMENT L49 (dossier,recepisse)>
+<!ATTLIST L49
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>
+
+<!ELEMENT PMV (poteau,souterrain)>
+<!ATTLIST PMV
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>
+
+<!ELEMENT recap (nommage)>
+<!ATTLIST recap
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT BPU (nommage)>
+<!ATTLIST BPU
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT planTirage (nommage)>
+<!ATTLIST planTirage
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT projetQGIS (fichierQGIS,couches)>
+<!ATTLIST projetQGIS
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>
+
+<!ELEMENT carnet (nommage)>
+<!ATTLIST carnet
+  xmlns CDATA #FIXED ''
+  type NMTOKEN #REQUIRED>
+
+<!ELEMENT synoptique (nommage)>
 <!ATTLIST synoptique
-type CDATA #REQUIRED
-code_zasro CDATA #IMPLIED
-nom CDATA #REQUIRED
->
+  xmlns CDATA #FIXED ''
+  type NMTOKEN #REQUIRED>
+
+<!ELEMENT plansBoite (nommage)>
+<!ATTLIST plansBoite
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>
+
+<!ELEMENT proprietaire (dossier,poteau)>
+<!ATTLIST proprietaire
+  xmlns CDATA #FIXED ''
+  nom NMTOKEN #REQUIRED>
+
+<!ELEMENT chambre (nommage)>
+<!ATTLIST chambre
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>
+
+<!ELEMENT annexeD15 (nommage)>
+<!ATTLIST annexeD15
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>
+
+<!ELEMENT listeC3A (C3A)>
+<!ATTLIST listeC3A
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT listeC7 (C7)>
+<!ATTLIST listeC7
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT recepisse (nommage)>
+<!ATTLIST recepisse
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT souterrain (nommage)>
+<!ATTLIST souterrain
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT fichierQGIS (nommage)>
+<!ATTLIST fichierQGIS
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT couches (couche)+>
+<!ATTLIST couches
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>
+
+<!ELEMENT C3A EMPTY>
+<!ATTLIST C3A
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>
+
+<!ELEMENT C7 EMPTY>
+<!ATTLIST C7
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>
+
+<!ELEMENT couche (jointure)*>
+<!ATTLIST couche
+  xmlns CDATA #FIXED ''
+  fichier NMTOKEN #REQUIRED
+  id NMTOKEN #REQUIRED
+  nom CDATA #REQUIRED>
+
+<!ELEMENT jointure EMPTY>
+<!ATTLIST jointure
+  xmlns CDATA #FIXED ''
+  id NMTOKEN #REQUIRED>
+
+<!ELEMENT dossier (nommage)?>
+<!ATTLIST dossier
+  xmlns CDATA #FIXED ''
+  chemin CDATA #IMPLIED>
+
+<!ELEMENT nommage EMPTY>
+<!ATTLIST nommage
+  xmlns CDATA #FIXED ''
+  branche_optique NMTOKEN #IMPLIED
+  code_etr NMTOKEN #IMPLIED
+  code_zasro NMTOKEN #IMPLIED
+  nom CDATA #IMPLIED
+  post_commune NMTOKEN #IMPLIED
+  pre_canton CDATA #IMPLIED
+  pre_code_zasro NMTOKEN #IMPLIED
+  pre_commune NMTOKEN #IMPLIED
+  pre_id NMTOKEN #IMPLIED
+  pre_insee_id NMTOKEN #IMPLIED
+  pre_pt CDATA #IMPLIED
+  separateur_insee_id NMTOKEN #IMPLIED
+  separateur_pt1_pt2 NMTOKEN #IMPLIED
+  separateur_zasro_etr NMTOKEN #IMPLIED>
+
+<!ELEMENT poteau (nommage)+>
+<!ATTLIST poteau
+  xmlns CDATA #FIXED ''
+  chemin CDATA #IMPLIED>

@@ -75,7 +75,6 @@ try:
 except Exception as e:
     print("Une erreur est survenue (code: 1)")
 
-
 chemin_exe=os.path.join(chemin_courant,"exe")
 exe_projet_racine=os.path.join(chemin_exe,"04 - Projet")
 

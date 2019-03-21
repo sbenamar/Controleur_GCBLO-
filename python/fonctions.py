@@ -156,18 +156,27 @@ def get_shape(chemin,nom_shape,check_exist=False):
 
 #Vérification de la présence des champs nécessaires dans une shape
 def verif_champs_shape(num_controle,chemin_shape,nom_shape,champs):
-    erreur=[]
-    shape,list_points = get_shape(chemin_shape,nom_shape)
-    champs_key=[k for k in champs if param_format.format(conf["zone"],conf["type_lvrb"]) in champs[k]]
-    
-    if not all(key.upper() in map(str.upper,shape.fields().names()) for key in champs_key):
+    erreurs=[]
+    try:
+        shape,list_points = get_shape(chemin_shape,nom_shape)
+        champs_key=[k for k in champs if param_format.format(conf["zone"],conf["type_lvrb"]) in champs[k]]
+        
+        if not all(key.upper() in map(str.upper,shape.fields().names()) for key in champs_key):
+            erreurs = [
+                modele_erreur(
+                    num_controle,
+                    [chemin_fichier_application(chemin_shape),"",""]
+                )
+            ]
+    except:
         erreurs = [
             modele_erreur(
                 num_controle,
                 [chemin_fichier_application(chemin_shape),"",""]
             )
         ]
-        alim_rapport_csv(erreurs)
+        
+    alim_rapport_csv(erreurs)
 
 #Récupération de la première feuille du fichier C7
 def get_feuille_c7(c3a):
