@@ -47,7 +47,7 @@ def prefixe_variable(elem,type_pre="nommage"):
 
 parser = etree.XMLParser(dtd_validation=True)
 try:
-    root = etree.parse("conf/livrables.xml",parser)
+    root = etree.parse("python/conf/livrables.xml",parser)
 except etree.XMLSyntaxError as e:
     print("Mauvais schema XML: "+str(e))
     exit()

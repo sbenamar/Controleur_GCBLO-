@@ -131,6 +131,25 @@ def lancer_controles(widget):
         pbar_chargement(pbar,step_ctrl,nb_ctrl)
     except Exception as e:
         return log(e,415)
+
+    try:
+        step_ctrl+=verif_fichier_enedis_pt(list_controle_exe[52])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,417)
+
+    try:
+        step_ctrl+=verif_fichier_appui_orange_pt(list_controle_exe[53])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,418)
+    
+    try:
+        step_ctrl+=verif_fichier_chambre_pt(list_controle_exe[54])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,419)
+    
     
     #Affichage du message de fin confirmant la réussite des controles
     msg_succes()

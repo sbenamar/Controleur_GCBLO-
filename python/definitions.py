@@ -184,7 +184,7 @@ conf_dpt["testv1"]={
 chemin_exe=os.path.join(chemin_courant,"Commande")
 commande_orange_path=chemin_exe
 cable_infra_csv_path=os.path.join(chemin_exe,"CABLE_INFRA.csv")
-appui_orange_path=os.path.join(chemin_exe,"Appui aérien")
+appui_orange_path=os.path.join(chemin_exe,"Appuis aériens Orange")
 arbo_c3a="*C3A*.xls*"
 format_arbo_c7="*{}*C7*.xls*"
 chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
@@ -206,6 +206,8 @@ bati_path=os.path.join(chemin_exe,"BATI.shp")
 cadastre_path=os.path.join(chemin_exe,"CADASTRE.shp")
 commune_path=os.path.join(chemin_exe,"COMMUNE.shp")
 projet_path=chemin_exe
+chambres_path=os.path.join(chemin_exe,"Chambres")
+appuis_enedis_dossier_path=os.path.join(chemin_exe,"Etude Comac")
 
 conf_dpt["testv2"]={
     "dpt":"testv2",
@@ -234,6 +236,8 @@ conf_dpt["testv2"]={
     "cadastre_path":cadastre_path,
     "commune_path":commune_path,
     "nro_path":nro_path,
+    "chambres_path":chambres_path,
+    "appuis_enedis_dossier_path":appuis_enedis_dossier_path
 }
 
 liste_couches=["point_technique","prises","sro","infra","boitier","racco_client","cable","zpbo","zsro","zpec","znro","nro","route","bati","cadastre","commune"]
@@ -553,6 +557,9 @@ try:
     erreur_controle39="La couche est manquante"
     erreur_controle47="Le répertoire LAYERS ou le fichier .qgs est introuvable dans le répertoire PROJET_QGIS"
     erreur_controle48="Le fichier de plan de tirage est introuvable dans le répertoire PROJET_QGIS"
+    erreur_controle52="Il existe des points techniques Enedis mais le dossier Enedic est vide"
+    erreur_controle53="Le fichier appui est manquant pour ce point technique"
+    erreur_controle54="Le fichier chambre est manquant pour ce point technique"
     
     
     criticite={
@@ -581,6 +588,9 @@ try:
     pre_entete_6= ["Complétude","Plan de tirage"]
     pre_entete_7= ["Complétude","Projet QGIS"]
     pre_entete_8= ["Complétude","QGIS"]
+    pre_entete_9= ["Complétude","Etude CAPFT"]
+    pre_entete_10= ["Complétude","FOA"]
+    pre_entete_11= ["Complétude","Etude Comac"]
     
     pre_entete_lien={
         1:pre_entete_1,
@@ -622,7 +632,10 @@ try:
         38:pre_entete_3,
         39:pre_entete_8,
         47:pre_entete_7,
-        48:pre_entete_6
+        48:pre_entete_6,
+        53:pre_entete_9,
+        54:pre_entete_10,
+        52:pre_entete_11
     }
     
     post_entete_controle1=[erreur_controle1,criticite['bloquant']]
@@ -666,14 +679,18 @@ try:
     post_entete_controle39=[erreur_controle39,criticite['majeure']]
     post_entete_controle47=[erreur_controle47,criticite['majeure']]
     post_entete_controle48=[erreur_controle48,criticite['majeure']]
-
+    post_entete_controle52=[erreur_controle52,criticite['majeure']]
+    post_entete_controle53=[erreur_controle53,criticite['majeure']]
+    post_entete_controle54=[erreur_controle54,criticite['majeure']]
     
     lib_nb_erreurs="Nombre d'erreurs"
     c3a_list_libelle="Ensemble des C3A"
     c7_list_libelle="Ensemble des C7"
     poteau_list_libelle="Ensemble des fiches poteaux"
+    chambre_list_libelle="Ensemble des fiches chambres"
     cable_infra_list_libelle="Ensemble des cables infra"
     projet_dossier_libelle="Dossier PROJET QGIS"
+    dossier_comac_libelle="Dossier Comac"
     lib_a="A"
     lib_b="B"
     msg_erreur=""
@@ -737,6 +754,8 @@ try:
     condition_travaux_c7=["oui remplacement appui","oui renforcement appui avec commande d'appui"]
     
     prop_orange='ORANGE'
+    prop_orange_code=''
+    prop_tiers_code='T'
     proprietaire_point_liste=['AUTRE', 'CLIENT', 'ENEDIS', prop_orange]
     type_point_liste=['APPUI', 'CHAMBRE', 'POTELET']
     

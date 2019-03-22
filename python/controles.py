@@ -629,7 +629,7 @@ def verif_point_technique_c3a(controle5=True):
     points_techniques=[
         (
             code_type_point(ligne['pt_typephy'],ligne['pt_prop']),
-            format_id_pt(str(ligne['NOM']),str(ligne['CODE_INSEE'])) if 'CODE_INSEE' in ligne else str(ligne['NOM'])
+            format_id_pt(str(ligne['NOM']),str(ligne['CODE_INSEE'])) if ligne.fieldNameIndex('CODE_INSEE') != -1 else str(ligne['NOM'])
         ) for ligne in list_point_technique
     ]
     
@@ -736,7 +736,7 @@ def verif_couches_exist(controle=True):
     erreurs=[
         modele_erreur(
             num_controle,
-            [conf["{}_path".format(point)],"",""]
+            [chemin_fichier_application(conf["{}_path".format(point)]),"",""]
         )
         for point in liste_couches if not get_shape(conf["{}_path".format(point)],exec("shape_{}_nom".format(point)),True)
     ]
@@ -781,5 +781,106 @@ def verif_dossier_qgis_exist(controle=True):
         )
     ] if not all([x in ''.join(glob.glob(os.path.join(path,"*"))) for x in ["LAYERS",".qgs"]]) else []
     
+    alim_rapport_csv(erreurs)
+    return nb_controles
+
+#Contrôle 53
+def verif_fichier_appui_orange_pt(controle=True):
+    if not controle:
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+    
+    num_controle=53
+    
+    shape,list_point_technique = get_shape(conf["point_technique_path"],shape_point_technique_nom)
+    
+    #Récupération des points techniques en uniformisant la forme du nom selon l'insee
+    #un poteau est trouvable mais avec le mauvais INSEE...
+    points_techniques=[
+        [
+            format_id_pt(str(ligne['NOM']),str(ligne['CODE_INSEE'])) if ligne.fieldNameIndex('CODE_INSEE') != -1 else str(ligne['NOM']),
+            str(ligne['NOM']).split("_")[-1]
+        ]
+        for ligne in list_point_technique
+        if code_type_point(ligne['pt_typephy'],ligne['pt_prop']) == "A"
+    ]
+    
+    appuis=get_poteaux_fiche()+get_poteaux_nom()
+    
+    erreurs=[
+        modele_erreur(
+            num_controle,
+            [chemin_fichier_application(conf["point_technique_path"]),poteau_list_libelle,appui[0]]
+        )
+        for appui in points_techniques if appui[0] not in appuis and (appui[1] not in appuis or True)
+    ]
+    
+     
+    alim_rapport_csv(erreurs)
+    return nb_controles
+
+#Contrôle 54
+def verif_fichier_chambre_pt(controle=True):
+    if not controle:
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+    
+    num_controle=54
+    
+    shape,list_point_technique = get_shape(conf["point_technique_path"],shape_point_technique_nom)
+    
+    #Récupération des points techniques en uniformisant la forme du nom selon l'insee
+    #une chambre est trouvable mais avec le mauvais INSEE...
+    points_techniques=[
+        [
+            format_id_pt(str(ligne['NOM']),str(ligne['CODE_INSEE'])) if ligne.fieldNameIndex('CODE_INSEE') != -1 else str(ligne['NOM']),
+            str(ligne['NOM']).split("_")[-1]
+        ]
+        for ligne in list_point_technique
+        if ligne['pt_typephy'] == "CHAMBRE"
+    ]
+    
+    chambres=get_chambres_fiche()+get_chambres_nom()
+    
+    erreurs=[
+        modele_erreur(
+            num_controle,
+            [chemin_fichier_application(conf["point_technique_path"]),chambre_list_libelle,chambre[0]]
+        )
+        for chambre in points_techniques if chambre[0] not in chambres and (chambre[1] not in chambres or True)
+    ]
+     
+    alim_rapport_csv(erreurs)
+    return nb_controles
+
+#Contrôle 52
+def verif_fichier_enedis_pt(controle=True):
+    if not controle:
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+    
+    num_controle=52
+    
+    shape,list_point_technique = get_shape(conf["point_technique_path"],shape_point_technique_nom)
+    
+    nb_points_techniques=len([
+        ligne
+        for ligne in list_point_technique
+        if ligne['pt_prop'] == "ENEDIS"
+    ])
+    
+    nb_fichiers=len(get_contenu_comac())
+    
+    erreurs=[
+        modele_erreur(
+            num_controle,
+            [chemin_fichier_application(conf["point_technique_path"]),dossier_comac_libelle,""]
+        )
+    ] if nb_points_techniques and not nb_fichiers else []
+    
+     
     alim_rapport_csv(erreurs)
     return nb_controles

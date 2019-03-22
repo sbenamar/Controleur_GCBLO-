@@ -118,7 +118,7 @@ def appui_from_c7_nom(c3a):
 def code_type_point(type_point,prop):
     return "{}{}".format(
         corr_point_lib_code[type_point if type_point in type_point_liste else 'ND'],
-        'T' if prop != prop_orange and type_point in point_tiers_liste else ''
+        prop_tiers_code if prop != prop_orange and type_point in point_tiers_liste else prop_orange_code
         )
 
 #Retourne tous les chemins menants vers des fichier C3A pour le projet
@@ -275,14 +275,29 @@ def liaisons_commande(commandes_joint):
 
 #Récupère la liste des poteaux en explorant la liste des fichiers de poteaux et en récupérant leur nom 
 def get_poteaux_fiche():
-    return [os.path.splitext(os.path.basename(f))[0]
+    return [os.path.splitext(os.path.basename(f))[0].replace("FicheAppui_","")
             for f in glob.iglob(os.path.join(conf["appui_orange_path"],"*.xls*"))]
 
 def get_poteaux_nom():
     #pattern=re.compile("^\W*\w*\d{5}\w*\W*$")
     #return [re.findall("[0-9]{5}",poteau)[-1] for poteau in get_poteaux_fiche()
     #        if pattern.match(poteau)]
-    return [poteau.split("_")[-1].replace("FicheAppui","") for poteau in get_poteaux_fiche()]
+    return [poteau.split("_")[-1].replace("FicheAppui_","") for poteau in get_poteaux_fiche()]
+
+#Récupère la liste des chambres en explorant la liste des fichiers de chambres et en récupérant leur nom 
+def get_chambres_fiche():
+    return [os.path.splitext(os.path.basename(f))[0]
+            for f in glob.iglob(os.path.join(conf["chambres_path"],"*.xls*"))]
+
+def get_chambres_nom():
+    #pattern=re.compile("^\W*\w*\d{5}\w*\W*$")
+    #return [re.findall("[0-9]{5}",chambres)[-1] for chambre in get_chambres_fiche()
+    #        if pattern.match(chambre)]
+    return [chambre.split("_")[-1] for chambre in get_chambres_fiche()]
+
+def get_contenu_comac():
+    return [os.path.splitext(os.path.basename(f))[0]
+            for f in glob.iglob(os.path.join(conf["appuis_enedis_dossier_path"],"*"))]
 
 #Modèle de ligne d'erreur dans le fichier rapport, contenant les informations de contrôle pré-enregistrés
 #selon le numéro de contrôle.

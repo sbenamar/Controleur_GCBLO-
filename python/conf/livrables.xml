@@ -81,7 +81,7 @@
                 <dossier chemin="07 - Appui Enedis - Comac">
                     <nommage pre_canton=""/>
                 </dossier>
-                <poteau chemin="BT01_21462_NORGES-LA-VILLE_ROUTE DE LANGRES_Photos" >
+                <poteau chemin="." >
                     <nommage separateur_insee_id="_"/>
                 </poteau>
             </proprietaire>
