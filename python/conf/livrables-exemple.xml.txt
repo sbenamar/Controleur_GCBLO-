@@ -1,68 +1,118 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<livrable dpt="CD00">
-    <administratif>
-        <DT chemin="01 - Administratif/1.1 - DT"/>
-        <L49 chemin="01 - Administratif/1.2 - L49">
-            <dossier pre_commune="L49_" post_comunne="_dossier"/>
-            <recepisse pre_commune="L49_" post_comunne="_recepisse"/>
-        </L49>
-        <PMV>
-            <poteau pre_commune="_PMV_" post_commune="_aérien"/>
-            <souterrain pre_commune="_PMV_" post_commune="_conduite"/>
-        </PMV>
-    </administratif>
-    <conventions chemin="02 - Convention">
-        <recap code_zasro="true" nom="_Recap_convention"/>
-    </conventions>
-    <financier chemin="03 - Financier" >
-        <BPU code_zasro="true" nom="_BPU" />
-    </financier>
+?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE livrables SYSTEM "livrables.dtd">
+<livrables>
+    <livrable dpt="CD00">
+        <administratif chemin="01 - Administratif/">
+            <DT chemin="01 - Administratif/1.1 - DT"/>
+            <L49 chemin="01 - Administratif/1.2 - L49">
+                <dossier>
+                    <nommage code_zasro="true" pre_commune="L49_" post_commune="_dossier"/>
+                </dossier>
+                <recepisse>
+                    <nommage code_zasro="true" pre_commune="L49_" post_commune="_recepisse"/>
+                </recepisse>
+            </L49>
+            <PMV chemin="01 - Administratif/1.3 - PMV">
+                <poteau>
+                    <nommage code_zasro="true" pre_commune="_PMV_aerien_"/>
+                </poteau> 
+                <souterrain>
+                    <nommage code_zasro="true" pre_commune="_PMV_conduite_"/>
+                </souterrain>
+            </PMV>
+        </administratif>
+        <conventions chemin="02 - Conventions">
+            <recap>
+                <nommage code_zasro="true" nom="_Convention"/>
+            </recap>
+        </conventions>
+        <financier chemin="03 - Financier" >
+            <BPU>
+                <nommage code_zasro="true" nom="_BdP" />
+            </BPU>
+        </financier>
         <projet chemin="04 - Projet">
-    	<planTirage code_zasro="oui" nom="_PLAN_TIRAGE"/>
-        <couches chemin="PROJET_QGIS/LAYERS">
-            <couche id="point_technique" nom="POINT TECHNIQUE" fichier="POINT_TECHNIQUE.shp"/>
-            <couche id="prises" nom="PRISES" fichier="PRISES.shp"/>
-            <couche id="sro" nom="SRO" fichier="SRO.shp"/>
-            <couche id="infra" nom="INFRASTRUCTURE" fichier="INFRASTRUCTURE.shp"/>
-            <couche id="boitier" nom="BOITIER" fichier="BOITIER.shp"/>
-            <couche id="racco_client" nom="RACCO_CLIENT" fichier="RACCO_CLIENT.shp"/>
-            <couche id="cable" nom="CABLE" fichier="CABLE.shp"/>
-            <couche id="zpbo" nom="ZPBO" fichier="ZPBO.shp"/>
-            <couche id="zsro" nom="ZSRO" fichier="ZSRO.shp"/>
-            <couche id="zpec" nom="ZPEC" fichier="ZPEC.shp"/>
-            <couche id="znro" nom="ZNRO" fichier="ZNRO.shp"/>
-            <couche id="nro" nom="NRO" fichier="NRO.shp"/>
-            <couche id="cable_infra" nom="CABLE_INFRA" fichier="CABLE_INFRA.csv">
-                <jointure id="cable"/>
-                <jointure id="infra"/>
-            </couche>
-        </couches>
-    </projet>
-    <PlansGC chemin="05 - Plans GC" nom="_Plan_GC"/>
-    <optique chemin="06 - Dossier Optique">
-    	<carnet type="cable" nom="Carnet_cable"/>
-    	<synoptique type="cable" nom="Synoptique_cable"/>
-    	<synoptique type="fibre" nom="Synoptique_fibre"/>
-    	<plansBoite chemin="Plan boite" pre_zasro="PB-" code_zasro="true" pre_id="-"/>
-    </optique>
-    <appuis>
-        <proprietaire nom="orange">
-            <poteau chemin="07 - Appui/Appui Orange - CAPFT/POTEAU" separateur_insee_id="_"/>
-        </proprietaire>
-    </appuis>
-<FOA>
-	<chambre chemin="09 - FOA\FOA" separateur_insee_id="_" />
-	<annexeD15 chemin="09 - FOA\Annexe_D15" pre_pt="Annexe D15  " separateur_pt1_pt2="_ "/>
-</FOA>
-<commande>
-	<listeC3A>
-        	<C3A chemin="SRO21271VEN_01_D_EXE/09 - Commande_Orange"/>
-    	</listeC3A>
-    	<listeC7>
-        	<C7 chemin="SRO21271VEN_01_D_EXE/09 - Commande_Orange"/>
-    	</listeC7>
-</commande>
-<syntheseEtude chemin="" nom="synthese_etude" />
-<graceTHD chemin="GraceTHD" branche_optique="true" nom="_GraceTHD" />
-</livrable>
+            <planTirage>
+                <nommage nom="Plan_tirage"/>
+            </planTirage>
+            <projetQGIS chemin="04 - Projet/PROJET_QGIS">
+                <fichierQGIS>
+                    <nommage pre_code_zasro="EXE_" code_zasro="true"/>
+                </fichierQGIS>
+                <couches chemin="04 - Projet/PROJET_QGIS/LAYERS">
+                    <couche id="point_technique" nom="POINT TECHNIQUE" fichier="POINT_TECHNIQUE.shp"/>
+                    <couche id="prises" nom="PRISES" fichier="PRISES.shp"/>
+                    <couche id="sro" nom="SRO" fichier="SRO.shp"/>
+                    <couche id="infra" nom="INFRASTRUCTURE" fichier="INFRASTRUCTURE.shp"/>
+                    <couche id="boitier" nom="BOITIER" fichier="BOITIER.shp"/>
+                    <couche id="racco_client" nom="RACCO_CLIENT" fichier="RACCO_CLIENT.shp"/>
+                    <couche id="cable" nom="CABLE" fichier="CABLE.shp"/>
+                    <couche id="zpbo" nom="ZPBO" fichier="ZPBO.shp"/>
+                    <couche id="zsro" nom="ZSRO" fichier="ZSRO.shp"/>
+                    <couche id="zpec" nom="ZPEC" fichier="ZPEC.shp"/>
+                    <couche id="znro" nom="ZNRO" fichier="ZNRO.shp"/>
+                    <couche id="nro" nom="NRO" fichier="NRO.shp"/>
+                    <couche id="cable_infra" nom="CABLE_INFRA" fichier="CABLE_INFRA.csv">
+                        <jointure id="cable"/>
+                        <jointure id="infra"/>
+                    </couche>
+                </couches>
+            </projetQGIS>
+        </projet>
+        <PlansGC chemin="05 - Plans GC">
+            <nommage code_zasro="true" nom="_Plan_GC"/>
+        </PlansGC>
+        <optique chemin="06 - Dossier Optique">
+            <carnet type="cable">
+                <nommage nom="Carnet_cable"/>
+            </carnet>
+            <synoptique type="cable">
+                <nommage nom="Synoptique_cable"/>
+            </synoptique> 
+            <synoptique type="fibre">
+                <nommage nom="Synoptique_fibre"/>
+            </synoptique>
+            <plansBoite chemin="Plan boite" >
+                <nommage pre_code_zasro="PB-" code_zasro="true" pre_id="-"/>
+            </plansBoite>
+        </optique>
+        <appuis>
+            <proprietaire nom="enedis">
+                <dossier chemin="07 - Appui Enedis - Comac">
+                    <nommage pre_canton=""/>
+                </dossier>
+                <poteau chemin="." >
+                    <nommage separateur_insee_id="_"/>
+                </poteau>
+            </proprietaire>
+            <proprietaire nom="orange">
+                <dossier chemin="08 - Appui Orange - CAPFT"/>
+                <poteau chemin="POTEAU">
+                    <nommage separateur_insee_id="_"/>
+                </poteau>
+            </proprietaire>
+        </appuis>
+        <FOA>
+            <chambre chemin="09 - FOA\FOA">
+                <nommage separateur_insee_id="_"/>
+            </chambre>
+            <annexeD15 chemin="09 - FOA\Annexe_D15">
+                <nommage pre_pt="Annexe D15  " separateur_pt1_pt2="_ "/>
+            </annexeD15>
+        </FOA>
+        <commande>
+            <listeC3A>
+                <C3A chemin="10 - Commande_Orange"/>
+            </listeC3A>
+            <listeC7>
+                <C7 chemin="10 - Commande_Orange"/>
+            </listeC7>
+        </commande>
+        <syntheseEtude chemin="">
+            <nommage nom="synthese_etude" />
+        </syntheseEtude>
+        <graceTHD chemin="GraceTHD">
+            <nommage branche_optique="true" nom="_GraceTHD" />
+        </graceTHD>
+    </livrable>
+</livrables>
