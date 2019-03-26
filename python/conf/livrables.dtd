@@ -48,11 +48,12 @@
 <!ATTLIST FOA
   xmlns CDATA #FIXED ''>
 
-<!ELEMENT commande (listeC3A,listeC7)>
+<!ELEMENT commande (listeC3A,listeC7,cable,percussion)>
 <!ATTLIST commande
-  xmlns CDATA #FIXED ''>
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>
 
-<!ELEMENT syntheseEtude (nommage)>
+<!ELEMENT syntheseEtude (nommage,(cable,percussion)?)>
 <!ATTLIST syntheseEtude
   xmlns CDATA #FIXED ''
   chemin CDATA #REQUIRED>
@@ -198,3 +199,13 @@
 <!ATTLIST poteau
   xmlns CDATA #FIXED ''
   chemin CDATA #IMPLIED>
+
+<!ELEMENT cable EMPTY>
+<!ATTLIST cable
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>
+
+<!ELEMENT percussion EMPTY>
+<!ATTLIST percussion
+  xmlns CDATA #FIXED ''
+  chemin CDATA #REQUIRED>

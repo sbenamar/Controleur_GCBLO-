@@ -123,7 +123,7 @@ def code_type_point(type_point,prop):
 
 #Retourne tous les chemins menants vers des fichier C3A pour le projet
 def get_c3a_list():
-    liste=[f for f in glob.iglob(conf["chemin_c3a"], recursive=True) if "~$" not in f]
+    liste=[f for f in glob.iglob(os.path.join(conf["listeC3A_C3A_path"],arbo_c3a), recursive=True) if "~$" not in f]
     if liste:
         return liste
     else:
@@ -180,7 +180,7 @@ def verif_champs_shape(num_controle,chemin_shape,nom_shape,champs):
 
 #Récupération de la première feuille du fichier C7
 def get_feuille_c7(c3a):
-    nom = [f for f in glob.glob(conf["format_chemin_c7"].format(nom_fichier(c3a).split("C3")[0])) if "~$" not in f][0]
+    nom = [f for f in glob.glob(os.path.join(conf["listeC7_C7_path"],format_arbo_c7).format(nom_fichier(c3a).split("C3")[0])) if "~$" not in f][0]
     c7_xls = xlrd.open_workbook(nom)
     return chemin_fichier_application(nom),c7_xls.sheet_by_index(0)
 
@@ -218,7 +218,7 @@ def get_liste_controle_dpt(dpt,type_lvrb,zone):
 
 #Chemin du fichier à partir du dossier de l'application
 def chemin_fichier_application(fichier):
-    return fichier.replace(conf["chemin_exe"],"")
+    return fichier.replace(chemin_exe,"").replace("\\.","")
 
 #Crée ou alimente le rapport csv contenant les erreurs. S'il est créé, on ajoute le header
 def alim_rapport_csv(erreurs=False):
@@ -250,7 +250,7 @@ def get_commandes_groupe():
             c3a,
             ouvrir_c3a(
                 get_feuille_commande(
-                    os.path.join(conf["commande_orange_path"],c3a)
+                    os.path.join(conf["commande_path"],c3a)
                 )
             )
         )
@@ -276,7 +276,7 @@ def liaisons_commande(commandes_joint):
 #Récupère la liste des poteaux en explorant la liste des fichiers de poteaux et en récupérant leur nom 
 def get_poteaux_fiche():
     return [os.path.splitext(os.path.basename(f))[0].replace("FicheAppui_","")
-            for f in glob.iglob(os.path.join(conf["appui_orange_path"],"*.xls*"))]
+            for f in glob.iglob(os.path.join(conf["appuis_orange_poteau_path"],"*.xls*"))]
 
 def get_poteaux_nom():
     #pattern=re.compile("^\W*\w*\d{5}\w*\W*$")
@@ -287,7 +287,7 @@ def get_poteaux_nom():
 #Récupère la liste des chambres en explorant la liste des fichiers de chambres et en récupérant leur nom 
 def get_chambres_fiche():
     return [os.path.splitext(os.path.basename(f))[0]
-            for f in glob.iglob(os.path.join(conf["chambres_path"],"*.xls*"))]
+            for f in glob.iglob(os.path.join(conf["FOA_chambre_path"],"*.xls*"))]
 
 def get_chambres_nom():
     #pattern=re.compile("^\W*\w*\d{5}\w*\W*$")

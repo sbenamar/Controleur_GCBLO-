@@ -1,5 +1,5 @@
-import os,sys
 import warnings,os,sys,traceback,csv,glob,re
+from conf_xml import *
 from datetime import datetime
 from functools import reduce
 from PyQt5.QtWidgets import *
@@ -12,8 +12,10 @@ chemin_courant=os.getcwd()
 
 if "python" in chemin_courant:
     qgis_prefix_path=os.path.join(chemin_courant,*["lib","qgis"])
+    xml_livrables_path=os.path.join("conf","livrables.xml")
 else:
     qgis_prefix_path=os.path.join(chemin_courant,*["python","lib","qgis"])
+    xml_livrables_path="python/conf/livrables.xml"
                                   
 prefixe_rapport_csv="rapport_erreurs"
 libelle_rapport_csv=prefixe_rapport_csv+'.csv'
@@ -25,6 +27,18 @@ conf={}
 #Variable contenant ces configurations par département. conf prendra la valeur d'un conf_dpt lorsqu'on change de département
 conf_dpt={}
 
+chemin_exe=os.path.join(chemin_courant,"Commande")
+conf_dpt=get_conf_xml(chemin_exe,xml_livrables_path)
+
+conf_dpt["CD21"],conf_dpt["CD39"],conf_dpt["CD58"],conf_dpt["CD70"],conf_dpt["CD71"]=[conf_dpt["CDXX"].copy() for nb in range(5)]
+conf_dpt["CD21"]["dpt"]="CD21"
+conf_dpt["CD39"]["dpt"]="CD39"
+conf_dpt["CD58"]["dpt"]="CD58"
+conf_dpt["CD70"]["dpt"]="CD70"
+conf_dpt["CD71"]["dpt"]="CD71"
+
+format_arbo_c7="*{}*C7*.xls*"
+arbo_c3a="*C3A*.xls*"
 
 #Fenêtre de message d'erreur avec un code d'identification
 #Possibilité d'intégrer un message spécifique en renseignant le message
@@ -75,6 +89,7 @@ try:
 except Exception as e:
     print("Une erreur est survenue (code: 1)")
 
+"""
 chemin_exe=os.path.join(chemin_courant,"exe")
 exe_projet_racine=os.path.join(chemin_exe,"04 - Projet")
 
@@ -83,7 +98,7 @@ try:
     nom_projet=os.listdir(exe_projet_racine)[0]
 except:
     nom_projet=""
-    
+
 exe_projet=os.path.join(exe_projet_racine,nom_projet)
 commande_orange_path=os.path.join(chemin_exe,"09 - Commande_Orange")
 chemin_layers=os.path.join(exe_projet,"LAYERS")
@@ -103,7 +118,7 @@ nro_path=os.path.join(chemin_layers,"NRO.shp")
 
 
 appui_orange_path=os.path.join(chemin_exe,"07 - Appui","Appui Orange - CAPFT","POTEAU")
-arbo_c3a="**/**/*C3A*.xls*"
+arbo_c3a="*C3A*.xls*"
 format_arbo_c7="*{}*C7*.xls*"
 chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
 format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
@@ -239,16 +254,9 @@ conf_dpt["testv2"]={
     "chambres_path":chambres_path,
     "appuis_enedis_dossier_path":appuis_enedis_dossier_path
 }
+"""
 
 liste_couches=["point_technique","prises","sro","infra","boitier","racco_client","cable","zpbo","zsro","zpec","znro","nro","route","bati","cadastre","commune"]
-
-conf_dpt["CD21"],conf_dpt["CD39"],conf_dpt["CD58"],conf_dpt["CD70"],conf_dpt["CD71"]=[conf_dpt["testv2"].copy() for nb in range(5)]
-conf_dpt["CD21"]["dpt"]="CD21"
-conf_dpt["CD39"]["dpt"]="CD39"
-conf_dpt["CD58"]["dpt"]="CD58"
-conf_dpt["CD70"]["dpt"]="CD70"
-conf_dpt["CD71"]["dpt"]="CD71"
-
 
 try:
     dpts = ("CD21","CD39","CD58","CD70","CD71")
@@ -259,7 +267,8 @@ try:
         "CD70":16,
         "CD71":16,
         "testv1":10,
-        "testv2":10
+        "testv2":10,
+        "CDXX":10
     }
     
     types_lvrb = ("AVP","RBAL","PRO","EXE")
@@ -789,7 +798,6 @@ except Exception as e:
 
 def set_libelle_rapport_csv():
     return prefixe_rapport_csv+'_'+str(datetime.now()).split('.')[0].replace(' ','_').replace(':','-')+'.csv'
-
 
 #La fonction update_conf contient le même code dans chaque fichier donc pour éviter les doublons,
 #on a le code en chaîne de caracère afin

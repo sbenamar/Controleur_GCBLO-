@@ -5,7 +5,7 @@ locale = QLocale.system().name()
 def main(args) :
     app = QApplication(args)
     widget = QWidget(None)
-    widget.setWindowTitle("Contrôleur v8")
+    widget.setWindowTitle("Contrôleur v9")
     widget.resize(250,185)
     widget.setFixedSize(widget.size())
     pal=widget.palette()

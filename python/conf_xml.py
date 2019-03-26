@@ -3,6 +3,11 @@ from lxml import etree
 import os
 
 def format_fichier_xml(elem):
+    format_pre=["pre_code_zasro","code_zasro","separateur_zasro_etr","code_etr","branche_optique"]
+    format_post=["nom"]
+    format_variables_complexes=["pt1_pt2","insee_id"]
+    format_variables_simples=["commune","id","canton"]
+    
     format_elem=""
     options=format_pre+format_post
     
@@ -32,7 +37,6 @@ def format_fichier_xml(elem):
 def prefixe_variable(elem,type_pre="nommage"):
     parent=elem.getparent() if type_pre=="nommage" else elem
     gparent=parent.getparent()
-    
 
     if gparent.tag=="livrable":
         prefixe="{}".format(parent.tag)
@@ -45,59 +49,56 @@ def prefixe_variable(elem,type_pre="nommage"):
         
     return prefixe
 
-parser = etree.XMLParser(dtd_validation=True)
-try:
-    root = etree.parse("python/conf/livrables.xml",parser)
-except etree.XMLSyntaxError as e:
-    print("Mauvais schema XML: "+str(e))
-    exit()
-
-conf_dpt={}
-conf={}
-
-format_pre=["pre_code_zasro","code_zasro","separateur_zasro_etr","code_etr","branche_optique"]
-format_post=["nom"]
-format_variables_complexes=["pt1_pt2","insee_id"]
-format_variables_simples=["commune","id","canton"]
-
-#Gerer le cas ou il y a plusieurs fois un element pour mettre plusieurs chemins
-for livrable in root.xpath("//livrable"):
-    for couche in livrable.xpath('//couche'):
-        chemin_couche=couche.getparent().get("chemin")
-        conf["shape_{}_path".format(couche.get("id"))]=os.path.join(chemin_couche.replace("/","\\",),couche.get("fichier"))
-        conf["shape_{}_nom".format(couche.get("id"))]=couche.get("nom")
-        
-    for elem in livrable.xpath("//nommage"):
-        format_fichier=format_fichier_xml(elem)
-        conf["{}_format".format(prefixe_variable(elem,"nommage"))]=format_fichier
+def get_conf_xml(chemin_livrable,xml_livrables_path="conf/livrables.xml"):
+    parser = etree.XMLParser(dtd_validation=True)
+    try:
+        root = etree.parse(xml_livrables_path,parser)
+    except etree.XMLSyntaxError as e:
+        print("Mauvais schema XML: "+str(e))
+        exit()
     
-    conf={
-        **conf,
-        **{
-            "{}_path".format(prefixe_variable(elem,"path")):elem.get("chemin")
-            for elem in livrable.xpath("//*[@chemin]")   
+    conf_dpt={}
+    
+    #Gerer le cas ou il y a plusieurs fois un element pour mettre plusieurs chemins
+    for livrable in root.xpath("//livrable"):
+        conf={}
+        for couche in livrable.xpath('.//couche'):
+            chemin_couche=couche.getparent().get("chemin")
+            conf["shape_{}_path".format(couche.get("id"))]=os.path.join(chemin_couche.replace("/","\\",),couche.get("fichier"))
+            conf["shape_{}_nom".format(couche.get("id"))]=couche.get("nom")
+            
+        for elem in livrable.xpath(".//nommage"):
+            format_fichier=format_fichier_xml(elem)
+            conf["{}_format".format(prefixe_variable(elem,"nommage"))]=format_fichier
+
+        conf={
+            **conf,
+            **{
+                "{}_path".format(prefixe_variable(elem,"path")):elem.get("chemin")
+                for elem in livrable.xpath(".//*[@chemin]")   
+            }
         }
-    }
-    
-    for elem in livrable.xpath("//proprietaire/*[not(self::dossier)]"):
-        dossier=elem.getprevious()
-        nommage=dossier.getchildren()
-        nom_conf="{}_path".format(prefixe_variable(elem,"path"))
         
-        if nommage:
-            conf[nom_conf]=os.path.join(
-                *[
-                    dossier.get("chemin"),
-                    format_fichier_xml(elem.getprevious().getchildren()[0])
-                ],
-                elem.get("chemin")
-            )
-        else:
-            conf[nom_conf]=os.path.join(
-                    dossier.get("chemin"),
+        for elem in livrable.xpath(".//proprietaire/*[not(self::dossier)]"):
+            dossier=elem.getprevious()
+            nommage=dossier.getchildren()
+            nom_conf="{}_path".format(prefixe_variable(elem,"path"))
+            
+            if nommage:
+                conf[nom_conf]=os.path.join(
+                    *[
+                        dossier.get("chemin"),
+                        format_fichier_xml(elem.getprevious().getchildren()[0])
+                    ],
                     elem.get("chemin")
-            )
+                )
+            else:
+                conf[nom_conf]=os.path.join(
+                        dossier.get("chemin"),
+                        elem.get("chemin")
+                )
+                
+        conf.update({k:os.path.join(chemin_livrable,conf[k]) for k in conf if "path" in k})
+        conf_dpt[livrable.get("dpt")]=conf
     
-    conf_dpt[livrable.get("dpt")]=conf
-
-print(conf_dpt)
+    return conf_dpt

@@ -52,6 +52,10 @@
                     <couche id="zpec" nom="ZPEC" fichier="ZPEC.shp"/>
                     <couche id="znro" nom="ZNRO" fichier="ZNRO.shp"/>
                     <couche id="nro" nom="NRO" fichier="NRO.shp"/>
+                    <couche id="route" nom="ROUTE" fichier="ROUTE.shp"/>
+                    <couche id="bati" nom="BATI" fichier="BATI.shp"/>
+                    <couche id="cadastre" nom="CADASTRE" fichier="CADASTRE.shp"/>
+                    <couche id="commune" nom="COMMUNE" fichier="COMMUNE.shp"/>
                     <couche id="cable_infra" nom="CABLE_INFRA" fichier="CABLE_INFRA.csv">
                         <jointure id="cable"/>
                         <jointure id="infra"/>
@@ -100,16 +104,19 @@
                 <nommage pre_pt="Annexe D15  " separateur_pt1_pt2="_ "/>
             </annexeD15>
         </FOA>
-        <commande>
+        <commande chemin="10 - Commande_Orange">
             <listeC3A>
                 <C3A chemin="10 - Commande_Orange"/>
             </listeC3A>
             <listeC7>
                 <C7 chemin="10 - Commande_Orange"/>
             </listeC7>
+            <cable chemin="10 - Commande_Orange"/>
+            <percussion chemin="10 - Commande_Orange"/>
         </commande>
         <syntheseEtude chemin="">
-            <nommage nom="synthese_etude" />
+            <nommage nom="synthese_etude" /><cable chemin="10 - Commande_Orange"/>
+            <percussion chemin="10 - Commande_Orange"/>
         </syntheseEtude>
         <graceTHD chemin="GraceTHD">
             <nommage branche_optique="true" nom="_GraceTHD" />
@@ -167,6 +174,10 @@
                     <couche id="zpec" nom="ZPEC" fichier="ZPEC.shp"/>
                     <couche id="znro" nom="ZNRO" fichier="ZNRO.shp"/>
                     <couche id="nro" nom="NRO" fichier="NRO.shp"/>
+                    <couche id="route" nom="ROUTE" fichier="ROUTE.shp"/>
+                    <couche id="bati" nom="BATI" fichier="BATI.shp"/>
+                    <couche id="cadastre" nom="CADASTRE" fichier="CADASTRE.shp"/>
+                    <couche id="commune" nom="COMMUNE" fichier="COMMUNE.shp"/>
                     <couche id="cable_infra" nom="CABLE_INFRA" fichier="CABLE_INFRA.csv">
                         <jointure id="cable"/>
                         <jointure id="infra"/>
@@ -201,7 +212,7 @@
                 </poteau>
             </proprietaire>
             <proprietaire nom="orange">
-                <dossier chemin="appuis orange"/>
+                <dossier chemin="Appuis aériens Orange"/>
                 <poteau chemin=".">
                     <nommage separateur_insee_id="_"/>
                     <nommage pre_id="FicheAppui_"/>
@@ -210,20 +221,22 @@
             </proprietaire>
         </appuis>
         <FOA>
-            <chambre chemin="FOA">
+            <chambre chemin="Chambres">
                 <nommage separateur_insee_id="_"/>
             </chambre>
             <annexeD15 chemin="D15">
                 <nommage pre_pt="D15" separateur_pt1_pt2="_ "/>
             </annexeD15>
         </FOA>
-        <commande>
+        <commande chemin=".">
             <listeC3A>
-                <C3A chemin="commande"/>
+                <C3A chemin="."/>
             </listeC3A>
             <listeC7>
-                <C7 chemin="commande"/>
+                <C7 chemin="."/>
             </listeC7>
+            <cable chemin="."/>
+            <percussion chemin="."/>
         </commande>
         <syntheseEtude chemin="synthese etude">
             <nommage nom="synthese_etude" />
@@ -284,6 +297,10 @@
                     <couche id="zpec" nom="ZPEC" fichier="ZPEC.shp"/>
                     <couche id="znro" nom="ZNRO" fichier="ZNRO.shp"/>
                     <couche id="nro" nom="NRO" fichier="NRO.shp"/>
+                    <couche id="route" nom="ROUTE" fichier="ROUTE.shp"/>
+                    <couche id="bati" nom="BATI" fichier="BATI.shp"/>
+                    <couche id="cadastre" nom="CADASTRE" fichier="CADASTRE.shp"/>
+                    <couche id="commune" nom="COMMUNE" fichier="COMMUNE.shp"/>
                     <couche id="cable_infra" nom="CABLE_INFRA" fichier="CABLE_INFRA.csv">
                         <jointure id="cable"/>
                         <jointure id="infra"/>
@@ -332,13 +349,15 @@
                 <nommage pre_pt="Annexe D15  " separateur_pt1_pt2="_ "/>
             </annexeD15>
         </FOA>
-        <commande>
+        <commande chemin="10 - Commande_Orange">
             <listeC3A>
                 <C3A chemin="10 - Commande_Orange"/>
             </listeC3A>
             <listeC7>
                 <C7 chemin="10 - Commande_Orange"/>
             </listeC7>
+            <cable chemin="10 - Commande_Orange"/>
+            <percussion chemin="10 - Commande_Orange"/>
         </commande>
         <syntheseEtude chemin=".">
             <nommage nom="synthese_etude" />

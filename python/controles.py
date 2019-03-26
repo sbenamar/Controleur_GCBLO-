@@ -22,7 +22,7 @@ def corresp_cable_infra_c3a(parcours_infra=True,parcours_c3a=True):
     liaisons_commandes = [[prestation[3],prestation[5]] for c3a,num,prestation in get_commande_groupe_ligne()]
 
     #Récupération du tableau de cable infra
-    cable_infra = ouvrir_cable_infra(conf["cable_infra_csv_path"])
+    cable_infra = ouvrir_cable_infra(conf["shape_cable_infra_path"])
 
     #Table infra reformaté pour avoir les points A et B séparés et sélectionner les données utiles
     #On filtre selon le typ_imp, défini dans le fichier de définition
@@ -31,7 +31,7 @@ def corresp_cable_infra_c3a(parcours_infra=True,parcours_c3a=True):
         if cable["cm_typ_imp"] in type_imp
     ]
 
-    cable_infra_fichier=chemin_fichier_application(conf["cable_infra_csv_path"])
+    cable_infra_fichier=chemin_fichier_application(conf["shape_cable_infra_path"])
 
     #Début du contrôle 2, s'il est sélectionné
     if parcours_infra:
@@ -621,7 +621,7 @@ def verif_point_technique_c3a(controle5=True):
     else:
         nb_controles=get_nb_controles(locals())
     
-    shape,list_point_technique = get_shape(conf["point_technique_path"],shape_point_technique_nom)
+    shape,list_point_technique = get_shape(conf["shape_point_technique_path"],shape_point_technique_nom)
         
     num_controle=5
     
@@ -648,7 +648,7 @@ def verif_point_technique_c3a(controle5=True):
     erreurs5=[
         modele_erreur(
             num_controle,
-            [chemin_fichier_application(conf["point_technique_path"]),c3a_list_libelle,commande[1].replace("_","/")]
+            [chemin_fichier_application(conf["shape_point_technique_path"]),c3a_list_libelle,commande[1].replace("_","/")]
         )
         for commande in commandes if commande[1] and (commande not in points_techniques and (commande[0],commande[1].split("_")[-1]) not in points_techniques)
     ]
@@ -677,51 +677,51 @@ def verif_struct_shape(controles={}):
     
     num_controle=26
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["point_technique_path"],shape_point_technique_nom,champs_point_technique)
+        verif_champs_shape(num_controle,conf["shape_point_technique_path"],shape_point_technique_nom,champs_point_technique)
         
     num_controle=27
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["prises_path"],shape_prises_nom,champs_prises)
+        verif_champs_shape(num_controle,conf["shape_prises_path"],shape_prises_nom,champs_prises)
     
     num_controle=28
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["sro_path"],shape_sro_nom,champs_sro)
+        verif_champs_shape(num_controle,conf["shape_sro_path"],shape_sro_nom,champs_sro)
     
     num_controle=29
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["boitier_path"],shape_boitier_nom,champs_boitier)
+        verif_champs_shape(num_controle,conf["shape_boitier_path"],shape_boitier_nom,champs_boitier)
     
     num_controle=30
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["infra_path"],shape_infra_nom,champs_infra)
+        verif_champs_shape(num_controle,conf["shape_infra_path"],shape_infra_nom,champs_infra)
         
     num_controle=31
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["racco_client_path"],shape_racco_client_nom,champs_racco_client)
+        verif_champs_shape(num_controle,conf["shape_racco_client_path"],shape_racco_client_nom,champs_racco_client)
         
     num_controle=32
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["cable_path"],shape_cable_nom,champs_cable)
+        verif_champs_shape(num_controle,conf["shape_cable_path"],shape_cable_nom,champs_cable)
         
     num_controle=33
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["zpbo_path"],shape_zpbo_nom,champs_zpbo)
+        verif_champs_shape(num_controle,conf["shape_zpbo_path"],shape_zpbo_nom,champs_zpbo)
         
     num_controle=34
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["zsro_path"],shape_zsro_nom,champs_zsro)
+        verif_champs_shape(num_controle,conf["shape_zsro_path"],shape_zsro_nom,champs_zsro)
         
     num_controle=35
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["zpec_path"],shape_zpec_nom,champs_zpec)
+        verif_champs_shape(num_controle,conf["shape_zpec_path"],shape_zpec_nom,champs_zpec)
         
     num_controle=36
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["znro_path"],shape_znro_nom,champs_znro)
+        verif_champs_shape(num_controle,conf["shape_znro_path"],shape_znro_nom,champs_znro)
         
     num_controle=37
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["nro_path"],shape_nro_nom,champs_nro)
+        verif_champs_shape(num_controle,conf["shape_nro_path"],shape_nro_nom,champs_nro)
     
     return nb_controles
 
@@ -736,9 +736,9 @@ def verif_couches_exist(controle=True):
     erreurs=[
         modele_erreur(
             num_controle,
-            [chemin_fichier_application(conf["{}_path".format(point)]),"",""]
+            [chemin_fichier_application(conf["shape_{}_path".format(point)]),"",""]
         )
-        for point in liste_couches if not get_shape(conf["{}_path".format(point)],exec("shape_{}_nom".format(point)),True)
+        for point in liste_couches if not get_shape(conf["shape_{}_path".format(point)],exec("shape_{}_nom".format(point)),True)
     ]
     
     alim_rapport_csv(erreurs)
@@ -772,7 +772,7 @@ def verif_dossier_qgis_exist(controle=True):
         nb_controles=get_nb_controles(locals())
     
     num_controle=47
-    path=conf["projet_path"]
+    path=conf["projet_projetQGIS_path"]
     fichier=chemin_fichier_application(path)
     erreurs=[
         modele_erreur(
@@ -793,7 +793,7 @@ def verif_fichier_appui_orange_pt(controle=True):
     
     num_controle=53
     
-    shape,list_point_technique = get_shape(conf["point_technique_path"],shape_point_technique_nom)
+    shape,list_point_technique = get_shape(conf["shape_point_technique_path"],shape_point_technique_nom)
     
     #Récupération des points techniques en uniformisant la forme du nom selon l'insee
     #un poteau est trouvable mais avec le mauvais INSEE...
@@ -811,7 +811,7 @@ def verif_fichier_appui_orange_pt(controle=True):
     erreurs=[
         modele_erreur(
             num_controle,
-            [chemin_fichier_application(conf["point_technique_path"]),poteau_list_libelle,appui[0]]
+            [chemin_fichier_application(conf["shape_point_technique_path"]),poteau_list_libelle,appui[0]]
         )
         for appui in points_techniques if appui[0] not in appuis and (appui[1] not in appuis or True)
     ]
@@ -829,7 +829,7 @@ def verif_fichier_chambre_pt(controle=True):
     
     num_controle=54
     
-    shape,list_point_technique = get_shape(conf["point_technique_path"],shape_point_technique_nom)
+    shape,list_point_technique = get_shape(conf["shape_point_technique_path"],shape_point_technique_nom)
     
     #Récupération des points techniques en uniformisant la forme du nom selon l'insee
     #une chambre est trouvable mais avec le mauvais INSEE...
@@ -847,7 +847,7 @@ def verif_fichier_chambre_pt(controle=True):
     erreurs=[
         modele_erreur(
             num_controle,
-            [chemin_fichier_application(conf["point_technique_path"]),chambre_list_libelle,chambre[0]]
+            [chemin_fichier_application(conf["shape_point_technique_path"]),chambre_list_libelle,chambre[0]]
         )
         for chambre in points_techniques if chambre[0] not in chambres and (chambre[1] not in chambres or True)
     ]
@@ -864,7 +864,7 @@ def verif_fichier_enedis_pt(controle=True):
     
     num_controle=52
     
-    shape,list_point_technique = get_shape(conf["point_technique_path"],shape_point_technique_nom)
+    shape,list_point_technique = get_shape(conf["shape_point_technique_path"],shape_point_technique_nom)
     
     nb_points_techniques=len([
         ligne
@@ -877,7 +877,7 @@ def verif_fichier_enedis_pt(controle=True):
     erreurs=[
         modele_erreur(
             num_controle,
-            [chemin_fichier_application(conf["point_technique_path"]),dossier_comac_libelle,""]
+            [chemin_fichier_application(conf["shape_point_technique_path"]),dossier_comac_libelle,""]
         )
     ] if nb_points_techniques and not nb_fichiers else []
     
