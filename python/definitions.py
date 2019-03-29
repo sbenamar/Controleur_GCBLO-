@@ -9,6 +9,7 @@ from qgis.core import *
 
 #chemin_courant permettra de servir de base pour la création des autres chemins
 chemin_courant=os.getcwd()
+#chemin_exe=os.getcwd()
 
 if "python" in chemin_courant:
     qgis_prefix_path=os.path.join(chemin_courant,*["lib","qgis"])
@@ -27,15 +28,17 @@ conf={}
 #Variable contenant ces configurations par département. conf prendra la valeur d'un conf_dpt lorsqu'on change de département
 conf_dpt={}
 
-chemin_exe=os.path.join(chemin_courant,"Commande")
-conf_dpt=get_conf_xml(chemin_exe,xml_livrables_path)
+conf_dpt=get_conf_xml(chemin_courant,xml_livrables_path)
 
-conf_dpt["CD21"],conf_dpt["CD39"],conf_dpt["CD58"],conf_dpt["CD70"],conf_dpt["CD71"]=[conf_dpt["CDXX"].copy() for nb in range(5)]
-conf_dpt["CD21"]["dpt"]="CD21"
+
+conf_dpt["CD39"],conf_dpt["CD58"],conf_dpt["CD70"],conf_dpt["CD71"]=[conf_dpt["CDXX"].copy() for nb in range(4)]
 conf_dpt["CD39"]["dpt"]="CD39"
 conf_dpt["CD58"]["dpt"]="CD58"
 conf_dpt["CD70"]["dpt"]="CD70"
 conf_dpt["CD71"]["dpt"]="CD71"
+
+#conf_dpt["CD21"]=conf_dpt["CDXX"].copy()
+#conf_dpt["CD21"]["dpt"]="CD21"
 
 format_arbo_c7="*{}*C7*.xls*"
 arbo_c3a="*C3A*.xls*"
@@ -569,7 +572,7 @@ try:
     erreur_controle52="Il existe des points techniques Enedis mais le dossier Enedic est vide"
     erreur_controle53="Le fichier appui est manquant pour ce point technique"
     erreur_controle54="Le fichier chambre est manquant pour ce point technique"
-    
+    erreur_controle57="Nom de fiche poteau incorrect"
     
     criticite={
         "mineure":"Mineure",
@@ -644,7 +647,8 @@ try:
         48:pre_entete_6,
         53:pre_entete_9,
         54:pre_entete_10,
-        52:pre_entete_11
+        52:pre_entete_11,
+        57:pre_entete_3
     }
     
     post_entete_controle1=[erreur_controle1,criticite['bloquant']]
@@ -691,6 +695,7 @@ try:
     post_entete_controle52=[erreur_controle52,criticite['majeure']]
     post_entete_controle53=[erreur_controle53,criticite['majeure']]
     post_entete_controle54=[erreur_controle54,criticite['majeure']]
+    post_entete_controle57=[erreur_controle57,criticite['mineure']]
     
     lib_nb_erreurs="Nombre d'erreurs"
     c3a_list_libelle="Ensemble des C3A"

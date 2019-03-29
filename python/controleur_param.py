@@ -56,7 +56,7 @@ def lancer_controles(widget):
         return log(e,43)
     
     try:
-        step_ctrl+=check_format_fiches_poteau(list_controle_exe[25])
+        step_ctrl+=check_format_fiches_poteau(list_controle_exe[25],list_controle_exe[57])
         pbar_chargement(pbar,step_ctrl,nb_ctrl)
     except Exception as e:
         return log(e,412)

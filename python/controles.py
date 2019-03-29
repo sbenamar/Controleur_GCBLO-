@@ -106,28 +106,40 @@ def version_c3a(controle=True):
     alim_rapport_csv(erreurs)
     return len(erreurs)
 
-#Contrôle 25
-def check_format_fiches_poteau(controle=True):
-    if not controle:
+#Contrôle 25,57
+def check_format_fiches_poteau(controle25=True,controle57=True):
+    if not controle25 and not control57:
         return 0
     else:
         nb_controles=get_nb_controles(locals())
-
     
-    num_controle=25
-    
-    #Récupération des poteaux
+    #Récupération du contenu du dossier poteau et des fiches poteau valides
+    poteaux_tot = get_poteaux_fiche(True)
     poteaux = get_poteaux_fiche()
     
-    erreurs=[
-            modele_erreur(
-                num_controle,
-                [poteau_list_libelle,"",poteau]
-            )
-            for poteau in poteaux if not pattern_nom_point_souple.match(poteau)
-        ]
-        
-    alim_rapport_csv(erreurs)
+    if controle25:
+        num_controle=25
+        erreurs=[
+                modele_erreur(
+                    num_controle,
+                    [poteau_list_libelle,"",poteau]
+                )
+                for poteau in poteaux_tot if not pattern_nom_point_souple.match(poteau)
+            ]
+            
+        alim_rapport_csv(erreurs)
+    
+    if controle57:
+        num_controle=57
+        erreurs=[
+                modele_erreur(
+                    num_controle,
+                    [poteau_list_libelle,"",poteau]
+                )
+                for poteau in poteaux_tot if poteau not in poteaux
+            ]
+            
+        alim_rapport_csv(erreurs)
     return nb_controles
 
 #Contrôle 4
@@ -137,7 +149,6 @@ def corresp_poteau_c3a(controle=True):
     else:
         nb_controles=get_nb_controles(locals())
 
-    
     num_controle=4
     
     #Récupération des poteaux en ne récupérant que le nom de poteau,
@@ -160,7 +171,7 @@ def corresp_poteau_c3a(controle=True):
             #Permet d'avoir le même format pour comparer
             point_a=prestation[3].value.split("/")[-1] if "/" in str(prestation[3].value) else prestation[3].value
             point_b=prestation[5].value.split("/")[-1] if "/" in str(prestation[5].value) else prestation[5].value
-
+            
             if prestation[2].value == "A" and str(point_a) not in poteaux and point_a not in c3a_poteaux and len(point_a):
                 erreurs.append(
                     modele_erreur_c3a(num_controle,c3a,prestation[3].value,"",poteau_list_libelle,1)
@@ -759,7 +770,7 @@ def verif_plan_tirage_exist(controle=True):
             num_controle,
             [fichier if fichier else projet_dossier_libelle,"",""]
         )
-    ] if not find_plan_tirage(path,pattern_plan_tirage) else []
+    ] if not find_plan_tirage() else []
     
     alim_rapport_csv(erreurs)
     return nb_controles
@@ -816,7 +827,6 @@ def verif_fichier_appui_orange_pt(controle=True):
         for appui in points_techniques if appui[0] not in appuis and (appui[1] not in appuis or True)
     ]
     
-     
     alim_rapport_csv(erreurs)
     return nb_controles
 

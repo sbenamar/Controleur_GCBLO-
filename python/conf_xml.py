@@ -49,7 +49,7 @@ def prefixe_variable(elem,type_pre="nommage"):
         
     return prefixe
 
-def get_conf_xml(chemin_livrable,xml_livrables_path="conf/livrables.xml"):
+def get_conf_xml(chemin_courant,xml_livrables_path="conf/livrables.xml"):
     parser = etree.XMLParser(dtd_validation=True)
     try:
         root = etree.parse(xml_livrables_path,parser)
@@ -62,6 +62,9 @@ def get_conf_xml(chemin_livrable,xml_livrables_path="conf/livrables.xml"):
     #Gerer le cas ou il y a plusieurs fois un element pour mettre plusieurs chemins
     for livrable in root.xpath("//livrable"):
         conf={}
+        chemin_livrable=os.path.join(chemin_courant,"Livrable" if livrable.get("dpt") == "CD21" else "Commande")
+        conf["dossier_path"]=chemin_livrable
+        
         for couche in livrable.xpath('.//couche'):
             chemin_couche=couche.getparent().get("chemin")
             conf["shape_{}_path".format(couche.get("id"))]=os.path.join(chemin_couche.replace("/","\\",),couche.get("fichier"))
@@ -69,8 +72,11 @@ def get_conf_xml(chemin_livrable,xml_livrables_path="conf/livrables.xml"):
             
         for elem in livrable.xpath(".//nommage"):
             format_fichier=format_fichier_xml(elem)
-            conf["{}_format".format(prefixe_variable(elem,"nommage"))]=format_fichier
-
+            nom="{}_format".format(prefixe_variable(elem,"nommage"))
+            if nom not in conf:
+                conf[nom]=[]
+            conf[nom].append(format_fichier)
+    
         conf={
             **conf,
             **{
@@ -98,7 +104,8 @@ def get_conf_xml(chemin_livrable,xml_livrables_path="conf/livrables.xml"):
                         elem.get("chemin")
                 )
                 
+        conf["dpt"] = livrable.get("dpt")
         conf.update({k:os.path.join(chemin_livrable,conf[k]) for k in conf if "path" in k})
-        conf_dpt[livrable.get("dpt")]=conf
+        conf_dpt[conf["dpt"]]=conf
     
     return conf_dpt

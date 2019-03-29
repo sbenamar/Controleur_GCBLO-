@@ -218,7 +218,7 @@ def get_liste_controle_dpt(dpt,type_lvrb,zone):
 
 #Chemin du fichier à partir du dossier de l'application
 def chemin_fichier_application(fichier):
-    return fichier.replace(chemin_exe,"").replace("\\.","")
+    return fichier.replace(conf["dossier_path"],"").replace("\\.","")
 
 #Crée ou alimente le rapport csv contenant les erreurs. S'il est créé, on ajoute le header
 def alim_rapport_csv(erreurs=False):
@@ -274,26 +274,67 @@ def liaisons_commande(commandes_joint):
     return [[prestation[3].value,prestation[5].value] for prestation in commandes_joint]
 
 #Récupère la liste des poteaux en explorant la liste des fichiers de poteaux et en récupérant leur nom 
-def get_poteaux_fiche():
-    return [os.path.splitext(os.path.basename(f))[0].replace("FicheAppui_","")
-            for f in glob.iglob(os.path.join(conf["appuis_orange_poteau_path"],"*.xls*"))]
+def get_poteaux_fiche(dossier_complet=False):
+    return [os.path.splitext(os.path.basename(f))[0]
+            for f in glob.iglob(os.path.join(conf["appuis_orange_poteau_path"],"*.xls*"))
+            if dossier_complet
+            or format_nommage_complt(os.path.splitext(os.path.basename(f))[0],conf["appuis_orange_poteau_format"])
+            ]
 
 def get_poteaux_nom():
-    #pattern=re.compile("^\W*\w*\d{5}\w*\W*$")
-    #return [re.findall("[0-9]{5}",poteau)[-1] for poteau in get_poteaux_fiche()
-    #        if pattern.match(poteau)]
-    return [poteau.split("_")[-1].replace("FicheAppui_","") for poteau in get_poteaux_fiche()]
+    return [get_valeurs_variables_conf(poteau,conf["appuis_orange_poteau_format"])["conf"]["id"] for poteau in get_poteaux_fiche()]
+
+def number_to_inline_list(nb):
+    return ','.join(map(str,range(1,nb+1)) or "-1")
+
+def get_valeurs_variables_conf(nom_fiche,f_formats):
+    for f_format in (f_formats if type(f_formats) is list else [f_formats]):
+        try:
+            f_format_origine=f_format
+            nb_var=f_format.count("{")
+            srch = re.search(("{(.+)}."*nb_var)[:-1],f_format)
+            variables_liste = eval('srch.group({})'.format(number_to_inline_list(nb_var)))
+            
+            for var in variables_liste:
+                f_format=f_format.replace("{"+var+"}","(.+)")
+            
+            variables_valeurs=eval("re.search(f_format,nom_fiche).group({})".format(number_to_inline_list(f_format.count(".+"))))
+
+            return {
+                "format":f_format_origine,
+                "conf":dict(zip(variables_liste,variables_valeurs))
+            }
+        except:
+            pass
+    return False
+
+def format_nommage_complt(nom_fiche,f_formats):
+    confs = get_valeurs_variables_conf(nom_fiche,f_formats)
+    
+    if confs:
+        f_format,conf=confs.values()
+        params = (str(conf)
+        .replace("{'","")
+        .replace("': ","=")
+        .replace(", '",", ")
+        .replace("}","")
+        .replace("}","")
+        .replace("{","")
+        )
+        
+        return eval("f_format.format({})".format(params))
+    else:
+        return False
 
 #Récupère la liste des chambres en explorant la liste des fichiers de chambres et en récupérant leur nom 
 def get_chambres_fiche():
     return [os.path.splitext(os.path.basename(f))[0]
-            for f in glob.iglob(os.path.join(conf["FOA_chambre_path"],"*.xls*"))]
+            for f in glob.iglob(os.path.join(conf["FOA_chambre_path"],"*.xls*"))
+            if format_nommage_complt(os.path.splitext(os.path.basename(f))[0],conf["FOA_chambre_format"])
+            ]
 
 def get_chambres_nom():
-    #pattern=re.compile("^\W*\w*\d{5}\w*\W*$")
-    #return [re.findall("[0-9]{5}",chambres)[-1] for chambre in get_chambres_fiche()
-    #        if pattern.match(chambre)]
-    return [chambre.split("_")[-1] for chambre in get_chambres_fiche()]
+    return [get_valeurs_variables_conf(chambre,conf["FOA_chambre_format"])["conf"]["id"] for chambre in get_chambres_fiche()]
 
 def get_contenu_comac():
     return [os.path.splitext(os.path.basename(f))[0]
@@ -331,8 +372,11 @@ def modele_erreur_c3a(num_controle,c3a,point_a,point_b,source_b="",nb_champs=2):
     return modele_erreur(num_controle,erreur)
 
 #Vérifier l'existance du fichier plan_tirange 
-def find_plan_tirage(path,pattern):
-    return any([pattern.match(str(fichier).lower()) for fichier in glob.glob(os.path.join(path,"*.pdf"))])
+def find_plan_tirage():
+    return any([f
+            for f in glob.iglob(os.path.join(conf["projet_path"],"*.pdf"))
+            if format_nommage_complt(os.path.splitext(os.path.basename(f))[0],conf["projet_planTirage_format"])
+            ])
 
 #Annonce la fin du programme
 def fin_programme():
