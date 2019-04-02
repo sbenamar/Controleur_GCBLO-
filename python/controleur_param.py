@@ -150,6 +150,23 @@ def lancer_controles(widget):
     except Exception as e:
         return log(e,419)
     
+    try:
+        step_ctrl+=verif_synthese_etude(list_controle_exe[56])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,421)
+    
+    try:
+        step_ctrl+=verif_synoptique(list_controle_exe[49],list_controle_exe[50])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,422)
+    
+    try:
+        step_ctrl+=verif_bpu(list_controle_exe[46])
+        pbar_chargement(pbar,100,100)
+    except Exception as e:
+        return log(e,423)
     
     #Affichage du message de fin confirmant la réussite des controles
     msg_succes()

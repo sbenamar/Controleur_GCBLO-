@@ -5,7 +5,7 @@ locale = QLocale.system().name()
 def main(args) :
     app = QApplication(args)
     widget = QWidget(None)
-    widget.setWindowTitle("Contrôleur v9")
+    widget.setWindowTitle("Contrôleur v10")
     widget.resize(250,185)
     widget.setFixedSize(widget.size())
     pal=widget.palette()
@@ -53,7 +53,8 @@ def controle_dpt(widget,dpt,type_lrvb,zone):
     
     #Mise à jour des variables de configuration spécifiques au département, avec les informations sélectionnées
     try:
-        update_conf(conf_dpt[dpt.currentText()],type_lrvb.currentText(),zone.currentText())
+        conf=get_conf_xml(conf_dpt[dpt.currentText()]["app_path"],xml_livrables_path,type_lrvb.currentText(),zone.currentText())[dpt.currentText()]
+        update_conf(conf,type_lrvb.currentText(),zone.currentText())
     except Exception as e:
         return log(e,52)
         
@@ -68,3 +69,6 @@ def update_conf(conf_dpt,type_lrvb,zone):
 
 if __name__ == "__main__":
     main(sys.argv)
+    zipf = glob.glob(os.path.join(*[chemin_courant,"Livrable"],"*.zip"))
+    if zipf:
+        zipfile.ZipFile(zipf[0], "r").extractall(".")

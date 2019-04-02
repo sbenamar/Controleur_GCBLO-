@@ -1,4 +1,3 @@
-import xmltodict
 from lxml import etree
 import os
 
@@ -49,7 +48,7 @@ def prefixe_variable(elem,type_pre="nommage"):
         
     return prefixe
 
-def get_conf_xml(chemin_courant,xml_livrables_path="conf/livrables.xml"):
+def get_conf_xml(chemin_courant,xml_livrables_path="conf/livrables.xml",type_livrable=False,zone_livrable=False):
     parser = etree.XMLParser(dtd_validation=True)
     try:
         root = etree.parse(xml_livrables_path,parser)
@@ -58,12 +57,28 @@ def get_conf_xml(chemin_courant,xml_livrables_path="conf/livrables.xml"):
         exit()
     
     conf_dpt={}
+    duplicate_cd21=True
     
     #Gerer le cas ou il y a plusieurs fois un element pour mettre plusieurs chemins
     for livrable in root.xpath("//livrable"):
-        conf={}
-        chemin_livrable=os.path.join(chemin_courant,"Livrable" if livrable.get("dpt") == "CD21" else "Commande")
+        conf,dpt={},livrable.get("dpt")
+        conf["code_zasro"]=None
+        
+        if (dpt,type_livrable,zone_livrable) == ("CD21","EXE","Distribution"):
+            try:
+                chemin_livrable=os.path.join(chemin_courant,"Livrable")
+                dossier_livrable=os.listdir(chemin_livrable)[-1]
+                chemin_livrable=os.path.join(chemin_livrable,dossier_livrable)
+                conf["code_zasro"]=dossier_livrable[:14]
+                duplicate_cd21=False
+            except:
+                pass
+        else:
+            chemin_livrable=os.path.join(chemin_courant,"Commande")
+            
+
         conf["dossier_path"]=chemin_livrable
+        conf["app_path"]=chemin_courant
         
         for couche in livrable.xpath('.//couche'):
             chemin_couche=couche.getparent().get("chemin")
@@ -107,5 +122,15 @@ def get_conf_xml(chemin_courant,xml_livrables_path="conf/livrables.xml"):
         conf["dpt"] = livrable.get("dpt")
         conf.update({k:os.path.join(chemin_livrable,conf[k]) for k in conf if "path" in k})
         conf_dpt[conf["dpt"]]=conf
+    
+    conf_dpt["CD39"],conf_dpt["CD58"],conf_dpt["CD70"],conf_dpt["CD71"]=[conf_dpt["CDXX"].copy() for nb in range(4)]
+    conf_dpt["CD39"]["dpt"]="CD39"
+    conf_dpt["CD58"]["dpt"]="CD58"
+    conf_dpt["CD70"]["dpt"]="CD70"
+    conf_dpt["CD71"]["dpt"]="CD71"
+    
+    if duplicate_cd21:
+        conf_dpt["CD21"]=conf_dpt["CDXX"].copy()
+        conf_dpt["CD21"]["dpt"]="CD21"
     
     return conf_dpt

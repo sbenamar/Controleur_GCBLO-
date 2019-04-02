@@ -1,4 +1,4 @@
-import warnings,os,sys,traceback,csv,glob,re
+import warnings,os,sys,traceback,csv,glob,re,zipfile
 from conf_xml import *
 from datetime import datetime
 from functools import reduce
@@ -29,13 +29,6 @@ conf={}
 conf_dpt={}
 
 conf_dpt=get_conf_xml(chemin_courant,xml_livrables_path)
-
-
-conf_dpt["CD39"],conf_dpt["CD58"],conf_dpt["CD70"],conf_dpt["CD71"]=[conf_dpt["CDXX"].copy() for nb in range(4)]
-conf_dpt["CD39"]["dpt"]="CD39"
-conf_dpt["CD58"]["dpt"]="CD58"
-conf_dpt["CD70"]["dpt"]="CD70"
-conf_dpt["CD71"]["dpt"]="CD71"
 
 #conf_dpt["CD21"]=conf_dpt["CDXX"].copy()
 #conf_dpt["CD21"]["dpt"]="CD21"
@@ -528,6 +521,24 @@ try:
     
     format_shape_invalide="Shape non valide: {}"
     
+    criticite={
+        "mineure":"Mineure",
+        "majeure":"Majeure",
+        "bloquant":"Bloquant",
+        "avertissement":"Avertissement"
+    }
+    
+    entete_rapport_csv = [
+        "Numéro de contrôle",
+        "Famille",
+        "Sous-famille",
+        "Source A",
+        "Source B",
+        "Champ concerné",
+        "Erreur générée",
+        "Criticité"
+    ]
+    
     erreur_controle1="Mauvaise version de la C3A"
     erreur_controle2="Liaison manquante dans la C3A"
     erreur_controle3="Tronçon présent dans la C3A mais absent de QGIS"
@@ -567,30 +578,16 @@ try:
     erreur_controle37="La structuration des champs de la couche NRO est incorrecte"
     erreur_controle38="Le format du numéro d'appui dans la C7 est incorrect"
     erreur_controle39="La couche est manquante"
+    erreur_controle46="Le fichier BPU est introuvable"
     erreur_controle47="Le répertoire LAYERS ou le fichier .qgs est introuvable dans le répertoire PROJET_QGIS"
     erreur_controle48="Le fichier de plan de tirage est introuvable dans le répertoire PROJET_QGIS"
+    erreur_controle49="Le fichier synoptique cable est introuvable"
+    erreur_controle50="Le fichier synoptique fibre est introuvable"
     erreur_controle52="Il existe des points techniques Enedis mais le dossier Enedic est vide"
     erreur_controle53="Le fichier appui est manquant pour ce point technique"
     erreur_controle54="Le fichier chambre est manquant pour ce point technique"
+    erreur_controle56="Le fichier de synthèse d'étude est introuvable"
     erreur_controle57="Nom de fiche poteau incorrect"
-    
-    criticite={
-        "mineure":"Mineure",
-        "majeure":"Majeure",
-        "bloquant":"Bloquant",
-        "avertissement":"Avertissement"
-    }
-    
-    entete_rapport_csv = [
-        "Numéro de contrôle",
-        "Famille",
-        "Sous-famille",
-        "Source A",
-        "Source B",
-        "Champ concerné",
-        "Erreur générée",
-        "Criticité"
-    ]
     
     pre_entete_1= ["Commande d'accès","Version"]
     pre_entete_2= ["Commande d'accès","Complétude"]
@@ -603,6 +600,10 @@ try:
     pre_entete_9= ["Complétude","Etude CAPFT"]
     pre_entete_10= ["Complétude","FOA"]
     pre_entete_11= ["Complétude","Etude Comac"]
+    pre_entete_12= ["Complétude","Synthèse étude"]
+    pre_entete_13= ["Complétude","Synoptique cable"]
+    pre_entete_14= ["Complétude","Synoptique fibre à fibre"]
+    pre_entete_15= ["Complétude","Financier"]
     
     pre_entete_lien={
         1:pre_entete_1,
@@ -645,10 +646,14 @@ try:
         39:pre_entete_8,
         47:pre_entete_7,
         48:pre_entete_6,
+        49:pre_entete_13,
+        50:pre_entete_14,
         53:pre_entete_9,
         54:pre_entete_10,
         52:pre_entete_11,
-        57:pre_entete_3
+        57:pre_entete_3,
+        56:pre_entete_12,
+        46:pre_entete_15
     }
     
     post_entete_controle1=[erreur_controle1,criticite['bloquant']]
@@ -690,11 +695,15 @@ try:
     post_entete_controle37=[erreur_controle37,criticite['majeure']]
     post_entete_controle38=[erreur_controle38,criticite['avertissement']]
     post_entete_controle39=[erreur_controle39,criticite['majeure']]
+    post_entete_controle46=[erreur_controle46,criticite['majeure']]
     post_entete_controle47=[erreur_controle47,criticite['majeure']]
     post_entete_controle48=[erreur_controle48,criticite['majeure']]
+    post_entete_controle49=[erreur_controle48,criticite['majeure']]
+    post_entete_controle50=[erreur_controle48,criticite['majeure']]
     post_entete_controle52=[erreur_controle52,criticite['majeure']]
     post_entete_controle53=[erreur_controle53,criticite['majeure']]
     post_entete_controle54=[erreur_controle54,criticite['majeure']]
+    post_entete_controle56=[erreur_controle56,criticite['mineure']]
     post_entete_controle57=[erreur_controle57,criticite['mineure']]
     
     lib_nb_erreurs="Nombre d'erreurs"

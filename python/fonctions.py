@@ -218,7 +218,37 @@ def get_liste_controle_dpt(dpt,type_lvrb,zone):
 
 #Chemin du fichier à partir du dossier de l'application
 def chemin_fichier_application(fichier):
-    return fichier.replace(conf["dossier_path"],"").replace("\\.","")
+    return fichier.replace(conf["dossier_path"],"").replace("\\.","") or "/"
+
+def find_synthese_etude():
+    return len([f
+            for f in glob.iglob(os.path.join(conf["syntheseEtude_path"],"*.xls*"))
+            if os.path.splitext(os.path.basename(f))[0] in [
+                    format_inline(f_format,{"code_zasro":conf["code_zasro"]})
+                    for f_format in conf["syntheseEtude_format"]
+                ]
+            ])    
+
+def find_synoptique_fichier(type_syn="cable"):
+    if type_syn not in ["cable","fibre"]:
+        raise Exception("Le fichier synoptique doit avoir qu'un seul type")
+    
+    return len([f
+            for f in glob.iglob(os.path.join(conf["optique_path".format(type_syn)],"*.xls*"))
+            if os.path.splitext(os.path.basename(f))[0] in [
+                    format_inline(f_format,{"code_zasro":conf["code_zasro"]})
+                    for f_format in conf["optique_synoptique_{}_format".format(type_syn)]
+                ]
+            ])    
+
+def find_bpu():
+    return len([f
+            for f in glob.iglob(os.path.join(conf["financier_path"],"*.xls*"))
+            if os.path.splitext(os.path.basename(f))[0] in [
+                    format_inline(f_format,{"code_zasro":conf["code_zasro"]})
+                    for f_format in conf["financier_BPU_format"]
+                ]
+            ])    
 
 #Crée ou alimente le rapport csv contenant les erreurs. S'il est créé, on ajoute le header
 def alim_rapport_csv(erreurs=False):
@@ -308,12 +338,8 @@ def get_valeurs_variables_conf(nom_fiche,f_formats):
             pass
     return False
 
-def format_nommage_complt(nom_fiche,f_formats):
-    confs = get_valeurs_variables_conf(nom_fiche,f_formats)
-    
-    if confs:
-        f_format,conf=confs.values()
-        params = (str(conf)
+def format_inline(f_format,params):
+    inline = (str(params)
         .replace("{'","")
         .replace("': ","=")
         .replace(", '",", ")
@@ -321,8 +347,15 @@ def format_nommage_complt(nom_fiche,f_formats):
         .replace("}","")
         .replace("{","")
         )
-        
-        return eval("f_format.format({})".format(params))
+    return eval("f_format.format({})".format(inline))
+
+
+def format_nommage_complt(nom_fiche,f_formats):
+    confs = get_valeurs_variables_conf(nom_fiche,f_formats)
+    
+    if confs:
+        f_format,conf=confs.values()       
+        return format_inline(f_format,conf)
     else:
         return False
 

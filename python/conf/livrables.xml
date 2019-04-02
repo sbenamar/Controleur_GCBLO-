@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!DOCTYPE livrables SYSTEM "livrables.dtd">
+
 <livrables>
     <livrable dpt="CD21">
         <administratif chemin="01 - Administratif/">
@@ -115,7 +117,8 @@
             <percussion chemin="10 - Commande_Orange"/>
         </commande>
         <syntheseEtude chemin="">
-            <nommage nom="synthese_etude" /><cable chemin="10 - Commande_Orange"/>
+            <nommage code_zasro="true" nom="_synthese_etude" />
+            <cable chemin="10 - Commande_Orange"/>
             <percussion chemin="10 - Commande_Orange"/>
         </syntheseEtude>
         <graceTHD chemin="GraceTHD">
@@ -123,7 +126,7 @@
         </graceTHD>
     </livrable>
     
-     <livrable dpt="CDXX">
+    <livrable dpt="CDXX">
         <administratif chemin=".">
             <DT chemin="DT"/>
             <L49 chemin="L49">
@@ -148,9 +151,9 @@
                 <nommage code_zasro="true" nom="_Convention"/>
             </recap>
         </conventions>
-        <financier chemin="bpu" >
+        <financier chemin="." >
             <BPU>
-                <nommage code_zasro="true" nom="_BdP" />
+                <nommage nom="BPU" />
             </BPU>
         </financier>
         <projet chemin="plan tirage">
@@ -188,7 +191,7 @@
         <PlansGC chemin="plan gc">
             <nommage code_zasro="true" nom="_Plan_GC"/>
         </PlansGC>
-        <optique chemin="optique">
+        <optique chemin=".">
             <carnet type="cable">
                 <nommage nom="Carnet_cable"/>
             </carnet>
@@ -238,7 +241,7 @@
             <cable chemin="."/>
             <percussion chemin="."/>
         </commande>
-        <syntheseEtude chemin="synthese etude">
+        <syntheseEtude chemin="">
             <nommage nom="synthese_etude" />
         </syntheseEtude>
         <graceTHD chemin="THD">

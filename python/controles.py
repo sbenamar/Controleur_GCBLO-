@@ -637,13 +637,16 @@ def verif_point_technique_c3a(controle5=True):
     num_controle=5
     
     #Récupération des points techniques en uniformisant la forme du nom selon l'insee
-    points_techniques=[
-        (
-            code_type_point(ligne['pt_typephy'],ligne['pt_prop']),
-            format_id_pt(str(ligne['NOM']),str(ligne['CODE_INSEE'])) if ligne.fieldNameIndex('CODE_INSEE') != -1 else str(ligne['NOM'])
-        ) for ligne in list_point_technique
-    ]
-    
+    try:
+        points_techniques=[
+            (
+                code_type_point(ligne['pt_typephy'],ligne['pt_prop']),
+                format_id_pt(str(ligne['NOM']),str(ligne['CODE_INSEE'])) if ligne.fieldNameIndex('CODE_INSEE') != -1 else str(ligne['NOM'])
+            ) for ligne in list_point_technique
+        ]
+    except Exception as e:
+        log(e,36)
+        
     #Liste des lignes de C3A en séparant en 2 lignes les points A et B
     commandes = reduce(
             lambda x,y:x+y,
@@ -890,7 +893,77 @@ def verif_fichier_enedis_pt(controle=True):
             [chemin_fichier_application(conf["shape_point_technique_path"]),dossier_comac_libelle,""]
         )
     ] if nb_points_techniques and not nb_fichiers else []
+     
+    alim_rapport_csv(erreurs)
+    return nb_controles
+
+#Contrôle 56
+def verif_synthese_etude(controle=True):
+    if not controle:
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
     
+    num_controle=56
+    
+    erreurs=[
+        modele_erreur(
+            num_controle,
+            [chemin_fichier_application(conf["syntheseEtude_path"]),"",""]
+        )
+    ] if not find_synthese_etude() else []
+     
+    alim_rapport_csv(erreurs)
+    return nb_controles
+
+#Contrôle 49,50
+def verif_synoptique(controle49=True,controle50=True):
+    if not controle49 and not controle50:
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+    
+    if controle49:
+        num_controle=49
+        
+        erreurs=[
+            modele_erreur(
+                num_controle,
+                [chemin_fichier_application(conf["optique_path"]),"",""]
+            )
+        ] if not find_synoptique_fichier("cable") else []
+        
+        alim_rapport_csv(erreurs)
+        
+    if controle50:
+        num_controle=50
+        
+        erreurs=[
+            modele_erreur(
+                num_controle,
+                [chemin_fichier_application(conf["optique_path"]),"",""]
+            )
+        ] if not find_synoptique_fichier("fibre") else []
+        
+        alim_rapport_csv(erreurs)
+        
+    return nb_controles
+
+#Contrôle 46
+def verif_bpu(controle=True):
+    if not controle:
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+    
+    num_controle=46
+    
+    erreurs=[
+        modele_erreur(
+            num_controle,
+            [chemin_fichier_application(conf["financier_path"]),"",""]
+        )
+    ] if not find_bpu() else []
      
     alim_rapport_csv(erreurs)
     return nb_controles
