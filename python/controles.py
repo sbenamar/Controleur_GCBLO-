@@ -108,7 +108,7 @@ def version_c3a(controle=True):
 
 #Contrôle 25,57
 def check_format_fiches_poteau(controle25=True,controle57=True):
-    if not controle25 and not control57:
+    if not controle25 and not controle57:
         return 0
     else:
         nb_controles=get_nb_controles(locals())
@@ -183,6 +183,53 @@ def corresp_poteau_c3a(controle=True):
                     modele_erreur_c3a(num_controle,c3a,"",prestation[5].value,poteau_list_libelle,1)
                 )
                 c3a_poteaux.append(point_b)
+            else:
+                pass
+
+    alim_rapport_csv(erreurs)
+    return nb_controles 
+
+#Contrôle 58
+def corresp_chambre_c3a(controle=True):
+    if not controle:
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+
+    num_controle=58
+    
+    #Récupération des chambres en ne récupérant que le nom de chambres,
+    #sans les autres eventuels caractères afin de faciliter la comparaison et la reconnaissance
+    chambres = get_chambres_nom()
+    noms_chambres =""
+    
+    #Récupération des lignes de C3A
+    commandes_groupe = get_commandes_groupe()
+    
+    erreurs=[]
+
+    for c3a,commandes in commandes_groupe:
+        #Ce tableau sert à éviter d'ajouter des lignes doublons dans les erreurs
+        #Dés qu'une chambre est manquante, on l'ajoute dans ce tableau et cette chambre ne sera plus ajoutée
+        c3a_chambres=[]
+
+        for (num_prestation,prestation) in enumerate(commandes):
+            
+            #Permet d'avoir le même format pour comparer
+            point_a=prestation[3].value.split("/")[-1] if "/" in str(prestation[3].value) else prestation[3].value
+            point_b=prestation[5].value.split("/")[-1] if "/" in str(prestation[5].value) else prestation[5].value
+            
+            if prestation[2].value == "C" and str(point_a) not in chambres and point_a not in c3a_chambres and len(point_a):
+                erreurs.append(
+                    modele_erreur_c3a(num_controle,c3a,prestation[3].value,"",chambre_list_libelle,1)
+                )
+                c3a_chambres.append(point_a)
+                
+            elif prestation[4].value == "C" and str(point_b) not in chambres and point_b not in c3a_chambres and len(point_b):
+                erreurs.append(
+                    modele_erreur_c3a(num_controle,c3a,"",prestation[5].value,chambre_list_libelle,1)
+                )
+                c3a_chambres.append(point_b)
             else:
                 pass
 
@@ -963,7 +1010,81 @@ def verif_bpu(controle=True):
             num_controle,
             [chemin_fichier_application(conf["financier_path"]),"",""]
         )
-    ] if not find_bpu() else []
+    ] if find_bpu() != 1 else []
      
+    alim_rapport_csv(erreurs)
+    return nb_controles
+
+#Contrôle 45
+def verif_convention(controle=True):
+    if not controle:
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+    
+    num_controle=45
+    erreurs=[
+        modele_erreur(
+            num_controle,
+            [chemin_fichier_application(conf["conventions_path"]),"",""]
+        )
+    ] if find_recap_conventions() != 1 else []
+     
+    alim_rapport_csv(erreurs)
+    return nb_controles
+
+#Contrôle 51
+def verif_boitier_planboite(controle=True):
+    if not controle:
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+    
+    shape,boitiers = get_shape(conf["shape_boitier_path"],shape_boitier_nom)
+    plansboite=get_noms_planboite()
+    
+    num_controle=51   
+    
+    erreurs=[
+        modele_erreur(
+            num_controle,
+            [chemin_fichier_application(conf["shape_boitier_path"]),chemin_fichier_application(conf["optique_plansBoite_path"]),boitier["bp_etiquet"]]
+        )
+        for boitier in boitiers if boitier["bp_etiquet"] not in plansboite
+    ]
+    
+    alim_rapport_csv(erreurs)
+    return nb_controles
+
+#Contrôle 44
+def verif_pmv_conduite_gc(controle=True):
+    if not controle:
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+    
+    num_controle=44
+    
+    infras = get_shape(conf["shape_infra_path"],shape_infra_nom)[1]
+    communes = [commune for commune in get_shape(conf["shape_commune_path"],shape_commune_nom)[1]]
+    communes_err = []
+    erreurs = []
+    
+    for inf in infras:
+        if inf["cm_avct"] not in codes_gc_prevu:
+            for comm in communes:
+                if comm.geometry().contains(inf.geometry()) and comm["NOM"] not in communes_err and not find_pmv_souterrain(comm["NOM"].upper()):
+                    erreurs+=[
+                        modele_erreur(
+                            num_controle,
+                            [
+                                chemin_fichier_application(conf["administratif_PMV_path"]),
+                                chemin_fichier_application(conf["shape_point_technique_path"]),
+                                "{} ({})".format(comm["NOM"],inf["cm_code"])
+                             ]
+                        ) 
+                    ]
+                    communes_err.append(comm["NOM"])
+    
     alim_rapport_csv(erreurs)
     return nb_controles

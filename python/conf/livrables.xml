@@ -23,7 +23,7 @@
                 </souterrain>
             </PMV>
         </administratif>
-        <conventions chemin="02 - Conventions">
+        <conventions chemin="02 - Convention">
             <recap>
                 <nommage code_zasro="true" nom="_Convention"/>
             </recap>
@@ -78,7 +78,7 @@
             <synoptique type="fibre">
                 <nommage nom="Synoptique_fibre"/>
             </synoptique>
-            <plansBoite chemin="Plan boite" >
+            <plansBoite chemin="06 - Dossier Optique/Plan boite" >
                 <nommage pre_code_zasro="PB-" code_zasro="true" pre_id="-"/>
             </plansBoite>
         </optique>
@@ -137,7 +137,7 @@
                     <nommage code_zasro="true" pre_commune="L49_" post_commune="_recepisse"/>
                 </recepisse>
             </L49>
-            <PMV chemin="PMV">
+            <PMV chemin=".">
                 <poteau>
                     <nommage code_zasro="true" pre_commune="_PMV_aerien_"/>
                 </poteau> 
@@ -146,7 +146,7 @@
                 </souterrain>
             </PMV>
         </administratif>
-        <conventions chemin="convention">
+        <conventions chemin=".">
             <recap>
                 <nommage code_zasro="true" nom="_Convention"/>
             </recap>

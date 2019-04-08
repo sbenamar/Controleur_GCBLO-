@@ -85,173 +85,6 @@ try:
 except Exception as e:
     print("Une erreur est survenue (code: 1)")
 
-"""
-chemin_exe=os.path.join(chemin_courant,"exe")
-exe_projet_racine=os.path.join(chemin_exe,"04 - Projet")
-
-#Avant de récupérer le chemin du projet de l'exe, vérifier que l'exe est présent
-try:
-    nom_projet=os.listdir(exe_projet_racine)[0]
-except:
-    nom_projet=""
-
-exe_projet=os.path.join(exe_projet_racine,nom_projet)
-commande_orange_path=os.path.join(chemin_exe,"09 - Commande_Orange")
-chemin_layers=os.path.join(exe_projet,"LAYERS")
-cable_infra_csv_path=os.path.join(chemin_layers,"CABLE_INFRA.csv")
-point_technique_path=os.path.join(chemin_layers,"POINT_TECHNIQUE.shp")
-prises_path=os.path.join(chemin_layers,"PRISES.shp")
-sro_path=os.path.join(chemin_layers,"SRO.shp")
-infra_path=os.path.join(chemin_layers,"INFRASTRUCTURE.shp")
-boitier_path=os.path.join(chemin_layers,"BOITIER.shp")
-racco_client_path=os.path.join(chemin_layers,"RACCO_CLIENT.shp")
-cable_path=os.path.join(chemin_layers,"CABLE.shp")
-zpbo_path=os.path.join(chemin_layers,"ZPBO.shp")
-zsro_path=os.path.join(chemin_layers,"ZSRO.shp")
-zpec_path=os.path.join(chemin_layers,"ZPEC.shp")
-znro_path=os.path.join(chemin_layers,"ZNRO.shp")
-nro_path=os.path.join(chemin_layers,"NRO.shp")
-
-
-appui_orange_path=os.path.join(chemin_exe,"07 - Appui","Appui Orange - CAPFT","POTEAU")
-arbo_c3a="*C3A*.xls*"
-format_arbo_c7="*{}*C7*.xls*"
-chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
-format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
-
-conf_dpt["CD21"]={
-    "dpt":"CD21",
-    "chemin_exe":chemin_exe,
-    "exe_projet_racine":exe_projet_racine,
-    "nom_projet":nom_projet,
-    "exe_projet":exe_projet,
-    "commande_orange_path":commande_orange_path,
-    "chemin_layers":chemin_layers,
-    "cable_infra_csv_path":cable_infra_csv_path,
-    "point_technique_path":point_technique_path,
-    "prises_path":prises_path,
-    "sro_path":sro_path,
-    "infra_path":infra_path,
-    "boitier_path":boitier_path,
-    "racco_client_path":racco_client_path,
-    "cable_path":cable_path,
-    "zpbo_path":zpbo_path,
-    "zsro_path":zsro_path,
-    "zpec_path":zpec_path,
-    "znro_path":znro_path,
-    "nro_path":nro_path,
-    "appui_orange_path":appui_orange_path,
-    "arbo_c3a":arbo_c3a,
-    "format_arbo_c7":format_arbo_c7,
-    "chemin_c3a":chemin_c3a,
-    "format_chemin_c7":format_chemin_c7
-}
-
-chemin_exe=os.path.join(chemin_courant,"Commande")
-commande_orange_path=chemin_exe
-cable_infra_csv_path=os.path.join(chemin_exe,"CABLE_INFRA.csv")
-appui_orange_path=os.path.join(chemin_exe,"Appui aérien")
-arbo_c3a="*C3A*.xls*"
-format_arbo_c7="*{}*C7*.xls*"
-chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
-format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
-point_technique_path=os.path.join(chemin_exe,"POINT TECHNIQUE.shp")
-prises_path=os.path.join(chemin_exe,"PRISES.shp")
-sro_path=os.path.join(chemin_exe,"SRO.shp")
-infra_path=os.path.join(chemin_exe,"INFRASTRUCTURE.shp")
-boitier_path=os.path.join(chemin_exe,"BOITIER.shp")
-racco_client_path=os.path.join(chemin_exe,"RACCO_CLIENT.shp")
-cable_path=os.path.join(chemin_exe,"CABLE.shp")
-zpbo_path=os.path.join(chemin_exe,"ZPBO.shp")
-zsro_path=os.path.join(chemin_exe,"ZSRO.shp")
-zpec_path=os.path.join(chemin_exe,"ZPEC.shp")
-znro_path=os.path.join(chemin_exe,"ZNRO.shp")
-nro_path=os.path.join(chemin_exe,"NRO.shp")
-
-conf_dpt["testv1"]={
-    "dpt":"testv1",
-    "chemin_exe":chemin_exe,
-    "commande_orange_path":commande_orange_path,
-    "cable_infra_csv_path":cable_infra_csv_path,
-    "appui_orange_path":appui_orange_path,
-    "arbo_c3a":arbo_c3a,
-    "format_arbo_c7":format_arbo_c7,
-    "chemin_c3a":chemin_c3a,
-    "format_chemin_c7":format_chemin_c7,
-    "point_technique_path":point_technique_path,
-    "prises_path":prises_path,
-    "sro_path":sro_path,
-    "infra_path":infra_path,
-    "boitier_path":boitier_path,
-    "racco_client_path":racco_client_path,
-    "cable_path":cable_path,
-    "zpbo_path":zpbo_path,
-    "zsro_path":zsro_path,
-    "zpec_path":zpec_path,
-    "znro_path":znro_path,
-    "nro_path":nro_path
-}
-
-chemin_exe=os.path.join(chemin_courant,"Commande")
-commande_orange_path=chemin_exe
-cable_infra_csv_path=os.path.join(chemin_exe,"CABLE_INFRA.csv")
-appui_orange_path=os.path.join(chemin_exe,"Appuis aériens Orange")
-arbo_c3a="*C3A*.xls*"
-format_arbo_c7="*{}*C7*.xls*"
-chemin_c3a=os.path.join(commande_orange_path,arbo_c3a)
-format_chemin_c7=os.path.join(commande_orange_path,format_arbo_c7)
-point_technique_path=os.path.join(chemin_exe,"POINT_TECHNIQUE.shp")
-prises_path=os.path.join(chemin_exe,"PRISES.shp")
-sro_path=os.path.join(chemin_exe,"SRO.shp")
-infra_path=os.path.join(chemin_exe,"INFRASTRUCTURE.shp")
-boitier_path=os.path.join(chemin_exe,"BOITIER.shp")
-racco_client_path=os.path.join(chemin_exe,"RACCO_CLIENT.shp")
-cable_path=os.path.join(chemin_exe,"CABLE.shp")
-zpbo_path=os.path.join(chemin_exe,"ZPBO.shp")
-zsro_path=os.path.join(chemin_exe,"ZSRO.shp")
-zpec_path=os.path.join(chemin_exe,"ZPEC.shp")
-znro_path=os.path.join(chemin_exe,"ZNRO.shp")
-nro_path=os.path.join(chemin_exe,"NRO.shp")
-route_path=os.path.join(chemin_exe,"ROUTE.shp")
-bati_path=os.path.join(chemin_exe,"BATI.shp")
-cadastre_path=os.path.join(chemin_exe,"CADASTRE.shp")
-commune_path=os.path.join(chemin_exe,"COMMUNE.shp")
-projet_path=chemin_exe
-chambres_path=os.path.join(chemin_exe,"Chambres")
-appuis_enedis_dossier_path=os.path.join(chemin_exe,"Etude Comac")
-
-conf_dpt["testv2"]={
-    "dpt":"testv2",
-    "chemin_exe":chemin_exe,
-    "commande_orange_path":commande_orange_path,
-    "cable_infra_csv_path":cable_infra_csv_path,
-    "appui_orange_path":appui_orange_path,
-    "arbo_c3a":arbo_c3a,
-    "format_arbo_c7":format_arbo_c7,
-    "chemin_c3a":chemin_c3a,
-    "format_chemin_c7":format_chemin_c7,
-    "projet_path":projet_path,
-    "point_technique_path":point_technique_path,
-    "prises_path":prises_path,
-    "sro_path":sro_path,
-    "infra_path":infra_path,
-    "boitier_path":boitier_path,
-    "racco_client_path":racco_client_path,
-    "cable_path":cable_path,
-    "zpbo_path":zpbo_path,
-    "zsro_path":zsro_path,
-    "zpec_path":zpec_path,
-    "znro_path":znro_path,
-    "route_path":route_path,
-    "bati_path":bati_path,
-    "cadastre_path":cadastre_path,
-    "commune_path":commune_path,
-    "nro_path":nro_path,
-    "chambres_path":chambres_path,
-    "appuis_enedis_dossier_path":appuis_enedis_dossier_path
-}
-"""
-
 liste_couches=["point_technique","prises","sro","infra","boitier","racco_client","cable","zpbo","zsro","zpec","znro","nro","route","bati","cadastre","commune"]
 
 try:
@@ -578,32 +411,40 @@ try:
     erreur_controle37="La structuration des champs de la couche NRO est incorrecte"
     erreur_controle38="Le format du numéro d'appui dans la C7 est incorrect"
     erreur_controle39="La couche est manquante"
+    erreur_controle44="Le fichier PMV conduite est manquant pour la commune"
+    erreur_controle45="Le récapitulatif de convention est introuvable dans le dossier de conventions"
     erreur_controle46="Le fichier BPU est introuvable"
     erreur_controle47="Le répertoire LAYERS ou le fichier .qgs est introuvable dans le répertoire PROJET_QGIS"
     erreur_controle48="Le fichier de plan de tirage est introuvable dans le répertoire PROJET_QGIS"
     erreur_controle49="Le fichier synoptique cable est introuvable"
     erreur_controle50="Le fichier synoptique fibre est introuvable"
+    erreur_controle51="Le boitier est introuvable dans le dossier Plan de boîte"
     erreur_controle52="Il existe des points techniques Enedis mais le dossier Enedic est vide"
     erreur_controle53="Le fichier appui est manquant pour ce point technique"
     erreur_controle54="Le fichier chambre est manquant pour ce point technique"
     erreur_controle56="Le fichier de synthèse d'étude est introuvable"
     erreur_controle57="Nom de fiche poteau incorrect"
+    erreur_controle58="Fiche chambre manquante"
     
-    pre_entete_1= ["Commande d'accès","Version"]
-    pre_entete_2= ["Commande d'accès","Complétude"]
-    pre_entete_3= ["Commande d'accès","Règle GCBLO"]
-    pre_entete_4= ["Commande d'accès","Cohérence"]
-    pre_entete_5= ["Commande d'accès","Structuration des couches"]
-    pre_entete_6= ["Complétude","Plan de tirage"]
-    pre_entete_7= ["Complétude","Projet QGIS"]
-    pre_entete_8= ["Complétude","QGIS"]
-    pre_entete_9= ["Complétude","Etude CAPFT"]
-    pre_entete_10= ["Complétude","FOA"]
-    pre_entete_11= ["Complétude","Etude Comac"]
-    pre_entete_12= ["Complétude","Synthèse étude"]
-    pre_entete_13= ["Complétude","Synoptique cable"]
-    pre_entete_14= ["Complétude","Synoptique fibre à fibre"]
-    pre_entete_15= ["Complétude","Financier"]
+    pre_entete_1 = ["Commande d'accès","Version"]
+    pre_entete_2 = ["Commande d'accès","Complétude"]
+    pre_entete_3 = ["Commande d'accès","Règle GCBLO"]
+    pre_entete_4 = ["Commande d'accès","Cohérence"]
+    pre_entete_5 = ["Commande d'accès","Structuration des couches"]
+    pre_entete_6 = ["Complétude","Plan de tirage"]
+    pre_entete_7 = ["Complétude","Projet QGIS"]
+    pre_entete_8 = ["Complétude","QGIS"]
+    pre_entete_9 = ["Complétude","Etude CAPFT"]
+    pre_entete_10 = ["Complétude","FOA"]
+    pre_entete_11 = ["Complétude","Etude Comac"]
+    pre_entete_12 = ["Complétude","Synthèse étude"]
+    pre_entete_13 = ["Complétude","Synoptique cable"]
+    pre_entete_14 = ["Complétude","Synoptique fibre à fibre"]
+    pre_entete_15 = ["Complétude","Financier"]
+    pre_entete_16 = ["Complétude","Convention"]
+    pre_entete_17 = ["Complétude","Plan de boite"]
+    pre_entete_18 = ["Complétude","PMV conduite"]
+    pre_entete_58 = ["Commande d'accès","Cohérence"]
     
     pre_entete_lien={
         1:pre_entete_1,
@@ -653,7 +494,11 @@ try:
         52:pre_entete_11,
         57:pre_entete_3,
         56:pre_entete_12,
-        46:pre_entete_15
+        46:pre_entete_15,
+        45:pre_entete_16,
+        51:pre_entete_17,
+        44:pre_entete_18,
+        58:pre_entete_3,
     }
     
     post_entete_controle1=[erreur_controle1,criticite['bloquant']]
@@ -695,16 +540,20 @@ try:
     post_entete_controle37=[erreur_controle37,criticite['majeure']]
     post_entete_controle38=[erreur_controle38,criticite['avertissement']]
     post_entete_controle39=[erreur_controle39,criticite['majeure']]
+    post_entete_controle44=[erreur_controle44,criticite['majeure']]
+    post_entete_controle45=[erreur_controle45,criticite['majeure']]
     post_entete_controle46=[erreur_controle46,criticite['majeure']]
     post_entete_controle47=[erreur_controle47,criticite['majeure']]
     post_entete_controle48=[erreur_controle48,criticite['majeure']]
     post_entete_controle49=[erreur_controle48,criticite['majeure']]
     post_entete_controle50=[erreur_controle48,criticite['majeure']]
+    post_entete_controle51=[erreur_controle51,criticite['majeure']]
     post_entete_controle52=[erreur_controle52,criticite['majeure']]
     post_entete_controle53=[erreur_controle53,criticite['majeure']]
     post_entete_controle54=[erreur_controle54,criticite['majeure']]
     post_entete_controle56=[erreur_controle56,criticite['mineure']]
     post_entete_controle57=[erreur_controle57,criticite['mineure']]
+    post_entete_controle58=[erreur_controle58,criticite['bloquant']]
     
     lib_nb_erreurs="Nombre d'erreurs"
     c3a_list_libelle="Ensemble des C3A"
@@ -792,6 +641,7 @@ try:
     }
     
     point_tiers_liste=['APPUI','CHAMBRE','POTELET']
+    codes_gc_prevu=("C","A CREER")
     
     #Types de liaisons
     liaison_c_c="C - C"

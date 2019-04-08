@@ -223,10 +223,14 @@ def chemin_fichier_application(fichier):
 def find_synthese_etude():
     return len([f
             for f in glob.iglob(os.path.join(conf["syntheseEtude_path"],"*.xls*"))
-            if os.path.splitext(os.path.basename(f))[0] in [
+            if os.path.splitext(os.path.basename(f))[0] in ([
                     format_inline(f_format,{"code_zasro":conf["code_zasro"]})
                     for f_format in conf["syntheseEtude_format"]
                 ]
+                +[
+                    format_inline(f_format,{"code_zasro":conf["code_zasro_alt"]})
+                    for f_format in conf["syntheseEtude_format"]
+                ])
             ])    
 
 def find_synoptique_fichier(type_syn="cable"):
@@ -235,20 +239,58 @@ def find_synoptique_fichier(type_syn="cable"):
     
     return len([f
             for f in glob.iglob(os.path.join(conf["optique_path".format(type_syn)],"*.xls*"))
-            if os.path.splitext(os.path.basename(f))[0] in [
+            if os.path.splitext(os.path.basename(f))[0] in ([
                     format_inline(f_format,{"code_zasro":conf["code_zasro"]})
                     for f_format in conf["optique_synoptique_{}_format".format(type_syn)]
                 ]
+                +[
+                    format_inline(f_format,{"code_zasro":conf["code_zasro_alt"]})
+                    for f_format in conf["optique_synoptique_{}_format".format(type_syn)]
+                ])
             ])    
 
 def find_bpu():
     return len([f
             for f in glob.iglob(os.path.join(conf["financier_path"],"*.xls*"))
-            if os.path.splitext(os.path.basename(f))[0] in [
+            if os.path.splitext(os.path.basename(f))[0] in ([
                     format_inline(f_format,{"code_zasro":conf["code_zasro"]})
                     for f_format in conf["financier_BPU_format"]
                 ]
+                +[
+                    format_inline(f_format,{"code_zasro":conf["code_zasro_alt"]})
+                    for f_format in conf["financier_BPU_format"]
+                ])
             ])    
+
+def find_recap_conventions():
+    return len([f
+            for f in glob.iglob(os.path.join(conf["conventions_path"],"*.xls*"))
+            if os.path.splitext(os.path.basename(f))[0] in ([
+                    format_inline(f_format,{"code_zasro":conf["code_zasro"]})
+                    for f_format in conf["conventions_recap_format"]
+                ]
+                +[
+                    format_inline(f_format,{"code_zasro":conf["code_zasro_alt"]})
+                    for f_format in conf["conventions_recap_format"]
+                ])
+            ])    
+
+
+def get_noms_planboite():
+    return [nom_fichier(f) for f in glob.iglob(os.path.join(conf["optique_plansBoite_path"],"*.xls*"))]
+
+def find_pmv_souterrain(nom_commune):
+    return len([f
+            for f in glob.iglob(os.path.join(conf["administratif_PMV_path"],"*.pdf"))
+            if os.path.splitext(os.path.basename(f))[0] in ([
+                    format_inline(f_format,{"code_zasro":conf["code_zasro"],"commune":nom_commune})
+                    for f_format in conf["PMV_souterrain_format"]
+                ]
+                +[
+                    format_inline(f_format,{"code_zasro":conf["code_zasro_alt"],"commune":nom_commune})
+                    for f_format in conf["PMV_souterrain_format"]
+                ])
+            ]) 
 
 #Crée ou alimente le rapport csv contenant les erreurs. S'il est créé, on ajoute le header
 def alim_rapport_csv(erreurs=False):
@@ -311,8 +353,19 @@ def get_poteaux_fiche(dossier_complet=False):
             or format_nommage_complt(os.path.splitext(os.path.basename(f))[0],conf["appuis_orange_poteau_format"])
             ]
 
+#Récupère la liste des chambres en explorant la liste des fichiers de chambres et en récupérant leur nom 
+def get_chambres_fiche(dossier_complet=False):
+    return [os.path.splitext(os.path.basename(f))[0]
+            for f in glob.iglob(os.path.join(conf["FOA_chambre_path"],"*.xls*"))
+            if dossier_complet
+            or format_nommage_complt(os.path.splitext(os.path.basename(f))[0],conf["FOA_chambre_format"])
+            ]
+
 def get_poteaux_nom():
     return [get_valeurs_variables_conf(poteau,conf["appuis_orange_poteau_format"])["conf"]["id"] for poteau in get_poteaux_fiche()]
+
+def get_chambres_nom():
+    return [get_valeurs_variables_conf(chambre,conf["FOA_chambre_format"])["conf"]["id"] for chambre in get_chambres_fiche()]
 
 def number_to_inline_list(nb):
     return ','.join(map(str,range(1,nb+1)) or "-1")

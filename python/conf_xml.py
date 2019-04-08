@@ -63,6 +63,7 @@ def get_conf_xml(chemin_courant,xml_livrables_path="conf/livrables.xml",type_liv
     for livrable in root.xpath("//livrable"):
         conf,dpt={},livrable.get("dpt")
         conf["code_zasro"]=None
+        conf["code_zasro_alt"]=None
         
         if (dpt,type_livrable,zone_livrable) == ("CD21","EXE","Distribution"):
             try:
@@ -70,6 +71,8 @@ def get_conf_xml(chemin_courant,xml_livrables_path="conf/livrables.xml",type_liv
                 dossier_livrable=os.listdir(chemin_livrable)[-1]
                 chemin_livrable=os.path.join(chemin_livrable,dossier_livrable)
                 conf["code_zasro"]=dossier_livrable[:14]
+                conf["code_zasro_alt"]= (lambda x:x[:-2]+x[-2].replace("0","")+x[-1])(conf["code_zasro"])
+                
                 duplicate_cd21=False
             except:
                 pass

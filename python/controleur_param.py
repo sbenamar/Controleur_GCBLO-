@@ -137,7 +137,7 @@ def lancer_controles(widget):
         pbar_chargement(pbar,step_ctrl,nb_ctrl)
     except Exception as e:
         return log(e,417)
-
+    
     try:
         step_ctrl+=verif_fichier_appui_orange_pt(list_controle_exe[53])
         pbar_chargement(pbar,step_ctrl,nb_ctrl)
@@ -164,9 +164,35 @@ def lancer_controles(widget):
     
     try:
         step_ctrl+=verif_bpu(list_controle_exe[46])
-        pbar_chargement(pbar,100,100)
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
     except Exception as e:
         return log(e,423)
+    
+    try:
+        step_ctrl+=verif_convention(list_controle_exe[45])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,424)
+    
+    try:
+        step_ctrl+=verif_boitier_planboite(list_controle_exe[51])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,425)
+    
+    try:
+        step_ctrl+=verif_pmv_conduite_gc(list_controle_exe[44])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,426)
+    
+    try:
+        step_ctrl+=corresp_chambre_c3a(list_controle_exe[58])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,427)
+    
+    pbar_chargement(pbar,100,100)
     
     #Affichage du message de fin confirmant la réussite des controles
     msg_succes()
