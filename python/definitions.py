@@ -411,6 +411,9 @@ try:
     erreur_controle37="La structuration des champs de la couche NRO est incorrecte"
     erreur_controle38="Le format du numéro d'appui dans la C7 est incorrect"
     erreur_controle39="La couche est manquante"
+    erreur_controle41="DT manquants pour la commune"
+    erreur_controle42="Des fichiers sont manquants dans le dossier L49"
+    erreur_controle43="Le fichier PMV aérien est manquant pour la commune"
     erreur_controle44="Le fichier PMV conduite est manquant pour la commune"
     erreur_controle45="Le récapitulatif de convention est introuvable dans le dossier de conventions"
     erreur_controle46="Le fichier BPU est introuvable"
@@ -422,6 +425,7 @@ try:
     erreur_controle52="Il existe des points techniques Enedis mais le dossier Enedic est vide"
     erreur_controle53="Le fichier appui est manquant pour ce point technique"
     erreur_controle54="Le fichier chambre est manquant pour ce point technique"
+    erreur_controle55="L'annexe est manquante pour cette élement"
     erreur_controle56="Le fichier de synthèse d'étude est introuvable"
     erreur_controle57="Nom de fiche poteau incorrect"
     erreur_controle58="Fiche chambre manquante"
@@ -444,7 +448,10 @@ try:
     pre_entete_16 = ["Complétude","Convention"]
     pre_entete_17 = ["Complétude","Plan de boite"]
     pre_entete_18 = ["Complétude","PMV conduite"]
-    pre_entete_58 = ["Commande d'accès","Cohérence"]
+    pre_entete_19 = ["Complétude","DT"]
+    pre_entete_20 = ["Complétude","L49"]
+    pre_entete_21 = ["Complétude","PMV aérien"]
+    pre_entete_22 = ["Complétude","Annexe D15"]
     
     pre_entete_lien={
         1:pre_entete_1,
@@ -498,7 +505,11 @@ try:
         45:pre_entete_16,
         51:pre_entete_17,
         44:pre_entete_18,
-        58:pre_entete_3,
+        58:pre_entete_2,
+        41:pre_entete_19,
+        42:pre_entete_20,
+        43:pre_entete_21,
+        55:pre_entete_22
     }
     
     post_entete_controle1=[erreur_controle1,criticite['bloquant']]
@@ -540,6 +551,9 @@ try:
     post_entete_controle37=[erreur_controle37,criticite['majeure']]
     post_entete_controle38=[erreur_controle38,criticite['avertissement']]
     post_entete_controle39=[erreur_controle39,criticite['majeure']]
+    post_entete_controle41=[erreur_controle41,criticite['majeure']]
+    post_entete_controle42=[erreur_controle42,criticite['majeure']]
+    post_entete_controle43=[erreur_controle43,criticite['majeure']]
     post_entete_controle44=[erreur_controle44,criticite['majeure']]
     post_entete_controle45=[erreur_controle45,criticite['majeure']]
     post_entete_controle46=[erreur_controle46,criticite['majeure']]
@@ -551,6 +565,7 @@ try:
     post_entete_controle52=[erreur_controle52,criticite['majeure']]
     post_entete_controle53=[erreur_controle53,criticite['majeure']]
     post_entete_controle54=[erreur_controle54,criticite['majeure']]
+    post_entete_controle55=[erreur_controle55,criticite['majeure']]
     post_entete_controle56=[erreur_controle56,criticite['mineure']]
     post_entete_controle57=[erreur_controle57,criticite['mineure']]
     post_entete_controle58=[erreur_controle58,criticite['bloquant']]
@@ -642,6 +657,9 @@ try:
     
     point_tiers_liste=['APPUI','CHAMBRE','POTELET']
     codes_gc_prevu=("C","A CREER")
+    codes_poteau_chng_rplc=("CHANGEMENT","RENFORT")
+    codes_pt_problematique=("PROBLEMATIQUE","DECROUTAGE","REHAUSSE","INTROUVABLE")
+    codes_infra_problematique=("PROBLEMATIQUE","DECROUTAGE","REHAUSSE","INTROUVABLE")
     
     #Types de liaisons
     liaison_c_c="C - C"

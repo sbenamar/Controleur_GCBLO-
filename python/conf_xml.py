@@ -2,7 +2,7 @@ from lxml import etree
 import os
 
 def format_fichier_xml(elem):
-    format_pre=["pre_code_zasro","code_zasro","separateur_zasro_etr","code_etr","branche_optique"]
+    format_pre=["pre_code_zasro","code_zasro","separateur_zasro_etr","code_etr","branche_optique","id"]
     format_post=["nom"]
     format_variables_complexes=["pt1_pt2","insee_id"]
     format_variables_simples=["commune","id","canton"]

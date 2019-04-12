@@ -1044,11 +1044,11 @@ def verif_boitier_planboite(controle=True):
     plansboite=get_noms_planboite()
     
     num_controle=51   
-    
+
     erreurs=[
         modele_erreur(
             num_controle,
-            [chemin_fichier_application(conf["shape_boitier_path"]),chemin_fichier_application(conf["optique_plansBoite_path"]),boitier["bp_etiquet"]]
+            [chemin_fichier_application(conf["shape_boitier_path"]),chemin_fichier_application(conf["optique_plansBoite_path"]),boitier["bp_etiquet"] or "N/D"]
         )
         for boitier in boitiers if boitier["bp_etiquet"] not in plansboite
     ]
@@ -1071,14 +1071,84 @@ def verif_pmv_conduite_gc(controle=True):
     erreurs = []
     
     for inf in infras:
-        if inf["cm_avct"] not in codes_gc_prevu:
+        if inf["cm_avct"] in codes_gc_prevu:
             for comm in communes:
                 if comm.geometry().contains(inf.geometry()) and comm["NOM"] not in communes_err and not find_pmv_souterrain(comm["NOM"].upper()):
                     erreurs+=[
                         modele_erreur(
                             num_controle,
                             [
+                                chemin_fichier_application(conf["shape_infra_path"]),
                                 chemin_fichier_application(conf["administratif_PMV_path"]),
+                                "{} ({})".format(comm["NOM"],inf["cm_code"])
+                             ]
+                        ) 
+                    ]
+                    communes_err.append(comm["NOM"])
+    
+    alim_rapport_csv(erreurs)
+    return nb_controles
+
+#Contrôle 43
+def verif_pmv_aerien_poteau_etat(controle=True):
+    if not controle:
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+    
+    num_controle=43
+    
+    pts = get_shape(conf["shape_point_technique_path"],shape_infra_nom)[1]
+    communes = [commune for commune in get_shape(conf["shape_commune_path"],shape_commune_nom)[1]]
+    communes_err = []
+    erreurs = []
+    
+    for pt in pts:
+        if pt["ETAT"] in codes_poteau_chng_rplc:
+            for comm in communes:
+                if comm.geometry().contains(pt.geometry()) and comm["NOM"] not in communes_err and not find_pmv_poteau(comm["NOM"].upper()):
+                    erreurs+=[
+                        modele_erreur(
+                            num_controle,
+                            [
+                                chemin_fichier_application(conf["shape_point_technique_path"]),
+                                chemin_fichier_application(conf["administratif_PMV_path"]),
+                                "{} ({})".format(
+                                    comm["NOM"],
+                                    format_id_pt(str(pt['NOM']),str(pt['CODE_INSEE'])) if pt.fieldNameIndex('CODE_INSEE') != -1 else str(pt['NOM']))
+                             ]
+                        ) 
+                    ]
+                    communes_err.append(comm["NOM"])
+    
+    alim_rapport_csv(erreurs)
+    return nb_controles
+
+#Contrôle 41
+def verif_dt_gc(controle=True):
+    if not controle:
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+    
+    num_controle=41
+
+    infras = get_shape(conf["shape_infra_path"],shape_infra_nom)[1]
+    communes = [commune for commune in get_shape(conf["shape_commune_path"],shape_commune_nom)[1]]
+    communes_err = []
+    erreurs = []
+    
+    for inf in infras:
+        if inf["cm_avct"] in codes_gc_prevu:
+            for comm in communes:
+                nom_commune=comm["NOM"].upper().replace("-"," ")
+                if comm.geometry().contains(inf.geometry()) and comm["NOM"] not in communes_err and not len(get_dt_pdf(nom_commune)):
+
+                    erreurs+=[
+                        modele_erreur(
+                            num_controle,
+                            [
+                                chemin_fichier_application(conf["administratif_DT_path"]),
                                 chemin_fichier_application(conf["shape_point_technique_path"]),
                                 "{} ({})".format(comm["NOM"],inf["cm_code"])
                              ]
@@ -1088,3 +1158,91 @@ def verif_pmv_conduite_gc(controle=True):
     
     alim_rapport_csv(erreurs)
     return nb_controles
+
+#Contrôle 55
+def verif_d15_problematique(controle=True):
+    if not controle:
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+    
+    num_controle=55
+
+    infras = [inf for inf in get_shape(conf["shape_infra_path"],shape_infra_nom)[1]]
+    pts = [pt for pt in get_shape(conf["shape_point_technique_path"],shape_point_technique_nom)[1]]
+    pts_pb = []
+    infras_pb = []
+    
+    for inf in infras:
+        if inf["ETAT"] in codes_infra_problematique:
+            troncon_pb = ["",""]
+            for pt in pts:
+                if pt["pt_nd_code"] == inf["cm_ndcode1"]:
+                    troncon_pb[0]=pt["NOM"]
+                elif pt["pt_nd_code"] == inf["cm_ndcode2"]:
+                    troncon_pb[1]=pt["NOM"]
+                if pt["ETAT"] in codes_infra_problematique and pt["NOM"] not in pts_pb and not find_d15(pt["NOM"]):
+                    pts_pb.append(pt["NOM"])
+            
+            if [inf["cm_code"],troncon_pb] not in infras_pb and not find_d15(troncon_pb):
+                infras_pb.append([inf["cm_code"],troncon_pb])
+                
+    erreurs_pt=[
+                modele_erreur(
+                    num_controle,
+                    [
+                        chemin_fichier_application(conf["shape_point_technique_path"]),
+                        chemin_fichier_application(conf["FOA_annexeD15_path"]),
+                        pt_nom
+                    ]
+                ) for pt_nom in pts_pb
+            ]
+    
+    erreurs_inf=[
+                modele_erreur(
+                    num_controle,
+                    [
+                        chemin_fichier_application(conf["shape_infra_path"]),
+                        chemin_fichier_application(conf["FOA_annexeD15_path"]),
+                        "{} ({} <=> {})".format(code,pt1,pt2)
+                    ]
+                ) for (code,(pt1,pt2)) in infras_pb
+            ]
+    
+    alim_rapport_csv(erreurs_pt)
+    alim_rapport_csv(erreurs_inf)
+    return nb_controles
+
+#Contrôle 42
+def verif_l49_gc_1000(controle=True):
+    if not controle:
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+    
+    num_controle=42
+
+    infras = get_shape(conf["shape_infra_path"],shape_infra_nom)[1]
+    communes = [commune for commune in get_shape(conf["shape_commune_path"],shape_commune_nom)[1]]
+    communes_err = []
+    erreurs = []
+    
+    for inf in infras:
+        if float(inf["cm_long"]) > 1000:
+            for comm in communes:
+                nom_commune=comm["NOM"]
+                if comm.geometry().contains(inf.geometry()) and comm["NOM"] not in communes_err and not get_l49_fichiers_complets(nom_commune):
+                    erreurs+=[
+                        modele_erreur(
+                            num_controle,
+                            [
+                                chemin_fichier_application(conf["shape_point_technique_path"]),
+                                chemin_fichier_application(conf["administratif_L49_path"]),
+                                "{} ({})".format(comm["NOM"],inf["cm_code"])
+                             ]
+                        ) 
+                    ]
+                    communes_err.append(comm["NOM"])
+    
+    alim_rapport_csv(erreurs)
+    return nb_controles   

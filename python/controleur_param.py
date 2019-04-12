@@ -181,6 +181,12 @@ def lancer_controles(widget):
         return log(e,425)
     
     try:
+        step_ctrl+=verif_pmv_aerien_poteau_etat(list_controle_exe[43])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,430)
+    
+    try:
         step_ctrl+=verif_pmv_conduite_gc(list_controle_exe[44])
         pbar_chargement(pbar,step_ctrl,nb_ctrl)
     except Exception as e:
@@ -191,6 +197,24 @@ def lancer_controles(widget):
         pbar_chargement(pbar,step_ctrl,nb_ctrl)
     except Exception as e:
         return log(e,427)
+    
+    try:
+        step_ctrl+=verif_dt_gc(list_controle_exe[41])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,428)
+    
+    try:
+        step_ctrl+=verif_l49_gc_1000(list_controle_exe[42])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,429)
+    
+    #try:
+    #    step_ctrl+=verif_d15_problematique(list_controle_exe[55])
+    #    pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    #except Exception as e:
+    #    return log(e,431)
     
     pbar_chargement(pbar,100,100)
     

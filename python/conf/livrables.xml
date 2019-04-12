@@ -8,10 +8,10 @@
             <DT chemin="01 - Administratif/1.1 - DT"/>
             <L49 chemin="01 - Administratif/1.2 - L49">
                 <dossier>
-                    <nommage code_zasro="true" pre_commune="L49_" post_commune="_dossier"/>
+                    <nommage pre_commune="L49_projet_CD21_"/>
                 </dossier>
                 <recepisse>
-                    <nommage code_zasro="true" pre_commune="L49_" post_commune="_recepisse"/>
+                    <nommage pre_commune="L49_projet_CD21_" post_commune="_recepisse"/>
                 </recepisse>
             </L49>
             <PMV chemin="01 - Administratif/1.3 - PMV">
@@ -104,6 +104,7 @@
             </chambre>
             <annexeD15 chemin="09 - FOA\Annexe_D15">
                 <nommage pre_pt="Annexe D15  " separateur_pt1_pt2="_ "/>
+                <nommage pre_pt="Annexe D15  " pt1="true"/>
             </annexeD15>
         </FOA>
         <commande chemin="10 - Commande_Orange">
@@ -228,7 +229,8 @@
                 <nommage separateur_insee_id="_"/>
             </chambre>
             <annexeD15 chemin="D15">
-                <nommage pre_pt="D15" separateur_pt1_pt2="_ "/>
+                <nommage pre_pt="Annexe D15  " pt1="true"/>
+                <nommage pre_pt="Annexe D15  " separateur_pt1_pt1="_"/>
             </annexeD15>
         </FOA>
         <commande chemin=".">

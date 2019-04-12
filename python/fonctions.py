@@ -282,15 +282,79 @@ def get_noms_planboite():
 def find_pmv_souterrain(nom_commune):
     return len([f
             for f in glob.iglob(os.path.join(conf["administratif_PMV_path"],"*.pdf"))
-            if os.path.splitext(os.path.basename(f))[0] in ([
-                    format_inline(f_format,{"code_zasro":conf["code_zasro"],"commune":nom_commune})
+            if os.path.splitext(os.path.basename(f))[0].upper().replace(" ","-") in ([
+                    str(format_inline(f_format,{"code_zasro":conf["code_zasro"],"commune":nom_commune})).upper().replace(" ","-")
                     for f_format in conf["PMV_souterrain_format"]
                 ]
                 +[
-                    format_inline(f_format,{"code_zasro":conf["code_zasro_alt"],"commune":nom_commune})
+                    str(format_inline(f_format,{"code_zasro":conf["code_zasro_alt"],"commune":nom_commune})).upper().replace(" ","-")
                     for f_format in conf["PMV_souterrain_format"]
                 ])
             ]) 
+
+def find_pmv_poteau(nom_commune):
+    return len([f
+            for f in glob.iglob(os.path.join(conf["administratif_PMV_path"],"*.pdf"))
+            if os.path.splitext(os.path.basename(f))[0].upper().replace(" ","-") in ([
+                    str(format_inline(f_format,{"code_zasro":conf["code_zasro"],"commune":nom_commune})).upper().replace(" ","-")
+                    for f_format in conf["PMV_poteau_format"]
+                ]
+                +[
+                    str(format_inline(f_format,{"code_zasro":conf["code_zasro_alt"],"commune":nom_commune})).upper().replace(" ","-")
+                    for f_format in conf["PMV_poteau_format"]
+                ])
+            ]) 
+
+def find_d15(noms_pt):
+    return len([f
+            for f in glob.iglob(os.path.join(conf["FOA_annexeD15_path"],"*.xls*"))
+            if os.path.splitext(os.path.basename(f))[0].upper().replace(" ","-") in ([
+                    str(format_inline(f_format,{"code_zasro":conf["code_zasro"],"pt1":noms_pt[0],"pt2":noms_pt[1]})).upper().replace(" ","-")
+                    if type(noms_pt) is list  
+                    else str(format_inline(f_format,{"code_zasro":conf["code_zasro"],"pt1":noms_pt,"pt2":""})).upper().replace(" ","-")
+                    for f_format in conf["FOA_annexeD15_format"]
+                ]
+                +[
+                    str(format_inline(f_format,{"code_zasro":conf["code_zasro"],"pt1":noms_pt[0],"pt2":noms_pt[1]})).upper().replace(" ","-")
+                    if type(noms_pt) is list  
+                    else str(format_inline(f_format,{"code_zasro":conf["code_zasro_alt"],"pt1":noms_pt,"pt2":""})).upper().replace(" ","-")
+                    for f_format in conf["FOA_annexeD15_format"]
+                ])
+            ]) 
+    
+def get_dt_pdf(nom_commune):
+    return [f
+            for f in glob.iglob(os.path.join(*[conf["administratif_DT_path"],nom_commune],"**/*.pdf"))
+            ]
+
+def get_l49_recepisse(nom_commune):
+    return len([f
+            for f in glob.iglob(os.path.join(conf["administratif_L49_path"],"*.*"))
+            if os.path.splitext(os.path.basename(f))[0].upper().replace(" ","-") in ([
+                    str(format_inline(f_format,{"code_zasro":conf["code_zasro"],"commune":nom_commune})).upper().replace(" ","-")
+                    for f_format in conf["L49_recepisse_format"]
+                ]
+                +[
+                    str(format_inline(f_format,{"code_zasro":conf["code_zasro_alt"],"commune":nom_commune})).upper().replace(" ","-")
+                    for f_format in conf["L49_recepisse_format"]
+                ])
+            ])
+
+def get_l49_dossier(nom_commune):
+    return len([f
+            for f in glob.iglob(os.path.join(conf["administratif_L49_path"],"*.*"))
+            if os.path.splitext(os.path.basename(f))[0].upper().replace(" ","-") in ([
+                    str(format_inline(f_format,{"code_zasro":conf["code_zasro"],"commune":nom_commune})).upper().replace(" ","-")
+                    for f_format in conf["L49_dossier_format"]
+                ]
+                +[
+                    str(format_inline(f_format,{"code_zasro":conf["code_zasro_alt"],"commune":nom_commune})).upper().replace(" ","-")
+                    for f_format in conf["L49_dossier_format"]
+                ])
+            ])
+
+def get_l49_fichiers_complets(nom_commune):
+    return get_l49_dossier(nom_commune) and get_l49_recepisse(nom_commune)
 
 #Crée ou alimente le rapport csv contenant les erreurs. S'il est créé, on ajoute le header
 def alim_rapport_csv(erreurs=False):
@@ -400,7 +464,8 @@ def format_inline(f_format,params):
         .replace("}","")
         .replace("{","")
         )
-    return eval("f_format.format({})".format(inline))
+
+    return eval("f_format.format({})".format(inline)) if f_format else ""
 
 
 def format_nommage_complt(nom_fiche,f_formats):
