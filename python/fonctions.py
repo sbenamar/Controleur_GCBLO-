@@ -305,6 +305,26 @@ def find_pmv_poteau(nom_commune):
                 ])
             ]) 
 
+#Récupération de la première feuille du fichier C7
+def get_d15_from_fichier():
+    chemins = [
+        f for f in glob.glob(os.path.join(conf["FOA_annexeD15_path"],"*.xls*"))
+        if get_valeurs_variables_conf(os.path.splitext(os.path.basename(f))[0],conf["FOA_annexeD15_format"])
+    ]
+    
+    liste_dt=[]
+    for chemin in chemins:
+        feuille = xlrd.open_workbook(chemin).sheet_by_index(0)
+        liste_dt.append({
+            "pt1":feuille.row(22)[1],
+            "pt2":feuille.row(22)[11],
+            "fichier":chemin_fichier_application(chemin)
+        })
+    return liste_dt  
+
+def pts_from_d15():
+    return [[d15["pt1"].value,d15["pt2"].value] for d15 in get_d15_from_fichier()]
+
 def find_d15(noms_pt):
     return len([f
             for f in glob.iglob(os.path.join(conf["FOA_annexeD15_path"],"*.xls*"))
@@ -431,6 +451,28 @@ def get_poteaux_nom():
 def get_chambres_nom():
     return [get_valeurs_variables_conf(chambre,conf["FOA_chambre_format"])["conf"]["id"] for chambre in get_chambres_fiche()]
 
+def get_cable_infra_shp(format_troncon=False):
+    infras = [infra for infra in get_shape(conf["shape_infra_path"],shape_infra_nom)[1]]
+    pts = [pt for pt in get_shape(conf["shape_point_technique_path"],shape_point_technique_nom)[1]]
+    cables = [cable for cable in get_shape(conf["shape_cable_path"],shape_cable_nom)[1]]
+    
+    cbl_inf=[]
+    for cable in cables:
+        type_inf,prop,pt1,pt2 = [""]*4
+        for infra in infras:
+            if infra.geometry().contains(cable.geometry()):
+                type_inf,prop = infra["cm_typ_imp"],infra["Proprio"]
+                break
+        for pt in pts:
+            if pt["pt_nd_code"] == cable["cb_nd1"]:
+                pt1=format_id_pt(str(pt['NOM']),str(pt['CODE_INSEE'])) if pt.fieldNameIndex('CODE_INSEE') != -1 else str(pt['NOM'])
+            if pt["pt_nd_code"] == cable["cb_nd2"]:
+                pt2=format_id_pt(str(pt['NOM']),str(pt['CODE_INSEE'])) if pt.fieldNameIndex('CODE_INSEE') != -1 else str(pt['NOM'])
+        if "CONDUITE" in type_inf and prop == "ORANGE":
+            cbl_inf.append([pt1,pt2] if not format_troncon else "{}=>{}".format(pt1,pt2))
+    
+    return cbl_inf
+
 def number_to_inline_list(nb):
     return ','.join(map(str,range(1,nb+1)) or "-1")
 
@@ -441,17 +483,17 @@ def get_valeurs_variables_conf(nom_fiche,f_formats):
             nb_var=f_format.count("{")
             srch = re.search(("{(.+)}."*nb_var)[:-1],f_format)
             variables_liste = eval('srch.group({})'.format(number_to_inline_list(nb_var)))
-            
+
             for var in variables_liste:
                 f_format=f_format.replace("{"+var+"}","(.+)")
-            
-            variables_valeurs=eval("re.search(f_format,nom_fiche).group({})".format(number_to_inline_list(f_format.count(".+"))))
 
+            variables_valeurs=eval("re.search(f_format,nom_fiche).group({})".format(number_to_inline_list(f_format.count(".+"))))
+            
             return {
                 "format":f_format_origine,
                 "conf":dict(zip(variables_liste,variables_valeurs))
             }
-        except:
+        except Exception as e:
             pass
     return False
 

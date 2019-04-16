@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <!ELEMENT livrables (livrable)+>
 <!ATTLIST livrables
   xmlns CDATA #FIXED ''>
@@ -192,6 +191,8 @@
   pre_id NMTOKEN #IMPLIED
   pre_insee_id NMTOKEN #IMPLIED
   pre_pt CDATA #IMPLIED
+  pre_pt1 CDATA #IMPLIED
+  pre_pt1_pt2 CDATA #IMPLIED
   pt1 NMTOKEN #IMPLIED
   separateur_insee_id NMTOKEN #IMPLIED
   separateur_pt1_pt1 NMTOKEN #IMPLIED

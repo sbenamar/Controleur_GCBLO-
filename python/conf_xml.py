@@ -2,10 +2,10 @@ from lxml import etree
 import os
 
 def format_fichier_xml(elem):
-    format_pre=["pre_code_zasro","code_zasro","separateur_zasro_etr","code_etr","branche_optique","id"]
+    format_pre=["pre_code_zasro","code_zasro","separateur_zasro_etr","code_etr","branche_optique"]
     format_post=["nom"]
     format_variables_complexes=["pt1_pt2","insee_id"]
-    format_variables_simples=["commune","id","canton"]
+    format_variables_simples=["commune","id","canton","pt1"]
     
     format_elem=""
     options=format_pre+format_post
@@ -78,7 +78,6 @@ def get_conf_xml(chemin_courant,xml_livrables_path="conf/livrables.xml",type_liv
                 pass
         else:
             chemin_livrable=os.path.join(chemin_courant,"Commande")
-            
 
         conf["dossier_path"]=chemin_livrable
         conf["app_path"]=chemin_courant

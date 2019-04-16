@@ -103,8 +103,8 @@
                 <nommage separateur_insee_id="_"/>
             </chambre>
             <annexeD15 chemin="09 - FOA\Annexe_D15">
-                <nommage pre_pt="Annexe D15  " separateur_pt1_pt2="_ "/>
-                <nommage pre_pt="Annexe D15  " pt1="true"/>
+                <nommage pre_pt1_pt2="Annexe D15  " separateur_pt1_pt2="_ "/>
+                <nommage pre_pt1="Annexe D15  "/>
             </annexeD15>
         </FOA>
         <commande chemin="10 - Commande_Orange">
@@ -229,8 +229,8 @@
                 <nommage separateur_insee_id="_"/>
             </chambre>
             <annexeD15 chemin="D15">
-                <nommage pre_pt="Annexe D15  " pt1="true"/>
-                <nommage pre_pt="Annexe D15  " separateur_pt1_pt1="_"/>
+                <nommage pre_pt1="Annexe D15  "/>
+                <nommage pre_pt1_pt2="Annexe D15  " separateur_pt1_pt2="_ "/>
             </annexeD15>
         </FOA>
         <commande chemin=".">
@@ -351,7 +351,7 @@
                 <nommage separateur_insee_id="_"/>
             </chambre>
             <annexeD15 chemin="09 - FOA\Annexe_D15">
-                <nommage pre_pt="Annexe D15  " separateur_pt1_pt2="_ "/>
+                <nommage pre_pt1_pt2="Annexe D15  " separateur_pt1_pt2="_ "/>
             </annexeD15>
         </FOA>
         <commande chemin="10 - Commande_Orange">

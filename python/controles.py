@@ -1173,6 +1173,8 @@ def verif_d15_problematique(controle=True):
     pts_pb = []
     infras_pb = []
     
+    pts_d15 = pts_from_d15()
+    
     for inf in infras:
         if inf["ETAT"] in codes_infra_problematique:
             troncon_pb = ["",""]
@@ -1181,10 +1183,9 @@ def verif_d15_problematique(controle=True):
                     troncon_pb[0]=pt["NOM"]
                 elif pt["pt_nd_code"] == inf["cm_ndcode2"]:
                     troncon_pb[1]=pt["NOM"]
-                if pt["ETAT"] in codes_infra_problematique and pt["NOM"] not in pts_pb and not find_d15(pt["NOM"]):
+                if pt["ETAT"] in codes_infra_problematique and pt["NOM"] not in pts_pb and not([pt["NOM"],""] in pts_d15 or ["",pt["NOM"]] in pts_d15):
                     pts_pb.append(pt["NOM"])
-            
-            if [inf["cm_code"],troncon_pb] not in infras_pb and not find_d15(troncon_pb):
+            if [inf["cm_code"],troncon_pb] not in infras_pb and not(troncon_pb in pts_d15):
                 infras_pb.append([inf["cm_code"],troncon_pb])
                 
     erreurs_pt=[
@@ -1204,7 +1205,7 @@ def verif_d15_problematique(controle=True):
                     [
                         chemin_fichier_application(conf["shape_infra_path"]),
                         chemin_fichier_application(conf["FOA_annexeD15_path"]),
-                        "{} ({} <=> {})".format(code,pt1,pt2)
+                        "{} ({} => {})".format(code,pt1,pt2)
                     ]
                 ) for (code,(pt1,pt2)) in infras_pb
             ]
@@ -1245,4 +1246,49 @@ def verif_l49_gc_1000(controle=True):
                     communes_err.append(comm["NOM"])
     
     alim_rapport_csv(erreurs)
-    return nb_controles   
+    return nb_controles
+
+#Contrôle 2 et contrôle 3 [nouvelle version sans cable-infra]
+def verif_cable_c3a(controle2=True,controle3=True):
+    if not controle2 and not controle3:
+        return 0
+    else:
+        nb_controles=get_nb_controles(locals())
+    
+    liaisons_commandes = ["{}=>{}".format(prestation[3].value.replace("/","_"),prestation[5].value.replace("/","_")) for c3a,num,prestation in get_commande_groupe_ligne()]
+    
+    cbl_inf = get_cable_infra_shp(True)
+    
+    num_controle=2
+    
+    erreurs_2 = [
+        modele_erreur(
+            num_controle,
+            [
+                chemin_fichier_application(conf["listeC3A_C3A_path"]),
+                chemin_fichier_application(conf["shape_cable_path"]),
+                troncon
+             ]
+        )
+        for troncon in set(cbl_inf)-set(liaisons_commandes)
+    ]
+    
+    num_controle=3
+    
+    erreurs_3 = [
+        modele_erreur(
+            num_controle,
+            [
+                chemin_fichier_application(conf["shape_cable_path"]),
+                chemin_fichier_application(conf["listeC3A_C3A_path"]),
+                troncon
+             ]
+        )
+        for troncon in set(liaisons_commandes)-set(cbl_inf)
+    ]
+    
+    if controle2:
+        alim_rapport_csv(erreurs_2)
+    if controle3:
+        alim_rapport_csv(erreurs_3)
+    return nb_controles

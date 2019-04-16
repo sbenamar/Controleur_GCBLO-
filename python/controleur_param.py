@@ -50,7 +50,7 @@ def lancer_controles(widget):
     
     try:
         #La progression se fait selon le nombre de contrôles effectués
-        step_ctrl+=corresp_cable_infra_c3a(list_controle_exe[2],list_controle_exe[3])
+        step_ctrl+=verif_cable_c3a(list_controle_exe[2],list_controle_exe[3])
         pbar_chargement(pbar,step_ctrl,nb_ctrl)
     except Exception as e:
         return log(e,43)
@@ -210,11 +210,11 @@ def lancer_controles(widget):
     except Exception as e:
         return log(e,429)
     
-    #try:
-    #    step_ctrl+=verif_d15_problematique(list_controle_exe[55])
-    #    pbar_chargement(pbar,step_ctrl,nb_ctrl)
-    #except Exception as e:
-    #    return log(e,431)
+    try:
+        step_ctrl+=verif_d15_problematique(list_controle_exe[55])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,431)
     
     pbar_chargement(pbar,100,100)
     
