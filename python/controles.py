@@ -706,12 +706,18 @@ def verif_point_technique_c3a(controle5=True):
             ]
     )
     
+    pt_ids = list(zip(*points_techniques))[1]
+    
     erreurs5=[
         modele_erreur(
             num_controle,
             [chemin_fichier_application(conf["shape_point_technique_path"]),c3a_list_libelle,commande[1].replace("_","/")]
         )
-        for commande in commandes if commande[1] and (commande not in points_techniques and (commande[0],commande[1].split("_")[-1]) not in points_techniques)
+        for commande in commandes
+        if commande[1]
+        and commande not in points_techniques
+        and (commande[0],commande[1].split("_")[-1]) not in points_techniques
+        and (commande[1] in pt_ids or commande[1].split("_")[-1] in pt_ids)
     ]
     
     alim_rapport_csv(erreurs5)

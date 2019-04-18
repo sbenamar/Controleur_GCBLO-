@@ -380,11 +380,12 @@ def get_l49_fichiers_complets(nom_commune):
 def alim_rapport_csv(erreurs=False):
     if type(erreurs) is not bool and len(erreurs) == 0:
         return
-
+    
     with open(os.path.join(chemin_rapport,libelle_rapport_csv), 'a', newline='') as fichier:
         fwrite = csv.writer(fichier, delimiter=';',
             quotechar='|', quoting=csv.QUOTE_MINIMAL)
         if erreurs:
+            erreurs = [y.split("#!") for y in set(["#!".join(list(map(str,x))) for x in erreurs])]
             for erreur in erreurs:
                 fwrite.writerow(erreur)
         else:
@@ -461,7 +462,7 @@ def get_cable_infra_shp(format_troncon=False):
         type_inf,prop,pt1,pt2 = [""]*4
         for infra in infras:
             if infra.geometry().contains(cable.geometry()):
-                type_inf,prop = infra["cm_typ_imp"],infra["Proprio"]
+                type_inf,prop = infra["cm_typ_imp"],infra["PROPRIETAI"]
                 break
         for pt in pts:
             if pt["pt_nd_code"] == cable["cb_nd1"]:
