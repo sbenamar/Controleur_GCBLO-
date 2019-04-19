@@ -574,7 +574,7 @@ def verif_liste_colonnes(controle=True):
     alim_rapport_csv(erreurs)
     return nb_controles
 
-#Contrôles 10 et 11 et 38 
+#Contrôle 10 et 11 et 38 
 def verif_c7_travaux_existe(controle10=True,controle11=True,controle38=True):
     if not(controle10 or controle11 or controle38):
         return 0
@@ -723,14 +723,14 @@ def verif_point_technique_c3a(controle5=True):
     alim_rapport_csv(erreurs5)
     return nb_controles
 
-#Contrôles 26,27,28,29,30,31,32,33,34,35,36,37
+#Contrôles 26,27,28,29,30,31,32,33,34,35,36,37,40
 def verif_struct_shape(controles={}):
     
     #valeurs possibles des paramètres
     valeurs=[[False],[True],[False,True]]
     
     #Vérifier que le paramètre passé est conforme (liste entière et valeurs attendues)
-    if list(set(controles.values())) not in valeurs or list(controles.keys()) != list(range(26,38)):
+    if list(set(controles.values())) not in valeurs or list(controles.keys()) != list(range(26,38))+[40]:
         try:
             raise ValueError(str(controles))
         except Exception as e:
@@ -744,51 +744,51 @@ def verif_struct_shape(controles={}):
     
     num_controle=26
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["shape_point_technique_path"],shape_point_technique_nom,champs_point_technique)
+        verif_champs_shape(num_controle,conf["shape_point_technique_path"],shape_point_technique_nom,champs_point_technique,controles[40])
         
     num_controle=27
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["shape_prises_path"],shape_prises_nom,champs_prises)
+        verif_champs_shape(num_controle,conf["shape_prises_path"],shape_prises_nom,champs_prises,controles[40])
     
     num_controle=28
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["shape_sro_path"],shape_sro_nom,champs_sro)
+        verif_champs_shape(num_controle,conf["shape_sro_path"],shape_sro_nom,champs_sro,controles[40])
     
     num_controle=29
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["shape_boitier_path"],shape_boitier_nom,champs_boitier)
+        verif_champs_shape(num_controle,conf["shape_boitier_path"],shape_boitier_nom,champs_boitier,controles[40])
     
     num_controle=30
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["shape_infra_path"],shape_infra_nom,champs_infra)
+        verif_champs_shape(num_controle,conf["shape_infra_path"],shape_infra_nom,champs_infra,controles[40])
         
     num_controle=31
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["shape_racco_client_path"],shape_racco_client_nom,champs_racco_client)
+        verif_champs_shape(num_controle,conf["shape_racco_client_path"],shape_racco_client_nom,champs_racco_client,controles[40])
         
     num_controle=32
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["shape_cable_path"],shape_cable_nom,champs_cable)
+        verif_champs_shape(num_controle,conf["shape_cable_path"],shape_cable_nom,champs_cable,controles[40])
         
     num_controle=33
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["shape_zpbo_path"],shape_zpbo_nom,champs_zpbo)
+        verif_champs_shape(num_controle,conf["shape_zpbo_path"],shape_zpbo_nom,champs_zpbo,controles[40])
         
     num_controle=34
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["shape_zsro_path"],shape_zsro_nom,champs_zsro)
+        verif_champs_shape(num_controle,conf["shape_zsro_path"],shape_zsro_nom,champs_zsro,controles[40])
         
     num_controle=35
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["shape_zpec_path"],shape_zpec_nom,champs_zpec)
+        verif_champs_shape(num_controle,conf["shape_zpec_path"],shape_zpec_nom,champs_zpec,controles[40])
         
     num_controle=36
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["shape_znro_path"],shape_znro_nom,champs_znro)
+        verif_champs_shape(num_controle,conf["shape_znro_path"],shape_znro_nom,champs_znro,controles[40])
         
     num_controle=37
     if controles[num_controle]:
-        verif_champs_shape(num_controle,conf["shape_nro_path"],shape_nro_nom,champs_nro)
+        verif_champs_shape(num_controle,conf["shape_nro_path"],shape_nro_nom,champs_nro,controles[40])
     
     return nb_controles
 

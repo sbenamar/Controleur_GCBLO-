@@ -411,6 +411,7 @@ try:
     erreur_controle37="La structuration des champs de la couche NRO est incorrecte"
     erreur_controle38="Le format du numéro d'appui dans la C7 est incorrect"
     erreur_controle39="La couche est manquante"
+    erreur_controle40="L'attribut est manquant"
     erreur_controle41="DT manquants pour la commune"
     erreur_controle42="Des fichiers sont manquants dans le dossier L49"
     erreur_controle43="Le fichier PMV aérien est manquant pour la commune"
@@ -509,7 +510,8 @@ try:
         41:pre_entete_19,
         42:pre_entete_20,
         43:pre_entete_21,
-        55:pre_entete_22
+        55:pre_entete_22,
+        40:pre_entete_8
     }
     
     post_entete_controle1=[erreur_controle1,criticite['bloquant']]
@@ -551,6 +553,7 @@ try:
     post_entete_controle37=[erreur_controle37,criticite['majeure']]
     post_entete_controle38=[erreur_controle38,criticite['avertissement']]
     post_entete_controle39=[erreur_controle39,criticite['majeure']]
+    post_entete_controle40=[erreur_controle40,criticite['majeure']]
     post_entete_controle41=[erreur_controle41,criticite['majeure']]
     post_entete_controle42=[erreur_controle42,criticite['majeure']]
     post_entete_controle43=[erreur_controle43,criticite['majeure']]

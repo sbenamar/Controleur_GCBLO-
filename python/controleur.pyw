@@ -26,7 +26,7 @@ def main(args) :
     zone = QComboBox()
     for item in zones:
         zone.addItem(item)
-        
+    
     layout = QFormLayout()
     layout.addRow(QLabel("Département:"), dpt)
     layout.addRow(QLabel("Référence de livrable:"), zone)
