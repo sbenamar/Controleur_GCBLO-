@@ -587,7 +587,7 @@ def verif_c7_travaux_existe(controle10=True,controle11=True,controle38=True):
     for c3a,num,prestation in commandes:
         condition_a=prestation[pos_xl("M")].value in condition_travaux_c7
         condition_b=prestation[pos_xl("N")].value in condition_travaux_c7
-        nom_c7=""
+        appuis=[]
         
         #Si l'ouverture de la C7 échoue, on attrape l'exception et ça signie donc que la C7 n'existe pas
         #et donc que le contrôle 10 est en erreur
@@ -595,27 +595,29 @@ def verif_c7_travaux_existe(controle10=True,controle11=True,controle38=True):
             #Contrôle 11 et 38 pour colonne M
             num_controle=38
             try:
-                (nom_c7,appuis)=appui_from_c7_nom(c3a)
+                appuis=appui_from_c7_nom()
+                if not appuis:
+                    raise IndexError("La liste des c7 est vide")
                 
-                erreurs[2]=[
+                erreurs[2].extend([
                         modele_erreur(num_controle,[chemin_fichier_application(nom_c7),"",appui])
-                        for appui in appui_from_c7(c3a)[1]
+                        for (nom_c7,appui) in appui_from_c7()
                         if not pattern_nom_point_souple.match(str(appui))
-                ]
+                ])
                 
                 num_controle=11
-                if prestation[3].ctype and str(prestation[3].value).split("/")[-1] not in appuis:
+                if prestation[3].ctype and str(prestation[3].value).split("/")[-1] not in list(zip(*appuis))[1]:
                     erreurs[1].append(
                                     modele_erreur_c3a(
                                         num_controle,
                                         c3a,
                                         prestation[3].value,
                                         "",
-                                        chemin_fichier_application(nom_c7),
+                                        c7_list_libelle,
                                         1
                                     )
                                 )
-            except IndexError as e:
+            except (IndexError,FileNotFoundError) as e:
                 #Contrôle 10 pour colonne M
                 num_controle=10
                 erreurs[0].append(
@@ -633,16 +635,19 @@ def verif_c7_travaux_existe(controle10=True,controle11=True,controle38=True):
             #Contrôle 11 et 38 pour colonne N
             num_controle=38
             try:
-                if not nom_c7:
-                    (nom_c7,appuis)=appui_from_c7_nom(c3a)
-                    erreurs[2]=[
+                if not appuis:
+                    appuis=appui_from_c7_nom()
+                    if not appuis:
+                        raise IndexError("La liste des c7 est vide")
+                
+                    erreurs[2].extend([
                         modele_erreur(num_controle,[chemin_fichier_application(nom_c7),"",appui])
-                        for appui in appui_from_c7(c3a)[1]
+                        for (nom_c7,appui) in appui_from_c7()
                         if not pattern_nom_point_souple.match(str(appui))
-                    ]
+                    ])
                 
                 num_controle=11
-                if prestation[5].ctype and str(prestation[5].value).split("/")[-1] not in appuis:
+                if prestation[5].ctype and str(prestation[5].value).split("/")[-1] not in list(zip(*appuis))[1]:
                     erreurs[1].append(
                                     modele_erreur_c3a(
                                         num_controle,
@@ -653,7 +658,7 @@ def verif_c7_travaux_existe(controle10=True,controle11=True,controle38=True):
                                         1
                                     )
                                 )
-            except IndexError:
+            except (IndexError,FileNotFoundError) as e:
                 #Contrôle 10 pour colonne N
                 num_controle=10
                 erreurs[0].append(

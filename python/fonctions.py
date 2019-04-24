@@ -104,15 +104,27 @@ def log(err,code=0):
         exit(code)
 
 #Récupérer la liste des appuis contenus dans la C7
-def appui_from_c7(c3a):
-    (nom_c7,feuille) = get_feuille_c7(c3a)
-    cmd_c7 = ouvrir_c7(feuille)
-    return (nom_c7,[str(appui[0].value).replace("_","/").split(".")[0] for appui in cmd_c7])
+def appui_from_c7(c3a=False):
+    if c3a:
+        (nom_c7,feuille) = get_feuille_c7(c3a)
+        cmd_c7 = ouvrir_c7(feuille)
+        return (nom_c7,[str(appui[0].value).replace("_","/").split(".")[0] for appui in cmd_c7])
+    else:
+        return [
+                    (
+                        nom_c7,
+                        str(appui[0].value).replace("_","/").split(".")[0]
+                    )
+                    for (nom_c7,num,appui) in get_appuis_c7_groupe_ligne()
+                ]
 
 #Récupération de la liste des appuis comme pour appui_from_c7 en récupérant que le nom
-def appui_from_c7_nom(c3a):
-    (nom_c7,appuis) = appui_from_c7(c3a)
-    return (nom_c7,[appui.split("_")[-1].split("/")[-1] for appui in appuis])
+def appui_from_c7_nom(c3a=False):
+    if c3a:
+        (nom_c7,appuis) = appui_from_c7(c3a)
+        return (nom_c7,[appui.split("_")[-1].split("/")[-1] for appui in appuis])
+    else:
+       return [(nom_c7,appui.split("_")[-1].split("/")[-1]) for (nom_c7,appui) in appui_from_c7()]
 
 #Création du code type sous la forme présente dans les C3A avec le type et le propriétaire
 def code_type_point(type_point,prop):
@@ -128,6 +140,36 @@ def get_c3a_list():
         return liste
     else:
         raise FileNotFoundError("fichiers C3A manquants")
+
+#Retourne tous les chemins menants vers des fichier C7 pour le projet
+def get_c7_list():
+    liste=[f for f in glob.iglob(os.path.join(conf["listeC7_C7_path"],arbo_c7), recursive=True) if "~$" not in f]
+    if liste:
+        return liste
+    else:
+        raise FileNotFoundError("fichiers C7 manquants")
+
+#Retourne la liste des tableaux de C7 et le nom du fichier C7, groupé par nom de fichier C7
+def get_appuis_c7_groupe():
+    return [
+        (
+            c7,
+            ouvrir_c7(
+                get_feuille_c7(
+                    False,
+                    os.path.join(conf["commande_path"],c7)
+                )
+            )
+        )
+            for c7 in get_c7_list()
+    ]
+
+#Récupère les lignes de la C7 avec le numéro de ligne et le nom du fichier, tout sur une même ligne
+def get_appuis_c7_groupe_ligne():
+    return [[c7,num_appui,appui]
+            for c7,appuis in get_appuis_c7_groupe()
+            for (num_appui,appui) in enumerate(appuis)
+            ]  
 
 #Retourne le nom du fichier selon le chemin
 def nom_fichier(chemin,extension=False):
@@ -188,10 +230,15 @@ def verif_champs_shape(num_controle,chemin_shape,nom_shape,champs,controle40=Fal
         pass
 
 #Récupération de la première feuille du fichier C7
-def get_feuille_c7(c3a):
-    nom = [f for f in glob.glob(os.path.join(conf["listeC7_C7_path"],format_arbo_c7).format(nom_fichier(c3a).split("C3")[0])) if "~$" not in f][0]
-    c7_xls = xlrd.open_workbook(nom)
-    return chemin_fichier_application(nom),c7_xls.sheet_by_index(0)
+def get_feuille_c7(c3a=False,chemin=False):
+    if c3a:
+        nom = [f for f in glob.glob(os.path.join(conf["listeC7_C7_path"],format_arbo_c7).format(nom_fichier(c3a).split("C3")[0])) if "~$" not in f][0]
+        c7_xls = xlrd.open_workbook(nom)
+        return chemin_fichier_application(nom),c7_xls.sheet_by_index(0)
+    if chemin:
+        c7_xls = xlrd.open_workbook(chemin)
+        return c7_xls.sheet_by_index(0)
+    return False
 
 #Récupération des lignes de la feuille de la C7
 def ouvrir_c7(feuille):

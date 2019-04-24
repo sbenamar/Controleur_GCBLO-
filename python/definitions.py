@@ -34,6 +34,7 @@ conf_dpt=get_conf_xml(chemin_courant,xml_livrables_path)
 #conf_dpt["CD21"]["dpt"]="CD21"
 
 format_arbo_c7="*{}*C7*.xls*"
+arbo_c7="*C7*.xls*"
 arbo_c3a="*C3A*.xls*"
 
 #Fenêtre de message d'erreur avec un code d'identification
