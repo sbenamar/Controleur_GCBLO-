@@ -1,5 +1,6 @@
 from lxml import etree
-import os
+from unrar import rarfile
+import os,zipfile,glob
 
 def format_fichier_xml(elem):
     format_pre=["pre_code_zasro","code_zasro","separateur_zasro_etr","code_etr","branche_optique"]
@@ -22,7 +23,7 @@ def format_fichier_xml(elem):
         if format_elem:
             options=format_pre+format_elem.split("&&")+format_post
             break
-
+    
     format_final=""
     for option in options:
         if "#" not in option:
@@ -48,7 +49,7 @@ def prefixe_variable(elem,type_pre="nommage"):
         
     return prefixe
 
-def get_conf_xml(chemin_courant,xml_livrables_path="conf/livrables.xml",type_livrable=False,zone_livrable=False):
+def get_conf_xml(chemin_courant,xml_livrables_path="conf/livrables.xml",type_livrable=False,zone_livrable=False,return_conf=None):
     parser = etree.XMLParser(dtd_validation=True)
     try:
         root = etree.parse(xml_livrables_path,parser)
@@ -64,15 +65,29 @@ def get_conf_xml(chemin_courant,xml_livrables_path="conf/livrables.xml",type_liv
         conf,dpt={},livrable.get("dpt")
         conf["code_zasro"]=None
         conf["code_zasro_alt"]=None
+        conf["archive"]=False
         
         if (dpt,type_livrable,zone_livrable) == ("CD21","EXE","Distribution"):
             try:
                 chemin_livrable=os.path.join(chemin_courant,"Livrable")
-                dossier_livrable=os.listdir(chemin_livrable)[-1]
+                
+                if return_conf is not None:
+                    try:
+                        zipf = glob.glob(os.path.join(chemin_livrable,"*.zip"))
+                        if len(zipf) == 1:
+                            zipfile.ZipFile(zipf[0], "r").extractall(chemin_livrable)
+                        
+                        rarf = glob.glob(os.path.join(chemin_livrable,"*.rar"))
+                        if len(rarf) == 1:
+                            rarfile.RarFile(rarf[0], "r").extractall(chemin_livrable)
+                    except Exception as e:
+                        pass
+                
+                dossier_livrable=glob.glob(os.path.join(chemin_livrable,"*/"))[-1]
                 chemin_livrable=os.path.join(chemin_livrable,dossier_livrable)
                 conf["code_zasro"]=dossier_livrable[:14]
                 conf["code_zasro_alt"]= (lambda x:x[:-2]+x[-2].replace("0","")+x[-1])(conf["code_zasro"])
-                
+                conf["archive"]=True
                 duplicate_cd21=False
             except:
                 pass
@@ -81,6 +96,7 @@ def get_conf_xml(chemin_courant,xml_livrables_path="conf/livrables.xml",type_liv
 
         conf["dossier_path"]=chemin_livrable
         conf["app_path"]=chemin_courant
+        conf["livrable_path"]=os.path.join(chemin_courant,"Livrable")
         
         for couche in livrable.xpath('.//couche'):
             chemin_couche=couche.getparent().get("chemin")
@@ -135,4 +151,6 @@ def get_conf_xml(chemin_courant,xml_livrables_path="conf/livrables.xml",type_liv
         conf_dpt["CD21"]=conf_dpt["CDXX"].copy()
         conf_dpt["CD21"]["dpt"]="CD21"
     
+    if return_conf is not None:
+        return_conf[0]=conf_dpt
     return conf_dpt

@@ -1,4 +1,4 @@
-import warnings,os,sys,traceback,csv,glob,re,zipfile
+import warnings,os,sys,traceback,csv,glob,re
 from conf_xml import *
 from datetime import datetime
 from functools import reduce

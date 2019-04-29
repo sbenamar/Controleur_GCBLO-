@@ -1,4 +1,6 @@
 ﻿from controleur_param import *
+from multiprocessing import Process,Manager
+import time,os
 
 locale = QLocale.system().name()
 
@@ -41,6 +43,32 @@ def main(args) :
     widget.show()
     app.exec_()
 
+def extract_livrable(widget,dpt,type_lrvb,zone):
+    try:
+        manager = Manager()
+        return_conf = manager.dict()
+        widget.hide()
+        
+        widget2 = QWidget(None)
+        widget2.setWindowTitle("Extraction du livrable...")
+        layout = QGridLayout()
+        widget2.setLayout(layout)
+        label = QLabel("Extraction de l'archive du livrable en cours... Veuillez patienter...")
+        label.setAlignment(Qt.AlignCenter)
+        layout.addWidget(label,0,0)
+        widget2.show()
+        
+        p1 = Process(target=get_conf_xml, args=(conf_dpt[dpt]["app_path"],xml_livrables_path,type_lrvb,zone,return_conf))
+        p1.start()
+        p1.join()
+        conf=return_conf[0][dpt]
+        p1.terminate()
+        widget2.hide()
+        widget.show()
+        return conf
+    except Exception as e:
+        return log(e,54)    
+
 #Lors du clic sur le bouton de contrôle, on récupère les informations sélectionnées, on paramètre en fonction et on lance les contrôles
 def controle_dpt(widget,dpt,type_lrvb,zone):
     #Vérification de la validité des combinaisons de reference et type de livraison
@@ -53,13 +81,20 @@ def controle_dpt(widget,dpt,type_lrvb,zone):
     
     #Mise à jour des variables de configuration spécifiques au département, avec les informations sélectionnées
     try:
-        conf=get_conf_xml(conf_dpt[dpt.currentText()]["app_path"],xml_livrables_path,type_lrvb.currentText(),zone.currentText())[dpt.currentText()]
-        update_conf(conf,type_lrvb.currentText(),zone.currentText())
+        dpt,type_lrvb,zone=dpt.currentText(),type_lrvb.currentText(),zone.currentText()
+        dossiers=glob.glob(os.path.join(conf_dpt[dpt]["livrable_path"],"*/"))
+        if not len(dossiers) and (dpt,type_lrvb,zone)==("CD21","EXE","Distribution"):
+            conf=extract_livrable(widget,dpt,type_lrvb,zone)
+        else:
+            conf=get_conf_xml(conf_dpt[dpt]["app_path"],xml_livrables_path,type_lrvb,zone)[dpt]
+    
+        update_conf(conf,type_lrvb,zone)
+
     except Exception as e:
         return log(e,52)
-        
+    
     lancer_controles(widget)
-
+    
 #Met à jour le dictionnaire de configuration dans chaque fichier selon le choix du menu de sélection
 def update_conf(conf_dpt,type_lrvb,zone):
     update_conf_param(conf_dpt,type_lrvb,zone)
@@ -69,6 +104,3 @@ def update_conf(conf_dpt,type_lrvb,zone):
 
 if __name__ == "__main__":
     main(sys.argv)
-    zipf = glob.glob(os.path.join(*[chemin_courant,"Livrable"],"*.zip"))
-    if zipf:
-        zipfile.ZipFile(zipf[0], "r").extractall(".")
