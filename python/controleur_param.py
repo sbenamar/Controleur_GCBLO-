@@ -52,6 +52,8 @@ def lancer_controles(widget):
         #La progression se fait selon le nombre de contrôles effectués
         step_ctrl+=verif_cable_c3a(list_controle_exe[2],list_controle_exe[3])
         pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except InternalException:
+        return
     except Exception as e:
         return log(e,43)
     

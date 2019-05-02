@@ -276,92 +276,82 @@ def get_liste_controle_dpt(dpt,type_lvrb,zone):
 def chemin_fichier_application(fichier):
     return fichier.replace(conf["dossier_path"],"").replace("\\.","") or "/"
 
-def find_synthese_etude():
+def find_fichier_format(conf_chemin,conf_format,ext,variables,code_zasro_alt):
+    variables_alt=variables.copy()
+    variables_alt["code_zasro"]=code_zasro_alt
+    
     return len([f
-            for f in glob.iglob(os.path.join(conf["syntheseEtude_path"],"*.xls*"))
-            if os.path.splitext(os.path.basename(f))[0] in ([
-                    format_inline(f_format,{"code_zasro":conf["code_zasro"]})
-                    for f_format in conf["syntheseEtude_format"]
+            for f in glob.iglob(os.path.join(conf_chemin,"*.{}*".format(ext)))
+            if os.path.splitext(os.path.basename(f))[0].upper().replace(" ","-") in ([
+                    str(format_inline(f_format,variables)).upper().replace(" ","-")
+                    for f_format in conf_format
                 ]
                 +[
-                    format_inline(f_format,{"code_zasro":conf["code_zasro_alt"]})
-                    for f_format in conf["syntheseEtude_format"]
+                    str(format_inline(f_format,variables_alt)).upper().replace(" ","-")
+                    for f_format in conf_format
                 ])
-            ])    
+            ])
+
+def find_synthese_etude():
+    return find_fichier_format(
+        conf["syntheseEtude_path"],
+        conf["syntheseEtude_format"],
+        "xls",
+        {"code_zasro":conf["code_zasro"]},
+        conf["code_zasro_alt"]
+        )   
 
 def find_synoptique_fichier(type_syn="cable"):
     if type_syn not in ["cable","fibre"]:
         raise Exception("Le fichier synoptique doit avoir qu'un seul type")
     
-    return len([f
-            for f in glob.iglob(os.path.join(conf["optique_path".format(type_syn)],"*.xls*"))
-            if os.path.splitext(os.path.basename(f))[0] in ([
-                    format_inline(f_format,{"code_zasro":conf["code_zasro"]})
-                    for f_format in conf["optique_synoptique_{}_format".format(type_syn)]
-                ]
-                +[
-                    format_inline(f_format,{"code_zasro":conf["code_zasro_alt"]})
-                    for f_format in conf["optique_synoptique_{}_format".format(type_syn)]
-                ])
-            ])    
+    return find_fichier_format(
+        conf["optique_path"],
+        conf["optique_synoptique_{}_format".format(type_syn)],
+        "xls",
+        {"code_zasro":conf["code_zasro"]},
+        conf["code_zasro_alt"]
+        ) 
 
 def find_bpu():
-    return len([f
-            for f in glob.iglob(os.path.join(conf["financier_path"],"*.xls*"))
-            if os.path.splitext(os.path.basename(f))[0] in ([
-                    format_inline(f_format,{"code_zasro":conf["code_zasro"]})
-                    for f_format in conf["financier_BPU_format"]
-                ]
-                +[
-                    format_inline(f_format,{"code_zasro":conf["code_zasro_alt"]})
-                    for f_format in conf["financier_BPU_format"]
-                ])
-            ])    
+    return find_fichier_format(
+        conf["financier_path"],
+        conf["financier_BPU_format"],
+        "xls",
+        {"code_zasro":conf["code_zasro"]},
+        conf["code_zasro_alt"]
+        )
 
 def find_recap_conventions():
-    return len([f
-            for f in glob.iglob(os.path.join(conf["conventions_path"],"*.xls*"))
-            if os.path.splitext(os.path.basename(f))[0] in ([
-                    format_inline(f_format,{"code_zasro":conf["code_zasro"]})
-                    for f_format in conf["conventions_recap_format"]
-                ]
-                +[
-                    format_inline(f_format,{"code_zasro":conf["code_zasro_alt"]})
-                    for f_format in conf["conventions_recap_format"]
-                ])
-            ])    
-
+    return find_fichier_format(
+        conf["conventions_path"],
+        conf["conventions_recap_format"],
+        "xls",
+        {"code_zasro":conf["code_zasro"]},
+        conf["code_zasro_alt"]
+        )   
 
 def get_noms_planboite():
     return [nom_fichier(f) for f in glob.iglob(os.path.join(conf["optique_plansBoite_path"],"*.xls*"))]
 
 def find_pmv_souterrain(nom_commune):
-    return len([f
-            for f in glob.iglob(os.path.join(conf["administratif_PMV_path"],"*.pdf"))
-            if os.path.splitext(os.path.basename(f))[0].upper().replace(" ","-") in ([
-                    str(format_inline(f_format,{"code_zasro":conf["code_zasro"],"commune":nom_commune})).upper().replace(" ","-")
-                    for f_format in conf["PMV_souterrain_format"]
-                ]
-                +[
-                    str(format_inline(f_format,{"code_zasro":conf["code_zasro_alt"],"commune":nom_commune})).upper().replace(" ","-")
-                    for f_format in conf["PMV_souterrain_format"]
-                ])
-            ]) 
+    return find_fichier_format(
+        conf["administratif_PMV_path"],
+        conf["PMV_souterrain_format"],
+        "pdf",
+        {"code_zasro":conf["code_zasro"],"commune":nom_commune},
+        conf["code_zasro_alt"]
+        )    
 
 def find_pmv_poteau(nom_commune):
-    return len([f
-            for f in glob.iglob(os.path.join(conf["administratif_PMV_path"],"*.pdf"))
-            if os.path.splitext(os.path.basename(f))[0].upper().replace(" ","-") in ([
-                    str(format_inline(f_format,{"code_zasro":conf["code_zasro"],"commune":nom_commune})).upper().replace(" ","-")
-                    for f_format in conf["PMV_poteau_format"]
-                ]
-                +[
-                    str(format_inline(f_format,{"code_zasro":conf["code_zasro_alt"],"commune":nom_commune})).upper().replace(" ","-")
-                    for f_format in conf["PMV_poteau_format"]
-                ])
-            ]) 
+    return find_fichier_format(
+        conf["administratif_PMV_path"],
+        conf["PMV_poteau_format"],
+        "pdf",
+        {"code_zasro":conf["code_zasro"],"commune":nom_commune},
+        conf["code_zasro_alt"]
+        )
 
-#Récupération de la première feuille du fichier C7
 def get_d15_from_fichier():
     chemins = [
         f for f in glob.glob(os.path.join(conf["FOA_annexeD15_path"],"*.xls*"))
@@ -382,21 +372,15 @@ def pts_from_d15():
     return [[d15["pt1"].value,d15["pt2"].value] for d15 in get_d15_from_fichier()]
 
 def find_d15(noms_pt):
-    return len([f
-            for f in glob.iglob(os.path.join(conf["FOA_annexeD15_path"],"*.xls*"))
-            if os.path.splitext(os.path.basename(f))[0].upper().replace(" ","-") in ([
-                    str(format_inline(f_format,{"code_zasro":conf["code_zasro"],"pt1":noms_pt[0],"pt2":noms_pt[1]})).upper().replace(" ","-")
-                    if type(noms_pt) is list  
-                    else str(format_inline(f_format,{"code_zasro":conf["code_zasro"],"pt1":noms_pt,"pt2":""})).upper().replace(" ","-")
-                    for f_format in conf["FOA_annexeD15_format"]
-                ]
-                +[
-                    str(format_inline(f_format,{"code_zasro":conf["code_zasro"],"pt1":noms_pt[0],"pt2":noms_pt[1]})).upper().replace(" ","-")
-                    if type(noms_pt) is list  
-                    else str(format_inline(f_format,{"code_zasro":conf["code_zasro_alt"],"pt1":noms_pt,"pt2":""})).upper().replace(" ","-")
-                    for f_format in conf["FOA_annexeD15_format"]
-                ])
-            ]) 
+    return find_fichier_format(
+        conf["FOA_annexeD15_path"],
+        conf["FOA_annexeD15_format"],
+        "xls",
+        {"code_zasro":conf["code_zasro"],"pt1":noms_pt[0],"pt2":noms_pt[1]}
+        if type(noms_pt) is list
+        else {"code_zasro":conf["code_zasro"],"pt1":noms_pt,"pt2":""},
+        conf["code_zasro_alt"]
+        )
     
 def get_dt_pdf(nom_commune):
     return [f
@@ -404,30 +388,22 @@ def get_dt_pdf(nom_commune):
             ]
 
 def get_l49_recepisse(nom_commune):
-    return len([f
-            for f in glob.iglob(os.path.join(conf["administratif_L49_path"],"*.*"))
-            if os.path.splitext(os.path.basename(f))[0].upper().replace(" ","-") in ([
-                    str(format_inline(f_format,{"code_zasro":conf["code_zasro"],"commune":nom_commune})).upper().replace(" ","-")
-                    for f_format in conf["L49_recepisse_format"]
-                ]
-                +[
-                    str(format_inline(f_format,{"code_zasro":conf["code_zasro_alt"],"commune":nom_commune})).upper().replace(" ","-")
-                    for f_format in conf["L49_recepisse_format"]
-                ])
-            ])
+    return find_fichier_format(
+        conf["administratif_L49_path"],
+        conf["L49_recepisse_format"],
+        ".",
+        {"code_zasro":conf["code_zasro"],"commune":nom_commune},
+        conf["code_zasro_alt"]
+        )
 
 def get_l49_dossier(nom_commune):
-    return len([f
-            for f in glob.iglob(os.path.join(conf["administratif_L49_path"],"*.*"))
-            if os.path.splitext(os.path.basename(f))[0].upper().replace(" ","-") in ([
-                    str(format_inline(f_format,{"code_zasro":conf["code_zasro"],"commune":nom_commune})).upper().replace(" ","-")
-                    for f_format in conf["L49_dossier_format"]
-                ]
-                +[
-                    str(format_inline(f_format,{"code_zasro":conf["code_zasro_alt"],"commune":nom_commune})).upper().replace(" ","-")
-                    for f_format in conf["L49_dossier_format"]
-                ])
-            ])
+    return find_fichier_format(
+        conf["administratif_L49_path"],
+        conf["L49_dossier_format"],
+        ".",
+        {"code_zasro":conf["code_zasro"],"commune":nom_commune},
+        conf["code_zasro_alt"]
+        )
 
 def get_l49_fichiers_complets(nom_commune):
     return get_l49_dossier(nom_commune) and get_l49_recepisse(nom_commune)
@@ -518,7 +494,11 @@ def get_cable_infra_shp(format_troncon=False):
         type_inf,prop,pt1,pt2 = [""]*4
         for infra in infras:
             if infra.geometry().contains(cable.geometry()):
-                type_inf,prop = infra["cm_typ_imp"],infra["PROPRIETAI"]
+                try:
+                    type_inf,prop = infra["cm_typ_imp"],infra["PROPRIETAI"]
+                except KeyError as e:
+                    log(e,23)
+                    raise InternalException()
                 break
         for pt in pts:
             if pt["pt_nd_code"] == cable["cb_nd1"]:

@@ -1,4 +1,5 @@
 import warnings,os,sys,traceback,csv,glob,re
+from InternalException import InternalException
 from conf_xml import *
 from datetime import datetime
 from functools import reduce
@@ -9,7 +10,6 @@ from qgis.core import *
 
 #chemin_courant permettra de servir de base pour la création des autres chemins
 chemin_courant=os.getcwd()
-#chemin_exe=os.getcwd()
 
 if "python" in chemin_courant:
     qgis_prefix_path=os.path.join(chemin_courant,*["lib","qgis"])
@@ -55,9 +55,6 @@ def msg_erreur(code,message=False):
 #Gestion de l'exception lors de la création de la fonction de log, qui permettra de généraliser
 ##la gestion des erreurs
 try:
-    #chemin_courant permettra de servir de base pour la création des autres chemins
-    chemin_courant=os.getcwd()
-    
     #Préparation des variables utilisées par la fonction log dont un format d'affichage
     log_path=os.path.join(*[chemin_courant,"python","log"])
     nom_log="log"
