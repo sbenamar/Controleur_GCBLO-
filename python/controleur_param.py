@@ -70,6 +70,12 @@ def lancer_controles(widget):
         return log(e,44)
     
     try:
+        step_ctrl+=corresp_chambre_c3a(list_controle_exe[58])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,427)
+    
+    try:
         step_ctrl+=verif_point_technique_c3a(list_controle_exe[5])
         pbar_chargement(pbar,step_ctrl,nb_ctrl)
     except Exception as e:
@@ -121,6 +127,42 @@ def lancer_controles(widget):
         pbar_chargement(pbar,step_ctrl,nb_ctrl)
     except Exception as e:
         return log(e,416)
+ 
+    try:
+        step_ctrl+=verif_dt_gc(list_controle_exe[41])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,428)
+    
+    try:
+        step_ctrl+=verif_l49_gc_1000(list_controle_exe[42])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,429)
+   
+    try:
+        step_ctrl+=verif_pmv_aerien_poteau_etat(list_controle_exe[43])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,430)
+    
+    try:
+        step_ctrl+=verif_pmv_conduite_gc(list_controle_exe[44])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,426)
+    
+    try:
+        step_ctrl+=verif_convention(list_controle_exe[45])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,424)
+    
+    try:
+        step_ctrl+=verif_bpu(list_controle_exe[46])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,423)
     
     try:
         step_ctrl+=verif_dossier_qgis_exist(list_controle_exe[47])
@@ -133,6 +175,18 @@ def lancer_controles(widget):
         pbar_chargement(pbar,step_ctrl,nb_ctrl)
     except Exception as e:
         return log(e,415)
+    
+    try:
+        step_ctrl+=verif_synoptique(list_controle_exe[49],list_controle_exe[50])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,422)
+    
+    try:
+        step_ctrl+=verif_boitier_planboite(list_controle_exe[51])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,425)
 
     try:
         step_ctrl+=verif_fichier_enedis_pt(list_controle_exe[52])
@@ -153,70 +207,16 @@ def lancer_controles(widget):
         return log(e,419)
     
     try:
-        step_ctrl+=verif_synthese_etude(list_controle_exe[56])
-        pbar_chargement(pbar,step_ctrl,nb_ctrl)
-    except Exception as e:
-        return log(e,421)
-    
-    try:
-        step_ctrl+=verif_synoptique(list_controle_exe[49],list_controle_exe[50])
-        pbar_chargement(pbar,step_ctrl,nb_ctrl)
-    except Exception as e:
-        return log(e,422)
-    
-    try:
-        step_ctrl+=verif_bpu(list_controle_exe[46])
-        pbar_chargement(pbar,step_ctrl,nb_ctrl)
-    except Exception as e:
-        return log(e,423)
-    
-    try:
-        step_ctrl+=verif_convention(list_controle_exe[45])
-        pbar_chargement(pbar,step_ctrl,nb_ctrl)
-    except Exception as e:
-        return log(e,424)
-    
-    try:
-        step_ctrl+=verif_boitier_planboite(list_controle_exe[51])
-        pbar_chargement(pbar,step_ctrl,nb_ctrl)
-    except Exception as e:
-        return log(e,425)
-    
-    try:
-        step_ctrl+=verif_pmv_aerien_poteau_etat(list_controle_exe[43])
-        pbar_chargement(pbar,step_ctrl,nb_ctrl)
-    except Exception as e:
-        return log(e,430)
-    
-    try:
-        step_ctrl+=verif_pmv_conduite_gc(list_controle_exe[44])
-        pbar_chargement(pbar,step_ctrl,nb_ctrl)
-    except Exception as e:
-        return log(e,426)
-    
-    try:
-        step_ctrl+=corresp_chambre_c3a(list_controle_exe[58])
-        pbar_chargement(pbar,step_ctrl,nb_ctrl)
-    except Exception as e:
-        return log(e,427)
-    
-    try:
-        step_ctrl+=verif_dt_gc(list_controle_exe[41])
-        pbar_chargement(pbar,step_ctrl,nb_ctrl)
-    except Exception as e:
-        return log(e,428)
-    
-    try:
-        step_ctrl+=verif_l49_gc_1000(list_controle_exe[42])
-        pbar_chargement(pbar,step_ctrl,nb_ctrl)
-    except Exception as e:
-        return log(e,429)
-    
-    try:
         step_ctrl+=verif_d15_problematique(list_controle_exe[55])
         pbar_chargement(pbar,step_ctrl,nb_ctrl)
     except Exception as e:
         return log(e,431)
+    
+    try:
+        step_ctrl+=verif_synthese_etude(list_controle_exe[56])
+        pbar_chargement(pbar,step_ctrl,nb_ctrl)
+    except Exception as e:
+        return log(e,421)
     
     pbar_chargement(pbar,100,100)
     

@@ -99,6 +99,7 @@ def controle_dpt(widget,dpt,type_lrvb,zone):
 def update_conf(conf_dpt,type_lrvb,zone):
     update_conf_param(conf_dpt,type_lrvb,zone)
     update_conf_ctrl(conf_dpt,type_lrvb,zone)
+    update_conf_ctrl_fct(conf_dpt,type_lrvb,zone)
     update_conf_fct(conf_dpt,type_lrvb,zone)
     update_conf_def(conf_dpt,type_lrvb,zone)
 

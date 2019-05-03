@@ -1,5 +1,5 @@
 #Pour l'explication des contrôles, se réferer au fichier Controlleur.xlsx dans le dossier Documentation
-from fonctions import *
+from controles_fct import *
 
 #Mise à jour du dictionnaire de configuration avec le nouveaux généré après sélection du département
 def update_conf_ctrl(config,type_lvrb,zone):
