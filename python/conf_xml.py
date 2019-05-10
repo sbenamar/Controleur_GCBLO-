@@ -1,5 +1,4 @@
 from lxml import etree
-from unrar import rarfile
 import os,zipfile,glob
 
 def format_fichier_xml(elem):
@@ -76,10 +75,6 @@ def get_conf_xml(chemin_courant,xml_livrables_path="conf/livrables.xml",type_liv
                         zipf = glob.glob(os.path.join(chemin_livrable,"*.zip"))
                         if len(zipf) == 1:
                             zipfile.ZipFile(zipf[0], "r").extractall(chemin_livrable)
-                        
-                        rarf = glob.glob(os.path.join(chemin_livrable,"*.rar"))
-                        if len(rarf) == 1:
-                            rarfile.RarFile(rarf[0], "r").extractall(chemin_livrable)
                     except Exception as e:
                         pass
                 

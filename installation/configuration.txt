@@ -18,6 +18,7 @@ set VSI_CACHE_SIZE=1000000
 set QT_PLUGIN_PATH=%OSGEO4W_ROOT%\apps\qgis\qtplugins;%OSGEO4W_ROOT%\apps\qt5\plugins
 set PYTHONPATH=%OSGEO4W_ROOT%\apps\qgis\python;%PYTHONPATH%
 set GDAL_DATA=%OSGEO4W_ROOT%\share\gdal
+set UNRAR_LIB_PATH=C:\Program Files (x86)\UnrarDLL\x64\UnRAR64.dll
 
 Chemins:
 PYTHONPATH=C:\Users\PTPC9452\AppData\Local\Programs\Python\Python37\Lib\site-packages;C:\Users\PTPC9452\AppData\Local\Programs\Python\Python37\Scripts\;C:\Program Files\QGIS 3.4\apps\qgis\python;C:\Users\PTPC9452\AppData\Roaming\QGIS\QGIS3\profiles\default\python;C:\Program Files\QGIS 3.4\apps\qgis\python\plugins;C:\Program Files\QGIS 3.4\apps\qgis\python;C:\Program Files\QGIS 3.4\apps\Python37\DLLs;C:\Program Files\QGIS 3.4\apps\Python37\lib;C:\Program Files\QGIS 3.4\bin;C:\Program Files\QGIS 3.4\apps\Python37;C:\Program Files\QGIS 3.4\apps\Python37\lib\site-packages;C:\Program Files\QGIS 3.4\apps\Python37\lib\site-packages\win32;C:\Program Files\QGIS 3.4\apps\Python37\lib\site-packages\win32\lib;C:\Program Files\QGIS 3.4\apps\Python37\lib\site-packages\Pythonwin;C:\Users\PTPC9452\AppData\Roaming\QGIS\QGIS3\profiles\default\python;

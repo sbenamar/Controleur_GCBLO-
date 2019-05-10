@@ -370,206 +370,119 @@ try:
         "Criticité"
     ]
     
-    erreur_controle1="Mauvaise version de la C3A"
-    erreur_controle2="Liaison manquante dans la C3A"
-    erreur_controle3="Tronçon présent dans la C3A mais absent de QGIS"
-    erreur_controle4="Fiche poteaux manquante"
-    erreur_controle5="Incohérence du type de point technique entre la C3A et QGIS"
-    erreur_controle6="Information de sous tubage incomplète pour le tronçon. La colonne I doit être renseigné"
-    erreur_controle7="Format de nommage incorrect"
-    erreur_controle8="Longueur de tronçon / portée incorrect"
-    erreur_controle9="Les valeurs ne respectent pas les listes déroulantes"
-    erreur_controle10="Fichier C7 manquant"
-    erreur_controle11="Appui manquant dans la C7"
-    erreur_controle12="Combinaison interdite"
-    erreur_controle13="Information de diamètre de l'alvéole mal renseigné"
-    erreur_controle14="La colonne F doit être vide"
-    erreur_controle15='La colonne H doit contenir la valeur "adduction"'
-    erreur_controle16="La colonne F doit être vide"
-    erreur_controle17='La colonne G doit contenir la valeur "7"'
-    erreur_controle18="La colonne F doit être vide"
-    erreur_controle19='La colonne H doit contenir la valeur "transition"'
-    erreur_controle20='La colonne G doit contenir la valeur "7"'
-    erreur_controle21='La colonne H doit contenir la valeur "transition"'
-    erreur_controle22='La colonne F doit être vide'
-    erreur_controle23='Les colonne B et D doivent être vide'
-    erreur_controle24='La colonne H doit contenir la valeur "transition"'
-    erreur_controle25='Nom de fiche poteau incorrect'
-    erreur_controle26="La structuration des champs de la couche point technique est incorrecte"
-    erreur_controle27="La structuration des champs de la couche prises est incorrecte"
-    erreur_controle28="La structuration des champs de la couche SRO est incorrecte"
-    erreur_controle29="La structuration des champs de la couche boitier est incorrecte"
-    erreur_controle30="La structuration des champs de la couche infrastructure est incorrecte"
-    erreur_controle31="La structuration des champs de la couche racco_client est incorrecte"
-    erreur_controle32="La structuration des champs de la couche cable est incorrecte"
-    erreur_controle33="La structuration des champs de la couche ZPBO est incorrecte"
-    erreur_controle34="La structuration des champs de la couche ZSRO est incorrecte"
-    erreur_controle35="La structuration des champs de la couche ZPEC est incorrecte"
-    erreur_controle36="La structuration des champs de la couche ZNRO est incorrecte"
-    erreur_controle37="La structuration des champs de la couche NRO est incorrecte"
-    erreur_controle38="Le format du numéro d'appui dans la C7 est incorrect"
-    erreur_controle39="La couche est manquante"
-    erreur_controle40="L'attribut est manquant"
-    erreur_controle41="DT manquants pour la commune"
-    erreur_controle42="Des fichiers sont manquants dans le dossier L49"
-    erreur_controle43="Le fichier PMV aérien est manquant pour la commune"
-    erreur_controle44="Le fichier PMV conduite est manquant pour la commune"
-    erreur_controle45="Le récapitulatif de convention est introuvable dans le dossier de conventions"
-    erreur_controle46="Le fichier BPU est introuvable"
-    erreur_controle47="Le répertoire LAYERS ou le fichier .qgs est introuvable dans le répertoire PROJET_QGIS"
-    erreur_controle48="Le fichier de plan de tirage est introuvable dans le répertoire PROJET_QGIS"
-    erreur_controle49="Le fichier synoptique cable est introuvable"
-    erreur_controle50="Le fichier synoptique fibre est introuvable"
-    erreur_controle51="Le boitier est introuvable dans le dossier Plan de boîte"
-    erreur_controle52="Il existe des points techniques Enedis mais le dossier Enedic est vide"
-    erreur_controle53="Le fichier appui est manquant pour ce point technique"
-    erreur_controle54="Le fichier chambre est manquant pour ce point technique"
-    erreur_controle55="L'annexe est manquante pour cette élement"
-    erreur_controle56="Le fichier de synthèse d'étude est introuvable"
-    erreur_controle57="Nom de fiche poteau incorrect"
-    erreur_controle58="Fiche chambre manquante"
+    erreur_controle={}
+    erreur_controle[1]="Mauvaise version de la C3A"
+    erreur_controle[2]="Liaison manquante dans la C3A"
+    erreur_controle[3]="Tronçon présent dans la C3A mais absent de QGIS"
+    erreur_controle[4]="Fiche poteaux manquante"
+    erreur_controle[5]="Incohérence du type de point technique entre la C3A et QGIS"
+    erreur_controle[6]="Information de sous tubage incomplète pour le tronçon. La colonne I doit être renseigné"
+    erreur_controle[7]="Format de nommage incorrect"
+    erreur_controle[8]="Longueur de tronçon / portée incorrect"
+    erreur_controle[9]="Les valeurs ne respectent pas les listes déroulantes"
+    erreur_controle[10]="Fichier C7 manquant"
+    erreur_controle[11]="Appui manquant dans la C7"
+    erreur_controle[12]="Combinaison interdite"
+    erreur_controle[13]="Information de diamètre de l'alvéole mal renseigné"
+    erreur_controle[14]="La colonne F doit être vide"
+    erreur_controle[15]='La colonne H doit contenir la valeur "adduction"'
+    erreur_controle[16]="La colonne F doit être vide"
+    erreur_controle[17]='La colonne G doit contenir la valeur "7"'
+    erreur_controle[18]="La colonne F doit être vide"
+    erreur_controle[19]='La colonne H doit contenir la valeur "transition"'
+    erreur_controle[20]='La colonne G doit contenir la valeur "7"'
+    erreur_controle[21]='La colonne H doit contenir la valeur "transition"'
+    erreur_controle[22]='La colonne F doit être vide'
+    erreur_controle[23]='Les colonne B et D doivent être vide'
+    erreur_controle[24]='La colonne H doit contenir la valeur "transition"'
+    erreur_controle[25]='Nom de fiche poteau incorrect'
+    erreur_controle[26]="La structuration des champs de la couche point technique est incorrecte"
+    erreur_controle[27]="La structuration des champs de la couche prises est incorrecte"
+    erreur_controle[28]="La structuration des champs de la couche SRO est incorrecte"
+    erreur_controle[29]="La structuration des champs de la couche boitier est incorrecte"
+    erreur_controle[30]="La structuration des champs de la couche infrastructure est incorrecte"
+    erreur_controle[31]="La structuration des champs de la couche racco_client est incorrecte"
+    erreur_controle[32]="La structuration des champs de la couche cable est incorrecte"
+    erreur_controle[33]="La structuration des champs de la couche ZPBO est incorrecte"
+    erreur_controle[34]="La structuration des champs de la couche ZSRO est incorrecte"
+    erreur_controle[35]="La structuration des champs de la couche ZPEC est incorrecte"
+    erreur_controle[36]="La structuration des champs de la couche ZNRO est incorrecte"
+    erreur_controle[37]="La structuration des champs de la couche NRO est incorrecte"
+    erreur_controle[38]="Le format du numéro d'appui dans la C7 est incorrect"
+    erreur_controle[39]="La couche est manquante"
+    erreur_controle[40]="L'attribut est manquant"
+    erreur_controle[41]="DT manquants pour la commune"
+    erreur_controle[42]="Des fichiers sont manquants dans le dossier L49"
+    erreur_controle[43]="Le fichier PMV aérien est manquant pour la commune"
+    erreur_controle[44]="Le fichier PMV conduite est manquant pour la commune"
+    erreur_controle[45]="Le récapitulatif de convention est introuvable dans le dossier de conventions"
+    erreur_controle[46]="Le fichier BPU est introuvable"
+    erreur_controle[47]="Le répertoire LAYERS ou le fichier .qgs est introuvable dans le répertoire PROJET_QGIS"
+    erreur_controle[48]="Le fichier de plan de tirage est introuvable dans le répertoire PROJET_QGIS"
+    erreur_controle[49]="Le fichier synoptique cable est introuvable"
+    erreur_controle[50]="Le fichier synoptique fibre est introuvable"
+    erreur_controle[51]="Le boitier est introuvable dans le dossier Plan de boîte"
+    erreur_controle[52]="Il existe des points techniques Enedis mais le dossier Enedic est vide"
+    erreur_controle[53]="Le fichier appui est manquant pour ce point technique"
+    erreur_controle[54]="Le fichier chambre est manquant pour ce point technique"
+    erreur_controle[55]="L'annexe est manquante pour cette élement"
+    erreur_controle[56]="Le fichier de synthèse d'étude est introuvable"
+    erreur_controle[57]="Nom de fiche poteau incorrect"
+    erreur_controle[58]="Fiche chambre manquante"
     
-    pre_entete_1 = ["Commande d'accès","Version"]
-    pre_entete_2 = ["Commande d'accès","Complétude"]
-    pre_entete_3 = ["Commande d'accès","Règle GCBLO"]
-    pre_entete_4 = ["Commande d'accès","Cohérence"]
-    pre_entete_5 = ["Commande d'accès","Structuration des couches"]
-    pre_entete_6 = ["Complétude","Plan de tirage"]
-    pre_entete_7 = ["Complétude","Projet QGIS"]
-    pre_entete_8 = ["Complétude","QGIS"]
-    pre_entete_9 = ["Complétude","Etude CAPFT"]
-    pre_entete_10 = ["Complétude","FOA"]
-    pre_entete_11 = ["Complétude","Etude Comac"]
-    pre_entete_12 = ["Complétude","Synthèse étude"]
-    pre_entete_13 = ["Complétude","Synoptique cable"]
-    pre_entete_14 = ["Complétude","Synoptique fibre à fibre"]
-    pre_entete_15 = ["Complétude","Financier"]
-    pre_entete_16 = ["Complétude","Convention"]
-    pre_entete_17 = ["Complétude","Plan de boite"]
-    pre_entete_18 = ["Complétude","PMV conduite"]
-    pre_entete_19 = ["Complétude","DT"]
-    pre_entete_20 = ["Complétude","L49"]
-    pre_entete_21 = ["Complétude","PMV aérien"]
-    pre_entete_22 = ["Complétude","Annexe D15"]
+    pre_entete = {}
+    pre_entete[1] = ["Commande d'accès","Version"]
+    pre_entete[2] = ["Commande d'accès","Complétude"]
+    pre_entete[3] = ["Commande d'accès","Règle GCBLO"]
+    pre_entete[4] = ["Commande d'accès","Cohérence"]
+    pre_entete[5] = ["Commande d'accès","Structuration des couches"]
+    pre_entete[6] = ["Complétude","Plan de tirage"]
+    pre_entete[7] = ["Complétude","Projet QGIS"]
+    pre_entete[8] = ["Complétude","QGIS"]
+    pre_entete[9] = ["Complétude","Etude CAPFT"]
+    pre_entete[10] = ["Complétude","FOA"]
+    pre_entete[11] = ["Complétude","Etude Comac"]
+    pre_entete[12] = ["Complétude","Synthèse étude"]
+    pre_entete[13] = ["Complétude","Synoptique cable"]
+    pre_entete[14] = ["Complétude","Synoptique fibre à fibre"]
+    pre_entete[15] = ["Complétude","Financier"]
+    pre_entete[16] = ["Complétude","Convention"]
+    pre_entete[17] = ["Complétude","Plan de boite"]
+    pre_entete[18] = ["Complétude","PMV conduite"]
+    pre_entete[19] = ["Complétude","DT"]
+    pre_entete[20] = ["Complétude","L49"]
+    pre_entete[21] = ["Complétude","PMV aérien"]
+    pre_entete[22] = ["Complétude","Annexe D15"]
     
-    pre_entete_lien={
-        1:pre_entete_1,
-        2:pre_entete_2,
-        3:pre_entete_2,
-        4:pre_entete_3,
-        5:pre_entete_4,
-        6:pre_entete_3,
-        7:pre_entete_3,
-        8:pre_entete_3,
-        9:pre_entete_3,
-        10:pre_entete_3,
-        11:pre_entete_3,
-        12:pre_entete_3,
-        13:pre_entete_3,
-        15:pre_entete_3,
-        16:pre_entete_3,
-        17:pre_entete_3,
-        18:pre_entete_3,
-        19:pre_entete_3,
-        20:pre_entete_3,
-        21:pre_entete_3,
-        22:pre_entete_3,
-        23:pre_entete_3,
-        24:pre_entete_3,
-        25:pre_entete_3,
-        26:pre_entete_5,
-        27:pre_entete_5,
-        28:pre_entete_5,
-        29:pre_entete_5,
-        30:pre_entete_5,
-        31:pre_entete_5,
-        32:pre_entete_5,
-        33:pre_entete_5,
-        34:pre_entete_5,
-        35:pre_entete_5,
-        36:pre_entete_5,
-        37:pre_entete_5,
-        38:pre_entete_3,
-        39:pre_entete_8,
-        47:pre_entete_7,
-        48:pre_entete_6,
-        49:pre_entete_13,
-        50:pre_entete_14,
-        53:pre_entete_9,
-        54:pre_entete_10,
-        52:pre_entete_11,
-        57:pre_entete_3,
-        56:pre_entete_12,
-        46:pre_entete_15,
-        45:pre_entete_16,
-        51:pre_entete_17,
-        44:pre_entete_18,
-        58:pre_entete_2,
-        41:pre_entete_19,
-        42:pre_entete_20,
-        43:pre_entete_21,
-        55:pre_entete_22,
-        40:pre_entete_8
-    }
+    pre_entete_lien={}
+    pre_entete_lien.update(dict.fromkeys([1],1))
+    pre_entete_lien.update(dict.fromkeys([2,3,58],2))
+    pre_entete_lien.update(dict.fromkeys([4,6,7,8,9,10,11,12,13,15,16,17,18,19,20,21,22,23,24,25,38,57],3))
+    pre_entete_lien.update(dict.fromkeys([5],4))
+    pre_entete_lien.update(dict.fromkeys([26,27,28,29,30,31,32,33,34,35,36,37],5))
+    pre_entete_lien.update(dict.fromkeys([48],6))
+    pre_entete_lien.update(dict.fromkeys([47],7))
+    pre_entete_lien.update(dict.fromkeys([39],8))
+    pre_entete_lien.update(dict.fromkeys([53],9))
+    pre_entete_lien.update(dict.fromkeys([54],10))
+    pre_entete_lien.update(dict.fromkeys([52],11))
+    pre_entete_lien.update(dict.fromkeys([56],12))
+    pre_entete_lien.update(dict.fromkeys([49],13))
+    pre_entete_lien.update(dict.fromkeys([50],14))
+    pre_entete_lien.update(dict.fromkeys([46],15))
+    pre_entete_lien.update(dict.fromkeys([45],16))
+    pre_entete_lien.update(dict.fromkeys([51],17))
+    pre_entete_lien.update(dict.fromkeys([44],18))
+    pre_entete_lien.update(dict.fromkeys([41],19))
+    pre_entete_lien.update(dict.fromkeys([42],20))
+    pre_entete_lien.update(dict.fromkeys([43],21))
+    pre_entete_lien.update(dict.fromkeys([55],22))
     
-    post_entete_controle1=[erreur_controle1,criticite['bloquant']]
-    post_entete_controle2=[erreur_controle2,criticite['bloquant']]
-    post_entete_controle3=[erreur_controle3,criticite['majeure']]
-    post_entete_controle4=[erreur_controle4,criticite['bloquant']]
-    post_entete_controle5=[erreur_controle5,criticite['majeure']]
-    post_entete_controle6=[erreur_controle6,criticite['mineure']]
-    post_entete_controle7=[erreur_controle7,criticite['majeure']]
-    post_entete_controle8=[erreur_controle8,criticite['majeure']]
-    post_entete_controle9=[erreur_controle9,criticite['mineure']]
-    post_entete_controle10=[erreur_controle10,criticite['majeure']]
-    post_entete_controle11=[erreur_controle11,criticite['majeure']]
-    post_entete_controle12=[erreur_controle12,criticite['majeure']]
-    post_entete_controle13=[erreur_controle13,criticite['mineure']]
-    post_entete_controle14=[erreur_controle14,criticite['mineure']]
-    post_entete_controle15=[erreur_controle15,criticite['mineure']]
-    post_entete_controle16=[erreur_controle16,criticite['mineure']]
-    post_entete_controle17=[erreur_controle17,criticite['mineure']]
-    post_entete_controle18=[erreur_controle18,criticite['mineure']]
-    post_entete_controle19=[erreur_controle19,criticite['mineure']]
-    post_entete_controle20=[erreur_controle20,criticite['mineure']]
-    post_entete_controle21=[erreur_controle21,criticite['mineure']]
-    post_entete_controle22=[erreur_controle22,criticite['mineure']]
-    post_entete_controle23=[erreur_controle23,criticite['mineure']]
-    post_entete_controle24=[erreur_controle24,criticite['mineure']]
-    post_entete_controle25=[erreur_controle25,criticite['avertissement']]
-    post_entete_controle26=[erreur_controle26,criticite['majeure']]
-    post_entete_controle27=[erreur_controle27,criticite['majeure']]
-    post_entete_controle28=[erreur_controle28,criticite['majeure']]
-    post_entete_controle29=[erreur_controle29,criticite['majeure']]
-    post_entete_controle30=[erreur_controle30,criticite['majeure']]
-    post_entete_controle31=[erreur_controle31,criticite['majeure']]
-    post_entete_controle32=[erreur_controle32,criticite['majeure']]
-    post_entete_controle33=[erreur_controle33,criticite['majeure']]
-    post_entete_controle34=[erreur_controle34,criticite['majeure']]
-    post_entete_controle35=[erreur_controle35,criticite['majeure']]
-    post_entete_controle36=[erreur_controle36,criticite['majeure']]
-    post_entete_controle37=[erreur_controle37,criticite['majeure']]
-    post_entete_controle38=[erreur_controle38,criticite['avertissement']]
-    post_entete_controle39=[erreur_controle39,criticite['majeure']]
-    post_entete_controle40=[erreur_controle40,criticite['majeure']]
-    post_entete_controle41=[erreur_controle41,criticite['majeure']]
-    post_entete_controle42=[erreur_controle42,criticite['majeure']]
-    post_entete_controle43=[erreur_controle43,criticite['majeure']]
-    post_entete_controle44=[erreur_controle44,criticite['majeure']]
-    post_entete_controle45=[erreur_controle45,criticite['majeure']]
-    post_entete_controle46=[erreur_controle46,criticite['majeure']]
-    post_entete_controle47=[erreur_controle47,criticite['majeure']]
-    post_entete_controle48=[erreur_controle48,criticite['majeure']]
-    post_entete_controle49=[erreur_controle48,criticite['majeure']]
-    post_entete_controle50=[erreur_controle48,criticite['majeure']]
-    post_entete_controle51=[erreur_controle51,criticite['majeure']]
-    post_entete_controle52=[erreur_controle52,criticite['majeure']]
-    post_entete_controle53=[erreur_controle53,criticite['majeure']]
-    post_entete_controle54=[erreur_controle54,criticite['majeure']]
-    post_entete_controle55=[erreur_controle55,criticite['majeure']]
-    post_entete_controle56=[erreur_controle56,criticite['mineure']]
-    post_entete_controle57=[erreur_controle57,criticite['mineure']]
-    post_entete_controle58=[erreur_controle58,criticite['bloquant']]
+    post_criticite_lien={}
+    post_criticite_lien.update(dict.fromkeys([1,2,4,58],criticite['bloquant']))
+    post_criticite_lien.update(dict.fromkeys([6,9,13,14,15,16,17,18,19,20,21,22,23,24,56,57],criticite['mineure']))
+    post_criticite_lien.update(dict.fromkeys([25,38],criticite['avertissement']))
+    post_criticite_lien.update(dict.fromkeys([3,5,7,8,10,11,12,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55],criticite['majeure']))
     
     lib_nb_erreurs="Nombre d'erreurs"
     c3a_list_libelle="Ensemble des C3A"

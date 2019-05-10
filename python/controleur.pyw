@@ -83,7 +83,8 @@ def controle_dpt(widget,dpt,type_lrvb,zone):
     try:
         dpt,type_lrvb,zone=dpt.currentText(),type_lrvb.currentText(),zone.currentText()
         dossiers=glob.glob(os.path.join(conf_dpt[dpt]["livrable_path"],"*/"))
-        if not len(dossiers) and (dpt,type_lrvb,zone)==("CD21","EXE","Distribution"):
+        fzip=glob.glob(os.path.join(conf_dpt[dpt]["livrable_path"],"*.zip"))
+        if (dpt,type_lrvb,zone)==("CD21","EXE","Distribution") and not len(dossiers) and len(fzip):
             conf=extract_livrable(widget,dpt,type_lrvb,zone)
         else:
             conf=get_conf_xml(conf_dpt[dpt]["app_path"],xml_livrables_path,type_lrvb,zone)[dpt]

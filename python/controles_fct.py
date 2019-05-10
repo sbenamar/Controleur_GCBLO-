@@ -420,8 +420,8 @@ def get_contenu_comac():
 #Modèle de ligne d'erreur dans le fichier rapport, contenant les informations de contrôle pré-enregistrés
 #selon le numéro de contrôle.
 def modele_erreur(num_controle,erreur):
-    pre_erreur=[num_controle]+pre_entete_lien[num_controle]
-    return pre_erreur+erreur+eval("post_entete_controle"+str(num_controle))
+    pre_erreur=[num_controle]+pre_entete[pre_entete_lien[num_controle]]
+    return pre_erreur+erreur+[erreur_controle[num_controle],post_criticite_lien[num_controle]]
 
 #Utilisation de la fonction modele_erreur plus spécifiquement pour la C3A
 #Le modèle affiche en "champ concerné" la concaténation des points, ou seulement l'un ou l'autre
