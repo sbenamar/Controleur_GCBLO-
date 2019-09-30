@@ -25,3 +25,11 @@ set GDAL_DATA=%OSGEO4W_ROOT%\share\gdal
 
 start pythonw python/controleur.pyw
 
+import os
+
+os.environ["OSGEO4W_ROOT"] = "C:\PROGRA~1\QGIS3~1.4"
+os.environ["PATH"] = os.environ["OSGEO4W_ROOT"]+r"\apps\qgis\bin;"+os.environ["PATH"]+r";"+os.environ["OSGEO4W_ROOT"]+r"\apps\Python37;"+os.environ["OSGEO4W_ROOT"]+r"\apps\Python37\Scripts;"+os.environ["OSGEO4W_ROOT"]+r"\apps\qt5\bin;"+os.environ["OSGEO4W_ROOT"]+r"\bin;"+os.environ["PATH"]
+os.environ["QT_PLUGIN_PATH"] = os.environ["OSGEO4W_ROOT"]+r"\apps\Qt5\plugins"
+os.environ["PYTHONHOME"]=os.environ["OSGEO4W_ROOT"]+r"\apps\Python37"
+os.environ["PYTHONPATH"]=""
+os.environ["PYTHONPATH"]=os.environ["OSGEO4W_ROOT"]+r"\apps\qgis\python;"+os.environ["PYTHONPATH"]

@@ -355,7 +355,6 @@ def valeurs_selon_liaisons(controles={}):
         return 0
     else:
         nb_controles=get_nb_controles(locals())
-
     
     #Initialisation du tableau d'erreur organisé par numéro de contrôle, afin de tout afficher à la suite
     erreurs={k:[] for k in controles.keys()}

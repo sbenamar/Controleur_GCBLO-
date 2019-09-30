@@ -9,7 +9,7 @@ def format_fichier_xml(elem):
     
     format_elem=""
     options=format_pre+format_post
-    
+
     for attr in elem.attrib:
         for var in format_variables_complexes+format_variables_simples:
             if var in attr:

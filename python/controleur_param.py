@@ -1,9 +1,9 @@
 from controles import *
 
 #Initialisation du gestionnaire de QGIS
-QgsApplication.setPrefixPath(qgis_prefix_path,True)
-qgs = QgsApplication([], False)
-qgs.initQgis()
+#QgsApplication.setPrefixPath(qgis_prefix_path,True)
+#qgs = QgsApplication([], False)
+#qgs.initQgis()
 
 #warning d'un module pour une bibliothèque bientôt obsolète
 warnings.simplefilter("ignore")
@@ -20,6 +20,9 @@ def lancer_controles(widget):
     #Récupération de la liste des contrôles à effectuer
     try:
         list_controle_exe=get_liste_controle_dpt(conf["dpt"],conf["type_lvrb"],conf["zone"])
+        for x in range(60):
+            if x not in list_controle_exe:
+                list_controle_exe[x]=False
     except Exception as e:
         return log(e,411)
      

@@ -1,13 +1,11 @@
 ﻿from controleur_param import *
-from multiprocessing import Process,Manager
-import time,os
 
 locale = QLocale.system().name()
 
 def main(args) :
     app = QApplication(args)
     widget = QWidget(None)
-    widget.setWindowTitle("Contrôleur v1.10")
+    widget.setWindowTitle("Contrôleur v1")
     widget.resize(250,185)
     widget.setFixedSize(widget.size())
     pal=widget.palette()
@@ -15,7 +13,7 @@ def main(args) :
     widget.setPalette(pal)
     
     formGroupBox = QGroupBox("Paramètres",widget)
-    formGroupBox.move(20,5)
+    formGroupBox.move(20,0)
     
     dpt = QComboBox()
     for item in dpts:
@@ -28,16 +26,25 @@ def main(args) :
     zone = QComboBox()
     for item in zones:
         zone.addItem(item)
-    
+
+    dpt.setCurrentIndex(3)
+    type_lvrb.setCurrentIndex(3)
+    zone.setCurrentIndex(3)
+
+    comm = QCheckBox()
+    comm.setChecked(True)
+
     layout = QFormLayout()
     layout.addRow(QLabel("Département:"), dpt)
     layout.addRow(QLabel("Référence de livrable:"), zone)
     layout.addRow(QLabel("Type de livrable:"),type_lvrb)
+    layout.addRow(QLabel("Commande d'accès:"),comm)
     formGroupBox.setLayout(layout)
+    formGroupBox.setEnabled(False)
     
     button = QPushButton("Lancer les contrôles", widget)
     button.resize(120,40)
-    button.move(65,120)
+    button.move(65,124)
     button.clicked.connect(lambda: controle_dpt(widget,dpt,type_lvrb,zone))
     
     widget.show()

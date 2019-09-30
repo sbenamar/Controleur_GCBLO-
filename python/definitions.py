@@ -1,4 +1,4 @@
-import warnings,os,sys,traceback,csv,glob,re
+import warnings,os,sys,traceback,csv,glob,re,time
 from InternalException import InternalException
 from conf_xml import *
 from datetime import datetime
@@ -6,7 +6,8 @@ from functools import reduce
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-from qgis.core import *
+#from qgis.core import *
+from multiprocessing import Process,Manager
 
 #chemin_courant permettra de servir de base pour la création des autres chemins
 chemin_courant=os.getcwd()

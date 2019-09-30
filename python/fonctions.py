@@ -67,7 +67,7 @@ def init_pbar(widget):
     pbar.setMinimum(0)
     pbar.setMaximum(100)
     pbar.setAlignment(Qt.AlignHCenter)
-    pbar.move(72,159)
+    pbar.move(72,163)
     pbar.show()
     return pbar
 
