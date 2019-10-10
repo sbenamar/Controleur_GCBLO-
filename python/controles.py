@@ -317,7 +317,6 @@ def info_sous_tubage(controle=True):
     else:
         nb_controles=get_nb_controles(locals())
 
-    
     num_controle=6
     
     commandes = get_commande_groupe_ligne()
@@ -333,7 +332,7 @@ def info_sous_tubage(controle=True):
         if not(prestation[8].ctype or len(prestation[8].value))
         and (prestation[9].ctype or len(prestation[9].value))
     ]
-    
+
     alim_rapport_csv(erreurs)
     return nb_controles
 
@@ -595,40 +594,44 @@ def verif_c7_travaux_existe(controle10=True,controle11=True,controle38=True):
             num_controle=38
             try:
                 appuis=appui_from_c7_nom()
-                if not appuis:
-                    raise IndexError("La liste des c7 est vide")
+                if controle38:
+                    if not appuis:
+                        raise IndexError("La liste des c7 est vide")
                 
-                erreurs[2].extend([
-                        modele_erreur(num_controle,[chemin_fichier_application(nom_c7),"",appui])
-                        for (nom_c7,appui) in appui_from_c7()
-                        if not pattern_nom_point_souple.match(str(appui))
-                ])
+                    erreurs[2].extend([
+                            modele_erreur(num_controle,[chemin_fichier_application(nom_c7),"",appui])
+                            for (nom_c7,appui) in appui_from_c7()
+                            if not pattern_nom_point_souple.match(str(appui))
+                    ])
                 
                 num_controle=11
-                if prestation[3].ctype and str(prestation[3].value).split("/")[-1] not in list(zip(*appuis))[1]:
-                    erreurs[1].append(
-                                    modele_erreur_c3a(
-                                        num_controle,
-                                        c3a,
-                                        prestation[3].value,
-                                        "",
-                                        c7_list_libelle,
-                                        1
+                if controle11:
+                    if prestation[3].ctype and str(prestation[3].value).split("/")[-1] not in list(zip(*appuis))[1]:
+                        erreurs[1].append(
+                                        modele_erreur_c3a(
+                                            num_controle,
+                                            c3a,
+                                            prestation[3].value,
+                                            "",
+                                            c7_list_libelle,
+                                           1
+                                        )
                                     )
-                                )
             except (IndexError,FileNotFoundError) as e:
                 #Contrôle 10 pour colonne M
+
                 num_controle=10
-                erreurs[0].append(
-                                    modele_erreur_c3a(
-                                        num_controle,
-                                        c3a,
-                                        prestation[3].value,
-                                        "",
-                                        c7_list_libelle,
-                                        1
+                if controle10:
+                    erreurs[0].append(
+                                        modele_erreur_c3a(
+                                            num_controle,
+                                            c3a,
+                                            prestation[3].value,
+                                            "",
+                                            c7_list_libelle,
+                                            1
+                                        )
                                     )
-                                )
                      
         if condition_b:
             #Contrôle 11 et 38 pour colonne N
@@ -636,40 +639,44 @@ def verif_c7_travaux_existe(controle10=True,controle11=True,controle38=True):
             try:
                 if not appuis:
                     appuis=appui_from_c7_nom()
-                    if not appuis:
-                        raise IndexError("La liste des c7 est vide")
+                    if controle38:
+                        if not appuis:
+                            raise IndexError("La liste des c7 est vide")
                 
-                    erreurs[2].extend([
-                        modele_erreur(num_controle,[chemin_fichier_application(nom_c7),"",appui])
-                        for (nom_c7,appui) in appui_from_c7()
-                        if not pattern_nom_point_souple.match(str(appui))
-                    ])
+                        erreurs[2].extend([
+                            modele_erreur(num_controle,[chemin_fichier_application(nom_c7),"",appui])
+                            for (nom_c7,appui) in appui_from_c7()
+                            if not pattern_nom_point_souple.match(str(appui))
+                        ])
                 
                 num_controle=11
-                if prestation[5].ctype and str(prestation[5].value).split("/")[-1] not in list(zip(*appuis))[1]:
-                    erreurs[1].append(
-                                    modele_erreur_c3a(
-                                        num_controle,
-                                        c3a,
-                                        "",
-                                        prestation[5].value,
-                                        nom_c7,
-                                        1
+                if controle11:
+                    if prestation[5].ctype and str(prestation[5].value).split("/")[-1] not in list(zip(*appuis))[1]:
+                        erreurs[1].append(
+                                        modele_erreur_c3a(
+                                            num_controle,
+                                            c3a,
+                                            "",
+                                            prestation[5].value,
+                                            c7_list_libelle,
+                                            1
+                                        )
                                     )
-                                )
             except (IndexError,FileNotFoundError) as e:
                 #Contrôle 10 pour colonne N
+
                 num_controle=10
-                erreurs[0].append(
-                                    modele_erreur_c3a(
-                                        num_controle,
-                                        c3a,
-                                        "",
-                                        prestation[5].value,
-                                        c7_list_libelle,
-                                        1
+                if controle10:
+                    erreurs[0].append(
+                                        modele_erreur_c3a(
+                                            num_controle,
+                                            c3a,
+                                            "",
+                                            prestation[5].value,
+                                            c7_list_libelle,
+                                            1
+                                       )
                                     )
-                                )
                 
     alim_rapport_csv(erreurs[0])
     alim_rapport_csv(erreurs[1])

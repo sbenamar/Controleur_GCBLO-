@@ -25,7 +25,7 @@ def appui_from_c7_nom(c3a=False):
         (nom_c7,appuis) = appui_from_c7(c3a)
         return (nom_c7,[appui.split("_")[-1].split("/")[-1] for appui in appuis])
     else:
-       return [(nom_c7,appui.split("_")[-1].split("/")[-1]) for (nom_c7,appui) in appui_from_c7()]
+        return [(nom_c7,appui.split("_")[-1].split("/")[-1]) for (nom_c7,appui) in appui_from_c7()]
 
 #Retourne tous les chemins menants vers des fichier C3A pour le projet
 def get_c3a_list():
@@ -118,7 +118,7 @@ def get_feuille_c7(c3a=False,chemin=False):
         return chemin_fichier_application(nom),c7_xls.sheet_by_index(0)
     if chemin:
         c7_xls = xlrd.open_workbook(chemin)
-        return c7_xls.sheet_by_index(0)
+        return c7_xls.sheet_by_name("Commande")
     return False
 
 #Récupération des lignes de la feuille de la C7

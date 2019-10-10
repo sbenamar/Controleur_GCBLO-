@@ -83,10 +83,11 @@ def lancer_controles(widget):
         pbar_chargement(pbar,step_ctrl,nb_ctrl)
     except Exception as e:
         return log(e,410)
-    
+
     try:
         step_ctrl+=info_sous_tubage(list_controle_exe[6])
         pbar_chargement(pbar,step_ctrl,nb_ctrl)
+
     except Exception as e:
         return log(e,45)
     
